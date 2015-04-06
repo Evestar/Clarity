@@ -38,6 +38,8 @@ public class MainActivity extends ARViewActivity {
     private ActionBarDrawerToggle drawerToggle;
     private ListView drawerList;
 
+    private IGeometry vuurtoren,standbeeld,blaak,havenBedrijf;
+
     @Override
     protected int getGUILayout() {
         return R.layout.activity_inapp;
@@ -110,23 +112,61 @@ public class MainActivity extends ARViewActivity {
         metaioSDK.setLLAObjectRenderingLimits(5, 200);
         metaioSDK.setRendererClippingPlaneLimits(10, 220000);
 
-        LLACoordinate rotterdam = new LLACoordinate(51.924161, 4.475128, 0, 0);
+        LLACoordinate vuurtorenLLA = new LLACoordinate(51.916801, 4.482380, 0, 0);
+        LLACoordinate blaakLLA = new LLACoordinate(51.919855, 4.489412, 0, 0);
+        LLACoordinate standbeeldLLA = new LLACoordinate(51.917648, 4.483057, 0, 0);
+        LLACoordinate havenBedrijfLLA = new LLACoordinate(51.904794,4.484548, 0, 0);
 
         File POIbackground =
                 AssetsManager.getAssetPathAsFile(getApplicationContext(), "ExamplePOI.png");
         if (POIbackground != null)
         {
-            IGeometry rotterdamGeo = metaioSDK.createGeometryFromImage(POIbackground,true,false);
-            if (rotterdamGeo != null)
+            vuurtoren = metaioSDK.createGeometryFromImage(POIbackground,true,false);
+            blaak = metaioSDK.createGeometryFromImage(POIbackground,true,false);
+            standbeeld = metaioSDK.createGeometryFromImage(POIbackground,true,false);
+            havenBedrijf = metaioSDK.createGeometryFromImage(POIbackground,true,false);
+
+            if (vuurtoren != null)
             {
-                rotterdamGeo.setTranslationLLA(rotterdam);
-                rotterdamGeo.setLLALimitsEnabled(true);
-                rotterdamGeo.setScale(100);
+                vuurtoren.setTranslationLLA(vuurtorenLLA);
+                vuurtoren.setLLALimitsEnabled(true);
+                vuurtoren.setScale(100);
             }
             else
             {
                 MetaioDebug.log(Log.ERROR, "Error loading geometry: " + POIbackground);
             }
+            if (blaak != null)
+            {
+                blaak.setTranslationLLA(blaakLLA);
+                blaak.setLLALimitsEnabled(true);
+                blaak.setScale(100);
+            }
+            else
+            {
+                MetaioDebug.log(Log.ERROR, "Error loading geometry: " + POIbackground);
+            }
+            if (standbeeld != null)
+            {
+                standbeeld.setTranslationLLA(standbeeldLLA);
+                standbeeld.setLLALimitsEnabled(true);
+                standbeeld.setScale(100);
+            }
+            else
+            {
+                MetaioDebug.log(Log.ERROR, "Error loading geometry: " + POIbackground);
+            }
+            if (havenBedrijf != null)
+            {
+                havenBedrijf.setTranslationLLA(havenBedrijfLLA);
+                havenBedrijf.setLLALimitsEnabled(true);
+                havenBedrijf.setScale(100);
+            }
+            else
+            {
+                MetaioDebug.log(Log.ERROR, "Error loading geometry: " + POIbackground);
+            }
+
         }
     }
 
