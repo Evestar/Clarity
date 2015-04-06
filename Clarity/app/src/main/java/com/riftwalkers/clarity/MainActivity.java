@@ -1,6 +1,9 @@
 package com.riftwalkers.clarity;
 
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.io.File;
 import java.util.concurrent.locks.Lock;
@@ -44,6 +47,7 @@ public class MainActivity extends ARViewActivity {
     private IRadar mRadar;
 
     @Override
+<<<<<<< HEAD
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -51,6 +55,10 @@ public class MainActivity extends ARViewActivity {
         // Set GPS tracking configuration
         boolean result = metaioSDK.setTrackingConfiguration("GPS", false);
         MetaioDebug.log("Tracking data loaded: " + result);
+=======
+    protected int getGUILayout() {
+        return R.layout.activity_inapp;
+>>>>>>> origin/master
     }
 
     @Override
@@ -122,6 +130,7 @@ public class MainActivity extends ARViewActivity {
     }
 
     @Override
+<<<<<<< HEAD
     protected void loadContents()
     {
         mAnnotatedGeometriesGroup = metaioSDK.createAnnotatedGeometriesGroup();
@@ -298,5 +307,29 @@ public class MainActivity extends ARViewActivity {
         {
             MetaioDebug.log("onFocusStateChanged for " + (String)userData + ", " + oldState + "->" + newState);
         }
+=======
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_inapp);
+
+        createListView();
+    }
+
+    public void createListView() {
+        //Create list of items
+        String[] items = {"Meerpalen", "Schepen", "Incidenten"};
+
+        // build Adapter
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this,
+                R.layout.listview_items,
+                items
+        );
+
+        // Config the list view
+        ListView list = (ListView) findViewById(R.id.legend);
+
+        list.setAdapter(adapter);
+>>>>>>> origin/master
     }
 }
