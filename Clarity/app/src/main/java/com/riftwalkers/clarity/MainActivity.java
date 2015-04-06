@@ -12,22 +12,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.util.Log;
 
-<<<<<<< HEAD
-=======
 import java.io.File;
 import java.io.IOException;
 
->>>>>>> origin/master
 import com.metaio.sdk.ARViewActivity;
 import com.metaio.sdk.MetaioDebug;
 import com.metaio.sdk.jni.IGeometry;
 import com.metaio.sdk.jni.IMetaioSDKCallback;
 import com.metaio.sdk.jni.LLACoordinate;
 import com.metaio.tools.io.AssetsManager;
-
-import java.io.IOException;
 
 
 public class MainActivity extends ARViewActivity {
