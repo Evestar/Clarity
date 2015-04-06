@@ -4,15 +4,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import java.io.IOException;
-
 import android.util.Log;
+
+import java.io.File;
+import java.io.IOException;
 
 import com.metaio.sdk.ARViewActivity;
 import com.metaio.sdk.MetaioDebug;
 import com.metaio.sdk.jni.IGeometry;
 import com.metaio.sdk.jni.IMetaioSDKCallback;
+import com.metaio.sdk.jni.LLACoordinate;
 import com.metaio.tools.io.AssetsManager;
 
 
@@ -28,11 +29,7 @@ public class MainActivity extends ARViewActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inapp);
 
-        //new AssetsExtracter().execute(0);
-
-        // Set GPS tracking configuration
-        boolean result = metaioSDK.setTrackingConfiguration("GPS", false);
-        MetaioDebug.log("Tracking data loaded: " + result);
+        new AssetsExtracter().execute(0);
 
         createListView();
     }
@@ -63,6 +60,30 @@ public class MainActivity extends ARViewActivity {
     @Override
     protected void loadContents()
     {
+        // Set GPS tracking configuration
+        metaioSDK.setTrackingConfiguration("GPS");
+
+        metaioSDK.setLLAObjectRenderingLimits(5, 200);
+        metaioSDK.setRendererClippingPlaneLimits(10, 220000);
+
+        LLACoordinate rotterdam = new LLACoordinate(51.924161, 4.475128, 0, 0);
+
+        File POIbackground =
+                AssetsManager.getAssetPathAsFile(getApplicationContext(), "ExamplePOI.png");
+        if (POIbackground != null)
+        {
+            IGeometry rotterdamGeo = metaioSDK.createGeometryFromImage(POIbackground,true,false);
+            if (rotterdamGeo != null)
+            {
+                rotterdamGeo.setTranslationLLA(rotterdam);
+                rotterdamGeo.setLLALimitsEnabled(true);
+                rotterdamGeo.setScale(100);
+            }
+            else
+            {
+                MetaioDebug.log(Log.ERROR, "Error loading geometry: " + POIbackground);
+            }
+        }
     }
 
     @Override
