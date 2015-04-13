@@ -2,6 +2,7 @@ package com.riftwalkers.clarity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,10 @@ public class RoleSelector extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_roleselector);
+
+        final AssetsExtracter assetsExtracter = new AssetsExtracter();
+        assetsExtracter.setContext(this);
+        assetsExtracter.execute(0);
 
         pilot = (Button) findViewById(R.id.loods);
         rower = (Button) findViewById(R.id.roei);
