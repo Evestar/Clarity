@@ -7,11 +7,14 @@
     <string name="drawer_title">Legend</string>
     <string name="drawer_open">Open Legend</string>
     <string name="drawer_close">Close Legend</string>
+    <string name="search_dialog_title">Zoeken naar POI\'s</string>
+    <string name="search_dialog_searchbutton">Zoek!</string>
     <string-array name="drawer_array">
+        <item></item>
+        <item>Boeien</item>
         <item>Meerpalen</item>
         <item>Ligplaatsen</item>
         <item>Schepen</item>
-        <item>Boeien</item>
         <item>Incidenten</item>
     </string-array>
 </resources>

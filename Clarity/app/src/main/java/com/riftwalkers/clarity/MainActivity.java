@@ -49,6 +49,11 @@ public class MainActivity extends ARViewActivity {
         createDrawMenu();
     }
 
+    public void Search(View view) {
+        SearchDialog searchDialog = new SearchDialog(this);
+        searchDialog.show();
+    }
+
     public void createDrawMenu() {
         // TODO : Fix drawerLayout menu
 
