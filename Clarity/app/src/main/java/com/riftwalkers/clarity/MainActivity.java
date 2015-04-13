@@ -111,56 +111,31 @@ public class MainActivity extends ARViewActivity {
         LLACoordinate standbeeldLLA = new LLACoordinate(51.917648, 4.483057, 0, 0);
         LLACoordinate havenBedrijfLLA = new LLACoordinate(51.904794,4.484548, 0, 0);
 
-        File POIbackground =
-                AssetsManager.getAssetPathAsFile(getApplicationContext(), "ExamplePOI.png");
-        if (POIbackground != null)
-        {
-            vuurtoren = metaioSDK.createGeometryFromImage(POIbackground,true,false);
-            blaak = metaioSDK.createGeometryFromImage(POIbackground,true,false);
-            standbeeld = metaioSDK.createGeometryFromImage(POIbackground,true,false);
-            havenBedrijf = metaioSDK.createGeometryFromImage(POIbackground,true,false);
+        File POIbackground = AssetsManager.getAssetPathAsFile(getApplicationContext(), "ExamplePOI.png");
 
-            if (vuurtoren != null)
-            {
-                vuurtoren.setTranslationLLA(vuurtorenLLA);
-                vuurtoren.setLLALimitsEnabled(true);
-                vuurtoren.setScale(100);
-            }
-            else
-            {
-                MetaioDebug.log(Log.ERROR, "Error loading geometry: " + POIbackground);
-            }
-            if (blaak != null)
-            {
-                blaak.setTranslationLLA(blaakLLA);
-                blaak.setLLALimitsEnabled(true);
-                blaak.setScale(100);
-            }
-            else
-            {
-                MetaioDebug.log(Log.ERROR, "Error loading geometry: " + POIbackground);
-            }
-            if (standbeeld != null)
-            {
-                standbeeld.setTranslationLLA(standbeeldLLA);
-                standbeeld.setLLALimitsEnabled(true);
-                standbeeld.setScale(100);
-            }
-            else
-            {
-                MetaioDebug.log(Log.ERROR, "Error loading geometry: " + POIbackground);
-            }
-            if (havenBedrijf != null)
-            {
-                havenBedrijf.setTranslationLLA(havenBedrijfLLA);
-                havenBedrijf.setLLALimitsEnabled(true);
-                havenBedrijf.setScale(100);
-            }
-            else
-            {
-                MetaioDebug.log(Log.ERROR, "Error loading geometry: " + POIbackground);
-            }
+        if(POIbackground != null) {
+            createGeometry(vuurtoren, vuurtorenLLA, POIbackground, 100);
+            createGeometry(blaak, blaakLLA, POIbackground, 100);
+            createGeometry(standbeeld, standbeeldLLA, POIbackground, 100);
+            createGeometry(havenBedrijf, havenBedrijfLLA, POIbackground, 100);
+        }
+    }
 
+    /**
+     *
+     * @param geometry - The IGeometry which you want to create
+     * @param coordinate - The coordinate for the geometry
+     * @param iconFile - The File which you want to use for the icon
+     * @param scale - The scale of the geometry
+     */
+    public void createGeometry(IGeometry geometry, LLACoordinate coordinate, File iconFile, int scale) {
+        geometry = metaioSDK.createGeometryFromImage(iconFile, true,false);
+        if(geometry != null) {
+            geometry.setTranslationLLA(coordinate);
+            geometry.setLLALimitsEnabled(true);
+            geometry.setScale(scale);
+        } else {
+            MetaioDebug.log(Log.ERROR, "Error loading geometry: " + geometry);
         }
     }
 
