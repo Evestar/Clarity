@@ -68,28 +68,28 @@ public class MainActivity extends ARViewActivity {
         PointOfInterest schip1 = new PointOfInterest();
         schip1.setId(1);
         schip1.setDescription("schip info x meter");
-        schip1.setCoordinate(new LLACoordinate(51.916801, 4.482380, 0, 0));
+        schip1.setCoordinate(new LLACoordinate(51.888547, 4.492725, 0, 0));
         schip1.setType(PoiType.Schip);
         pointOfInterestList.add(schip1);
 
         PointOfInterest bolder1 = new PointOfInterest();
         bolder1.setId(2);
         bolder1.setDescription("bolder info x meter");
-        bolder1.setCoordinate(new LLACoordinate(51.919855, 4.489412, 0, 0));
+        bolder1.setCoordinate(new LLACoordinate(51.885094, 4.491985, 0, 0));
         bolder1.setType(PoiType.Bolder);
         pointOfInterestList.add(bolder1);
 
         PointOfInterest bolder2 = new PointOfInterest();
         bolder2.setId(3);
         bolder2.setDescription("bolder info x meter");
-        bolder2.setCoordinate(new LLACoordinate(51.917648, 4.483057, 0, 0));
+        bolder2.setCoordinate(new LLACoordinate(51.884488, 4.487275, 0, 0));
         bolder2.setType(PoiType.Bolder);
         pointOfInterestList.add(bolder2);
 
         PointOfInterest boei1 = new PointOfInterest();
         boei1.setId(4);
         boei1.setDescription("boei info x meter");
-        boei1.setCoordinate(new LLACoordinate(51.904794,4.484548, 0, 0));
+        boei1.setCoordinate(new LLACoordinate(51.889385, 4.488627, 0, 0));
         boei1.setType(PoiType.Boei);
         pointOfInterestList.add(boei1);
 
