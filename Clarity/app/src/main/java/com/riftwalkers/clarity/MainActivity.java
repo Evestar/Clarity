@@ -65,33 +65,17 @@ public class MainActivity extends ARViewActivity {
         // Replace this by converting JSON to the object model
         pointOfInterestList = new ArrayList<PointOfInterest>();
 
-        PointOfInterest schip1 = new PointOfInterest();
-        schip1.setId(1);
-        schip1.setDescription("schip info x meter");
-        schip1.setCoordinate(new LLACoordinate(51.888547, 4.492725, 0, 0));
-        schip1.setType(PoiType.Schip);
-        pointOfInterestList.add(schip1);
+        createPOI(0,"Schip info x meter",  51.888689, 4.487128, PoiType.Schip);
+        createPOI(1,"boei info x meter",   51.888348, 4.484435, PoiType.Boei);
+        createPOI(2,"boei info x meter",   51.887325, 4.483684, PoiType.Boei);
+        createPOI(3,"bolder info x meter", 51.885825, 4.484510, PoiType.Bolder);
+        createPOI(4,"bolder info x meter", 51.885239, 4.486806, PoiType.Bolder);
+        createPOI(5,"bolder info x meter", 51.888547, 4.492725, PoiType.Bolder);
+        createPOI(6,"bolder info x meter", 51.886077, 4.490636, PoiType.Bolder);
+        createPOI(7,"bolder info x meter", 51.887682, 4.488394, PoiType.Bolder);
+        createPOI(8,"bolder info x meter", 51.887149, 4.489338, PoiType.Bolder);
+        createPOI(9,"bolder info x meter", 51.889334, 4.493962, PoiType.Bolder);
 
-        PointOfInterest bolder1 = new PointOfInterest();
-        bolder1.setId(2);
-        bolder1.setDescription("bolder info x meter");
-        bolder1.setCoordinate(new LLACoordinate(51.885094, 4.491985, 0, 0));
-        bolder1.setType(PoiType.Bolder);
-        pointOfInterestList.add(bolder1);
-
-        PointOfInterest bolder2 = new PointOfInterest();
-        bolder2.setId(3);
-        bolder2.setDescription("bolder info x meter");
-        bolder2.setCoordinate(new LLACoordinate(51.884488, 4.487275, 0, 0));
-        bolder2.setType(PoiType.Bolder);
-        pointOfInterestList.add(bolder2);
-
-        PointOfInterest boei1 = new PointOfInterest();
-        boei1.setId(4);
-        boei1.setDescription("boei info x meter");
-        boei1.setCoordinate(new LLACoordinate(51.889385, 4.488627, 0, 0));
-        boei1.setType(PoiType.Boei);
-        pointOfInterestList.add(boei1);
 
         //draw each poi in the arrayList
         for(int i=0;i<pointOfInterestList.size();i++) {
@@ -129,5 +113,28 @@ public class MainActivity extends ARViewActivity {
     @Override
     protected void onGeometryTouched(final IGeometry geometry)
     {
+    }
+
+
+    private void createPOI(int id, String desc, LLACoordinate cord, PoiType type){
+        PointOfInterest poi = new PointOfInterest();
+
+        poi.setId(id);
+        poi.setDescription(desc);
+        poi.setCoordinate(cord);
+        poi.setType(type);
+
+        pointOfInterestList.add(poi);
+    }
+
+    private void createPOI(int id, String desc, double lat, double lng, PoiType type){
+        PointOfInterest poi = new PointOfInterest();
+
+        poi.setId(id);
+        poi.setDescription(desc);
+        poi.setCoordinate(new LLACoordinate(lat, lng, 0 ,0));
+        poi.setType(type);
+
+        pointOfInterestList.add(poi);
     }
 }
