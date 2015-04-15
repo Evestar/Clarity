@@ -46,6 +46,14 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
     }
 
     @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+        }
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(mGUIView);
@@ -111,8 +119,10 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
+            return true;
+        } else*/ if(id == R.id.action_search) {
+            Search(getCurrentFocus());
             return true;
         }
 
