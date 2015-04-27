@@ -54,6 +54,7 @@ public class RoleSelector extends Activity {
             public void onClick(View v) {
                 choise = 1;
                 editor.putInt("choice", choise);
+                editor.commit();
                 Intent intent = new Intent(RoleSelector.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -64,6 +65,7 @@ public class RoleSelector extends Activity {
             public void onClick(View v) {
                 choise = 2;
                 editor.putInt("choice", choise);
+                editor.commit();
                 Intent intent = new Intent(RoleSelector.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -74,6 +76,7 @@ public class RoleSelector extends Activity {
             public void onClick(View v) {
                 choise = 3;
                 editor.putInt("choice", choise);
+                editor.commit();
                 Intent intent = new Intent(RoleSelector.this, MainActivity.class);
                 startActivity(intent);
             }
