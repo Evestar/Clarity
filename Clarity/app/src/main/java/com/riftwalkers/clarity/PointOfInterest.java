@@ -54,7 +54,7 @@ public class PointOfInterest {
     public String GetImageName()
     {
         switch (this.Type){
-            case Schip: return "POIa.png";
+            case Ligplaats: return "POIa.png";
             case Boei: return "POIb.png";
             case Bolder: return "POIc.png";
             default: return "ExamplePOI.png";

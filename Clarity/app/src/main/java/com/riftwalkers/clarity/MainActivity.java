@@ -1,6 +1,7 @@
 package com.riftwalkers.clarity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -17,6 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 
 import java.io.File;
@@ -36,7 +40,6 @@ import org.json.JSONArray;
 
 public class MainActivity extends ARViewActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks{
     private NavigationDrawerFragment mNavigationDrawerFragment;
-    private CharSequence mTitle;
 
     private ArrayList<PointOfInterest> pointOfInterestList;
 
@@ -60,12 +63,81 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        Button menuBackButton = (Button) findViewById(R.id.backbuttonMenu);
+        menuBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), RoleSelector.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+            }
+        });
+
+        CheckBox meerpalenCheckbox = (CheckBox) findViewById(R.id.meerpalenCheckbox);
+        meerpalenCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked == false) {
+                    for (PointOfInterest poi : pointOfInterestList) {
+                        if (poi.getType().equals(PoiType.Bolder)) {
+                            poi.getGeometry().setVisible(false);
+                        }
+                    }
+                } else {
+                    for (PointOfInterest poi : pointOfInterestList) {
+                        if (poi.getType().equals(PoiType.Bolder)) {
+                            poi.getGeometry().setVisible(true);
+                        }
+                    }
+                }
+            }
+        });
+
+        CheckBox ligplaatsenCheckbox = (CheckBox) findViewById(R.id.ligplaatsenCheckbox);
+        ligplaatsenCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked == false) {
+                    for (PointOfInterest poi : pointOfInterestList) {
+                        if (poi.getType().equals(PoiType.Ligplaats)) {
+                            poi.getGeometry().setVisible(false);
+                        }
+                    }
+                } else {
+                    for (PointOfInterest poi : pointOfInterestList) {
+                        if (poi.getType().equals(PoiType.Ligplaats)) {
+                            poi.getGeometry().setVisible(true);
+                        }
+                    }
+                }
+            }
+        });
+
+        CheckBox aanmeerboeienCheckbox = (CheckBox) findViewById(R.id.aanmeerboeienCheckbox);
+        aanmeerboeienCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked == false) {
+                    for (PointOfInterest poi : pointOfInterestList) {
+                        if (poi.getType().equals(PoiType.Boei)) {
+                            poi.getGeometry().setVisible(false);
+                        }
+                    }
+                } else {
+                    for (PointOfInterest poi : pointOfInterestList) {
+                        if (poi.getType().equals(PoiType.Boei)) {
+                            poi.getGeometry().setVisible(true);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -77,25 +149,11 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
                 .commit();
     }
 
-    public void onSectionAttached(int number) {
-        switch (number) {
-            case 1:
-                mTitle = getString(R.string.title_section1);
-                break;
-            case 2:
-                mTitle = getString(R.string.title_section2);
-                break;
-            case 3:
-                mTitle = getString(R.string.title_section3);
-                break;
-        }
-    }
-
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
+        actionBar.setTitle(R.string.app_name);
     }
 
 
@@ -119,9 +177,7 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        /*if (id == R.id.action_settings) {
-            return true;
-        } else*/ if(id == R.id.action_search) {
+        if(id == R.id.action_search) {
             Search(getCurrentFocus());
             return true;
         }
@@ -152,7 +208,7 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
         // Replace this by converting JSON to the object model
         pointOfInterestList = new ArrayList<PointOfInterest>();
 
-        createPOI(0,"Schip info x meter",  51.888689, 4.487128, PoiType.Schip);
+        createPOI(0,"Schip info x meter",  51.888689, 4.487128, PoiType.Ligplaats);
         createPOI(1,"boei info x meter",   51.888348, 4.484435, PoiType.Boei);
         createPOI(2,"boei info x meter",   51.887325, 4.483684, PoiType.Boei);
         createPOI(3,"bolder info x meter", 51.885825, 4.484510, PoiType.Bolder);
@@ -172,7 +228,7 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
             IGeometry geometry = pointOfInterestList.get(i).getGeometry();
 
             if(POIbackground != null) {
-                createGeometry(geometry, pointOfInterestList.get(i).getCoordinate(), POIbackground, 100);
+                pointOfInterestList.get(i).setGeometry(createGeometry(geometry, pointOfInterestList.get(i).getCoordinate(), POIbackground, 100));
             } else {
                 MetaioDebug.log(Log.ERROR, "Error loading geometry: " + POIbackground);
             }
@@ -186,14 +242,17 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
      * @param iconFile - The File which you want to use for the icon
      * @param scale - The scale of the geometry
      */
-    public void createGeometry(IGeometry geometry, LLACoordinate coordinate, File iconFile, int scale) {
+    public IGeometry createGeometry(IGeometry geometry, LLACoordinate coordinate, File iconFile, int scale) {
         geometry = metaioSDK.createGeometryFromImage(iconFile, true,false);
         if(geometry != null) {
             geometry.setTranslationLLA(coordinate);
             geometry.setLLALimitsEnabled(true);
             geometry.setScale(scale);
+
+            return geometry;
         } else {
             MetaioDebug.log(Log.ERROR, "Error loading geometry: " + geometry);
+            return null;
         }
     }
 
@@ -252,13 +311,6 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main_activity, container, false);
             return rootView;
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            ((MainActivity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
 }
