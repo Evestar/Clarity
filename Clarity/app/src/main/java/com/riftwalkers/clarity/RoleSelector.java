@@ -34,8 +34,8 @@ public class RoleSelector extends Activity {
         sharedPreferences = getSharedPreferences("ClarityApp", 0);
         final SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        if(sharedPreferences.getInt("choise",0) > choise){
-            choise = sharedPreferences.getInt("choise",0);
+        if(sharedPreferences.getInt("choice",0) > choise){
+            choise = sharedPreferences.getInt("choice",0);
 
             Intent intent = new Intent(RoleSelector.this, MainActivity.class);
             startActivity(intent);
@@ -53,7 +53,7 @@ public class RoleSelector extends Activity {
             @Override
             public void onClick(View v) {
                 choise = 1;
-                editor.putInt("choise", choise);
+                editor.putInt("choice", choise);
                 Intent intent = new Intent(RoleSelector.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -63,7 +63,7 @@ public class RoleSelector extends Activity {
             @Override
             public void onClick(View v) {
                 choise = 2;
-                editor.putInt("choise", choise);
+                editor.putInt("choice", choise);
                 Intent intent = new Intent(RoleSelector.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -73,7 +73,7 @@ public class RoleSelector extends Activity {
             @Override
             public void onClick(View v) {
                 choise = 3;
-                editor.putInt("choise", choise);
+                editor.putInt("choice", choise);
                 Intent intent = new Intent(RoleSelector.this, MainActivity.class);
                 startActivity(intent);
             }

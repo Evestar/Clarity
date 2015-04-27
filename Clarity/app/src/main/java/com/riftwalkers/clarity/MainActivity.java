@@ -87,7 +87,7 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
         menuBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editor.putInt("choise", 0);
+                editor.putInt("choice", 0);
                 Intent i = new Intent(getApplicationContext(), RoleSelector.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
@@ -318,34 +318,10 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
     }
 
     @Override
-    public void onBackPressed(){
-        if(System.currentTimeMillis() < oldTime+1500 ){
+    public void onBackPressed() {
 
-            Thread closeMain = new Thread(){
-                @Override
-                public void run(){
-                    try{
-                        sleep(2500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    finally{
-                        finish();
-                    }
-                }
-            };
-            closeMain.start();
+        Toast.makeText(getApplicationContext(), "Use the slide menu to go back.", Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(getApplicationContext(), RoleSelector.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra("EXIT", true);
-            startActivity(intent);
-
-        } else{
-            oldTime = System.currentTimeMillis();
-
-            Toast.makeText(getApplicationContext(), "Press back again to log off.", Toast.LENGTH_SHORT).show();
-        }
     }
 
     public static class PlaceholderFragment extends Fragment {
