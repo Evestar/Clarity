@@ -88,6 +88,7 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
             @Override
             public void onClick(View v) {
                 editor.putInt("choice", 0);
+                editor.commit();
                 Intent i = new Intent(getApplicationContext(), RoleSelector.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
