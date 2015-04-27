@@ -43,6 +43,8 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
 
     private ArrayList<PointOfInterest> pointOfInterestList;
 
+    private PointOfInterest zoekPOI;
+
     @Override
     protected int getGUILayout() {
         return R.layout.activity_inapp;
@@ -186,7 +188,25 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
     }
 
     public void Search(View view) {
-        SearchDialog searchDialog = new SearchDialog(this);
+        SearchDialog searchDialog = new SearchDialog(this, pointOfInterestList);
+        searchDialog.setDialogResult(new SearchDialog.OnMyDialogResult() {
+            @Override
+            public void finish(final PointOfInterest poi) {
+                mSurfaceView.queueEvent(new Runnable() {
+                    @Override
+                    public void run() {
+                        if((zoekPOI != null)) {
+                            metaioSDK.unloadGeometry(zoekPOI.getGeometry());
+                        }
+
+                        zoekPOI = poi;
+
+                        File POIbackground = AssetsManager.getAssetPathAsFile(getApplicationContext(), "zoekPOI.png");
+                        zoekPOI.setGeometry(createGeometry(poi.getCoordinate(), POIbackground, 100));
+                    }
+                });
+            }
+        });
         searchDialog.show();
     }
 
@@ -218,17 +238,18 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
         createPOI(7,"bolder info x meter", 51.887682, 4.488394, PoiType.Bolder);
         createPOI(8,"bolder info x meter", 51.887149, 4.489338, PoiType.Bolder);
         createPOI(9,"bolder info x meter", 51.889334, 4.493962, PoiType.Bolder);
+/*        createPOI(1,"Fokker",51.824507, 4.678926,PoiType.Ligplaats);
+        createPOI(2,"Haven",51.823230, 4.684425,PoiType.Ligplaats);
+        createPOI(3,"Schooldwarsstraat",51.826066, 4.682022,PoiType.Bolder);*/
 
 
         //draw each poi in the arrayList
         for(int i=0;i<pointOfInterestList.size();i++) {
             //get type of POI and image
             File POIbackground = AssetsManager.getAssetPathAsFile(getApplicationContext(), pointOfInterestList.get(i).GetImageName());
-            String name = Integer.toString(pointOfInterestList.get(i).getId());
-            IGeometry geometry = pointOfInterestList.get(i).getGeometry();
 
             if(POIbackground != null) {
-                pointOfInterestList.get(i).setGeometry(createGeometry(geometry, pointOfInterestList.get(i).getCoordinate(), POIbackground, 100));
+                pointOfInterestList.get(i).setGeometry(createGeometry(pointOfInterestList.get(i).getCoordinate(), POIbackground, 100));
             } else {
                 MetaioDebug.log(Log.ERROR, "Error loading geometry: " + POIbackground);
             }
@@ -237,13 +258,12 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
 
     /**
      *
-     * @param geometry - The IGeometry which you want to create
      * @param coordinate - The coordinate for the geometry
      * @param iconFile - The File which you want to use for the icon
      * @param scale - The scale of the geometry
      */
-    public IGeometry createGeometry(IGeometry geometry, LLACoordinate coordinate, File iconFile, int scale) {
-        geometry = metaioSDK.createGeometryFromImage(iconFile, true,false);
+    public IGeometry createGeometry(LLACoordinate coordinate, File iconFile, int scale) {
+        IGeometry geometry = metaioSDK.createGeometryFromImage(iconFile, true,false);
         if(geometry != null) {
             geometry.setTranslationLLA(coordinate);
             geometry.setLLALimitsEnabled(true);

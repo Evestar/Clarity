@@ -2,13 +2,18 @@ package com.riftwalkers.clarity;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
+
 public class SearchDialog extends Dialog {
+    private OnMyDialogResult mDialogResult;
+
     private Spinner spinner;
     private Spinner spinner2;
     private Button button;
@@ -16,8 +21,9 @@ public class SearchDialog extends Dialog {
     private ArrayAdapter<CharSequence> spinnerAdapter;
     private ArrayAdapter<CharSequence> spinner2Adapter;
 
-    String[] boeienArray = {"","boei1","boei2","boei3","boei4","boei5"};
-    String[] palenArray = {"","paal1","paal2","paal3"};
+    private ArrayList<PointOfInterest> boeienArray;
+    private ArrayList<PointOfInterest> palenArray;
+    private ArrayList<PointOfInterest> ligplaatsenArray;
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -33,10 +39,24 @@ public class SearchDialog extends Dialog {
         }
     }
 
-    public SearchDialog(final Context context) {
+    public SearchDialog(final Context context, ArrayList<PointOfInterest> pointOfInterests) {
         super(context);
         this.setContentView(R.layout.search_dialog);
         this.setTitle(R.string.search_dialog_title);
+
+        boeienArray = new ArrayList<>();
+        palenArray = new ArrayList<>();
+        ligplaatsenArray = new ArrayList<>();
+
+        for(PointOfInterest poi: pointOfInterests) {
+            if(poi.getType().equals(PoiType.Bolder)) {
+                palenArray.add(poi);
+            } else if(poi.getType().equals(PoiType.Ligplaats)) {
+                ligplaatsenArray.add(poi);
+            } else {
+                boeienArray.add(poi);
+            }
+        }
 
         spinner = (Spinner) findViewById(R.id.spinner);
         spinner2 = (Spinner) findViewById(R.id.spinner2);
@@ -60,11 +80,11 @@ public class SearchDialog extends Dialog {
                 }
 
                 if (id == 1) {
-                    setSpinner2Adapter(new ArrayAdapter<CharSequence>(context, R.layout.searchbox_spinner_listview, boeienArray));
+                    setSpinner2Adapter(new ArrayAdapter(context, R.layout.searchbox_spinner_listview, boeienArray));
                 } else if (id == 2) {
-                    setSpinner2Adapter(new ArrayAdapter<CharSequence>(context, R.layout.searchbox_spinner_listview, palenArray));
+                    setSpinner2Adapter(new ArrayAdapter(context, R.layout.searchbox_spinner_listview, ligplaatsenArray));
                 } else {
-                    setSpinner2Adapter(new ArrayAdapter<CharSequence>(context, R.layout.searchbox_spinner_listview, palenArray));
+                    setSpinner2Adapter(new ArrayAdapter(context, R.layout.searchbox_spinner_listview, palenArray));
                 }
 
                 getSpinner2Adapter().setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -76,21 +96,13 @@ public class SearchDialog extends Dialog {
             }
         });
 
-        getSpinner2().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if((id != 0) && (getButton().getVisibility() == View.GONE)) {
-                    getButton().setVisibility(View.VISIBLE);
+            public void onClick(View v) {
+                if( mDialogResult != null ){
+                    mDialogResult.finish((PointOfInterest) getSpinner2().getSelectedItem());
                 }
-
-                if(id == 0) {
-                    getButton().setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+                SearchDialog.this.dismiss();
             }
         });
     }
@@ -121,5 +133,13 @@ public class SearchDialog extends Dialog {
 
     public void setSpinner2Adapter(ArrayAdapter<CharSequence> spinner2Adapter) {
         this.spinner2Adapter = spinner2Adapter;
+    }
+
+    public void setDialogResult(OnMyDialogResult dialogResult){
+        mDialogResult = dialogResult;
+    }
+
+    public interface OnMyDialogResult{
+        void finish(PointOfInterest poi);
     }
 }

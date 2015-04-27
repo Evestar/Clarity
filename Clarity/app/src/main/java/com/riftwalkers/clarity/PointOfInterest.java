@@ -5,6 +5,7 @@ import com.metaio.sdk.jni.LLACoordinate;
 
 public class PointOfInterest {
     private int Id;
+    private String featureId;
     private PoiType Type;
     private String Description;
     private LLACoordinate Coordinate;
@@ -59,5 +60,10 @@ public class PointOfInterest {
             case Bolder: return "POIc.png";
             default: return "ExamplePOI.png";
         }
+    }
+
+    @Override
+    public String toString(){
+        return "OBJECTID: " + String.valueOf(getId()) + " FEATUREID: " + getDescription();
     }
 }

@@ -9,24 +9,16 @@
     <string name="search_dialog_searchbutton">Zoek!</string>
     <string-array name="drawer_array">
         <item></item>
-        <item>Boeien</item>
-        <item>Meerpalen</item>
+        <item>Afmeerboeien</item>
         <item>Ligplaatsen</item>
-        <item>Schepen</item>
-        <item>Incidenten</item>
+        <item>Meerpalen</item>
     </string-array>
-
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
 
     <string name="back_button_menu">Terug</string>
     <string name="meerpalenCheckbox">Meerpalen</string>
-    <string name="aanmeerboeienCheckbox">Aanmeerboeien</string>
+    <string name="aanmeerboeienCheckbox">Afmeerboeien</string>
     <string name="ligplaatsenCheckbox">Ligplaatsen</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_example">Example action</string>
 </resources>
