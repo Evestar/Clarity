@@ -2,6 +2,7 @@ package com.riftwalkers.clarity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -22,6 +23,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,6 +47,12 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
 
     private PointOfInterest zoekPOI;
 
+    // SharedPreference and information
+    SharedPreferences sharedPreferences;
+
+    // Back button override timer
+    long oldTime;
+
     @Override
     protected int getGUILayout() {
         return R.layout.activity_inapp;
@@ -63,6 +71,10 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
         super.onCreate(savedInstanceState);
         setContentView(mGUIView);
 
+        // Shared preff
+        sharedPreferences = getSharedPreferences("ClarityApp", 0);
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
@@ -75,6 +87,7 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
         menuBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editor.putInt("choise", 0);
                 Intent i = new Intent(getApplicationContext(), RoleSelector.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
@@ -125,7 +138,7 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
         aanmeerboeienCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked == false) {
+                if (isChecked == false) {
                     for (PointOfInterest poi : pointOfInterestList) {
                         if (poi.getType().equals(PoiType.Boei)) {
                             poi.getGeometry().setVisible(false);
@@ -302,6 +315,37 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
         poi.setType(type);
 
         pointOfInterestList.add(poi);
+    }
+
+    @Override
+    public void onBackPressed(){
+        if(System.currentTimeMillis() < oldTime+1500 ){
+
+            Thread closeMain = new Thread(){
+                @Override
+                public void run(){
+                    try{
+                        sleep(2500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    finally{
+                        finish();
+                    }
+                }
+            };
+            closeMain.start();
+
+            Intent intent = new Intent(getApplicationContext(), RoleSelector.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("EXIT", true);
+            startActivity(intent);
+
+        } else{
+            oldTime = System.currentTimeMillis();
+
+            Toast.makeText(getApplicationContext(), "Press back again to log off.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public static class PlaceholderFragment extends Fragment {
