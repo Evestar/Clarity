@@ -1,0 +1,1874 @@
+{
+	"type" : "FeatureCollection",
+	"crs" : {
+		"type" : "name",
+		"properties" : {
+			"name" : "urn:ogc:def:crs:OGC:1.3:CRS84"
+		}
+	},
+	"features" : [{
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 1,
+				"FEATUREID" : null,
+				"REGIONID" : null,
+				"HARBOURID" : null,
+				"FACILITYID" : null,
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : null,
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : null
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.643696418250173, 51.793925918814814]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 2,
+				"FEATUREID" : null,
+				"REGIONID" : null,
+				"HARBOURID" : null,
+				"FACILITYID" : null,
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : null,
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : null
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.645629416835781, 51.793858005551265]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 3,
+				"FEATUREID" : null,
+				"REGIONID" : null,
+				"HARBOURID" : null,
+				"FACILITYID" : null,
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : null,
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : null
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.643434245680734, 51.795334570500245]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 4,
+				"FEATUREID" : null,
+				"REGIONID" : null,
+				"HARBOURID" : null,
+				"FACILITYID" : null,
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : null,
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : null
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.645831384182388, 51.79526769322645]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 5,
+				"FEATUREID" : null,
+				"REGIONID" : null,
+				"HARBOURID" : null,
+				"FACILITYID" : null,
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : null,
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : null
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.645696356742035, 51.794568817637106]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 6,
+				"FEATUREID" : null,
+				"REGIONID" : null,
+				"HARBOURID" : null,
+				"FACILITYID" : null,
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : null,
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : null
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.643020466140677, 51.79460954761941]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 7,
+				"FEATUREID" : null,
+				"REGIONID" : null,
+				"HARBOURID" : null,
+				"FACILITYID" : null,
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : null,
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : null
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.641741715240318, 51.79393729767068]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 8,
+				"FEATUREID" : null,
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : null,
+				"FACILITYID" : null,
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : null,
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : null
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.437396831908281, 51.885187469144874]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 9,
+				"FEATUREID" : null,
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : null,
+				"FACILITYID" : null,
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : null,
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : null
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.443435633571548, 51.89408088179128]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 10,
+				"FEATUREID" : null,
+				"REGIONID" : null,
+				"HARBOURID" : null,
+				"FACILITYID" : null,
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : null,
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : null
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.445748745026274, 51.89376053277039]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 11,
+				"FEATUREID" : null,
+				"REGIONID" : null,
+				"HARBOURID" : null,
+				"FACILITYID" : null,
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : null,
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : null
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.445745443590621, 51.89364278083787]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 12,
+				"FEATUREID" : null,
+				"REGIONID" : null,
+				"HARBOURID" : null,
+				"FACILITYID" : null,
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : null,
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : null
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.447191536667658, 51.89342247629747]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 13,
+				"FEATUREID" : null,
+				"REGIONID" : null,
+				"HARBOURID" : null,
+				"FACILITYID" : null,
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : null,
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : null
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.444102185085776, 51.893090918790826]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 14,
+				"FEATUREID" : null,
+				"REGIONID" : "H-L-N-BT",
+				"HARBOURID" : "H-L-N-BT-226",
+				"FACILITYID" : null,
+				"FACSECID" : null,
+				"PORTMAINT" : 1,
+				"STATUS" : 0,
+				"DATASOURCE" : null,
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : null
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.278319725881451, 51.88549177977788]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 15,
+				"FEATUREID" : "H-L-N-EW-208-LPG-026-090",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-208",
+				"FACILITYID" : "H-L-N-EW-208-LPG-026",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "26-090"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.450512232955146, 51.885768157706536]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 16,
+				"FEATUREID" : "H-L-N-EW-208-LPG-026-100",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-208",
+				"FACILITYID" : "H-L-N-EW-208-LPG-026",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "26-100"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.450746852486244, 51.88566216249707]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 17,
+				"FEATUREID" : "H-L-N-EW-208-LPG-026-120",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-208",
+				"FACILITYID" : "H-L-N-EW-208-LPG-026",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "26-120"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.45051155745836, 51.88510298044699]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 18,
+				"FEATUREID" : "H-L-N-EW-208-LPG-026-130",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-208",
+				"FACILITYID" : "H-L-N-EW-208-LPG-026",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "26-130"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.450192983275025, 51.88505549580198]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 19,
+				"FEATUREID" : "H-L-N-EW-208-LPG-026-280",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-208",
+				"FACILITYID" : "H-L-N-EW-208-LPG-026",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "26-280"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.446687695182094, 51.88597130979791]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 20,
+				"FEATUREID" : "H-L-N-EW-208-LPG-026-290",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-208",
+				"FACILITYID" : "H-L-N-EW-208-LPG-026",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "26-290"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.446726004580191, 51.886223303247405]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 21,
+				"FEATUREID" : "H-L-N-EW-208-LPG-027-090",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-208",
+				"FACILITYID" : "H-L-N-EW-208-LPG-027",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "27-090"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.451441661087221, 51.88438229946233]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 22,
+				"FEATUREID" : "H-L-N-EW-208-LPG-027-290",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-208",
+				"FACILITYID" : "H-L-N-EW-208-LPG-027",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "27-290"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.447439026463218, 51.88477282166015]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 23,
+				"FEATUREID" : "H-L-N-EW-208-LPG-027-125",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-208",
+				"FACILITYID" : "H-L-N-EW-208-LPG-027",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "27-125"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.450888359278327, 51.88374867399979]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 24,
+				"FEATUREID" : "H-L-N-EW-208-LPG-027-280",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-208",
+				"FACILITYID" : "H-L-N-EW-208-LPG-027",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "27-280"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.447342810048361, 51.88451137632194]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 25,
+				"FEATUREID" : "H-L-N-EW-213-LGP-029-255",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-213",
+				"FACILITYID" : "H-L-N-EW-213-LGP-029",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "29-255"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.440377543588938, 51.8828015001408]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 26,
+				"FEATUREID" : "H-L-N-EW-213-LGP-029-250",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-213",
+				"FACILITYID" : "H-L-N-EW-213-LGP-029",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "29-250"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.440596136183326, 51.88276730652695]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 27,
+				"FEATUREID" : "H-L-N-EW-213-LGP-029-245",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-213",
+				"FACILITYID" : "H-L-N-EW-213-LGP-029",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "29-245"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.440586152200095, 51.882551494313006]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 28,
+				"FEATUREID" : "H-L-N-EW-213-LGP-029-060",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-213",
+				"FACILITYID" : "H-L-N-EW-213-LGP-029",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "29-060"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.444667544696094, 51.88394162429808]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 29,
+				"FEATUREID" : "H-L-N-EW-213-LGP-029-080",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-213",
+				"FACILITYID" : "H-L-N-EW-213-LGP-029",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "29-080"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.444805780420702, 51.88358318064923]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 30,
+				"FEATUREID" : "H-L-N-EW-213-LGP-032-255",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-213",
+				"FACILITYID" : "H-L-N-EW-213-LGP-032",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "32-255"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.437989127079356, 51.884340986096255]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 31,
+				"FEATUREID" : "H-L-N-EW-213-LGP-032-250",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-213",
+				"FACILITYID" : "H-L-N-EW-213-LGP-032",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "32-250"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.438168362862151, 51.884144410434295]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 32,
+				"FEATUREID" : "H-L-N-EW-213-LGP-032-245",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-213",
+				"FACILITYID" : "H-L-N-EW-213-LGP-032",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "32-245"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.438343968013772, 51.88394841641703]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 33,
+				"FEATUREID" : "H-L-N-EW-213-LGP-032-055",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-213",
+				"FACILITYID" : "H-L-N-EW-213-LGP-032",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "32-055"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.441623383377477, 51.88541902388468]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 34,
+				"FEATUREID" : "H-L-N-EW-213-LGP-032-060",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-213",
+				"FACILITYID" : "H-L-N-EW-213-LGP-032",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "32-060"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.441741753699191, 51.88527276582239]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 35,
+				"FEATUREID" : "H-L-N-EW-213-LGP-032-070",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-213",
+				"FACILITYID" : "H-L-N-EW-213-LGP-032",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "32-070"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.441839446555113, 51.88511832591483]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 36,
+				"FEATUREID" : "H-L-N-EW-213-LGP-034-250",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-213",
+				"FACILITYID" : "H-L-N-EW-213-LGP-034",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "34-250"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.437212066879565, 51.88501152542832]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 37,
+				"FEATUREID" : "H-L-N-EW-213-LGP-034-240",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-213",
+				"FACILITYID" : "H-L-N-EW-213-LGP-034",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "34-240"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.43740225868421, 51.88486039892274]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 38,
+				"FEATUREID" : "H-L-N-EW-213-LGP-034-060",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-213",
+				"FACILITYID" : "H-L-N-EW-213-LGP-034",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "34-060"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.440914255610664, 51.88651854938648]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 39,
+				"FEATUREID" : "H-L-N-EW-213-LGP-034-070",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-213",
+				"FACILITYID" : "H-L-N-EW-213-LGP-034",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "34-070"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.441253847006466, 51.88612130888084]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 40,
+				"FEATUREID" : "H-L-N-EW-212-LGP-035",
+				"REGIONID" : "H-L-N-EW",
+				"HARBOURID" : "H-L-N-EW-212",
+				"FACILITYID" : "H-L-N-EW-212-LGP-035",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "35-000"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.438850702234689, 51.89184092534754]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 41,
+				"FEATUREID" : "H-L-N-PN-094-LGP-050-100",
+				"REGIONID" : "H-L-N-PN",
+				"HARBOURID" : "H-L-N-PN-094",
+				"FACILITYID" : "H-L-N-PN-094-LGP-050",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "50-100"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.377795068274409, 51.88708945822936]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 42,
+				"FEATUREID" : "H-L-N-PN-094-LGP-050-285",
+				"REGIONID" : "H-L-N-PN",
+				"HARBOURID" : "H-L-N-PN-094",
+				"FACILITYID" : "H-L-N-PN-094-LGP-050",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "50-285"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.375259071425684, 51.88746315169806]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 43,
+				"FEATUREID" : "H-L-N-PN-094-LPG-051-170",
+				"REGIONID" : "H-L-N-PN",
+				"HARBOURID" : "H-L-N-PN-094",
+				"FACILITYID" : "H-L-N-PN-094-LPG-051",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "51-170"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.348485258376482, 51.88060462811957]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 44,
+				"FEATUREID" : "H-L-N-PN-094-LPG-051-350",
+				"REGIONID" : "H-L-N-PN",
+				"HARBOURID" : "H-L-N-PN-094",
+				"FACILITYID" : "H-L-N-PN-094-LPG-051",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "51-350"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.348153327371739, 51.88177025375133]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 45,
+				"FEATUREID" : "H-L-N-PN-094-LPG-052-035",
+				"REGIONID" : "H-L-N-PN",
+				"HARBOURID" : "H-L-N-PN-094",
+				"FACILITYID" : "H-L-N-PN-094-LPG-052",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "52-035"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.343119526496041, 51.884629045615455]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 46,
+				"FEATUREID" : "H-L-N-PN-094-LPG-052-210",
+				"REGIONID" : "H-L-N-PN",
+				"HARBOURID" : "H-L-N-PN-094",
+				"FACILITYID" : "H-L-N-PN-094-LPG-052",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "52-210"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.341218627415222, 51.88267052404319]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 47,
+				"FEATUREID" : "H-L-N-PN-094-LPG-052-220",
+				"REGIONID" : "H-L-N-PN",
+				"HARBOURID" : "H-L-N-PN-094",
+				"FACILITYID" : "H-L-N-PN-094-LPG-052",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "52-220"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.340998289238554, 51.882776429114266]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 48,
+				"FEATUREID" : "H-L-N-BT-096-LGP-061-070",
+				"REGIONID" : "H-L-N-BT",
+				"HARBOURID" : "H-L-N-BT-096",
+				"FACILITYID" : "H-L-N-BT-096-LGP-061",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "61-070"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.295446351194839, 51.87803817988519]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 49,
+				"FEATUREID" : "H-L-N-BT-096-LGP-061-255",
+				"REGIONID" : "H-L-N-BT",
+				"HARBOURID" : "H-L-N-BT-096",
+				"FACILITYID" : "H-L-N-BT-096-LGP-061",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "61-255"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.291905496440935, 51.877322049644626]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 50,
+				"FEATUREID" : "H-L-N-BT-096-LGP-061-080",
+				"REGIONID" : "H-L-N-BT",
+				"HARBOURID" : "H-L-N-BT-096",
+				"FACILITYID" : "H-L-N-BT-096-LGP-061",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "61-080"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.295436628355064, 51.87784033143494]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 51,
+				"FEATUREID" : "H-L-N-BT-096-LGP-061-250",
+				"REGIONID" : "H-L-N-BT",
+				"HARBOURID" : "H-L-N-BT-096",
+				"FACILITYID" : "H-L-N-BT-096-LGP-061",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "61-250"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.291952338139844, 51.87718765131476]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 52,
+				"FEATUREID" : "H-L-N-BT-128-LGP-062-345",
+				"REGIONID" : "H-L-N-BT",
+				"HARBOURID" : "H-L-N-BT-128",
+				"FACILITYID" : "H-L-N-BT-128-LGP-062",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "62-345"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.272384016150722, 51.89322873907489]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 53,
+				"FEATUREID" : "H-L-N-BT-128-LGP-062-335",
+				"REGIONID" : "H-L-N-BT",
+				"HARBOURID" : "H-L-N-BT-128",
+				"FACILITYID" : "H-L-N-BT-128-LGP-062",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "62-335"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.272037195111494, 51.893153535390816]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 54,
+				"FEATUREID" : "H-L-N-BT-128-LGP-062-155",
+				"REGIONID" : "H-L-N-BT",
+				"HARBOURID" : "H-L-N-BT-128",
+				"FACILITYID" : "H-L-N-BT-128-LGP-062",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "62-155"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.273989973149577, 51.8905652406779]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 55,
+				"FEATUREID" : "H-L-N-BT-128-LGP-062-160",
+				"REGIONID" : "H-L-N-BT",
+				"HARBOURID" : "H-L-N-BT-128",
+				"FACILITYID" : "H-L-N-BT-128-LGP-062",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "62-160"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.273657471675353, 51.89049916634183]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 56,
+				"FEATUREID" : "H-L-N-BT-004-LGP-066-060",
+				"REGIONID" : "H-L-N-BT",
+				"HARBOURID" : "H-L-N-BT-004",
+				"FACILITYID" : "H-L-N-BT-004-LGP-066",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "66-060"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.274663781385482, 51.88270623065689]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 57,
+				"FEATUREID" : "H-L-N-BT-004-LGP-066-080",
+				"REGIONID" : "H-L-N-BT",
+				"HARBOURID" : "H-L-N-BT-004",
+				"FACILITYID" : "H-L-N-BT-004-LGP-066",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "66-080"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.274760912274989, 51.88230264443896]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 58,
+				"FEATUREID" : "H-L-N-BT-021-LGP-067-010",
+				"REGIONID" : "H-L-N-BT",
+				"HARBOURID" : "H-L-N-BT-021",
+				"FACILITYID" : "H-L-N-BT-021-LGP-067",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "67-010"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.272341299525742, 51.8726794160937]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 59,
+				"FEATUREID" : "H-L-N-BT-021-LGP-067-190",
+				"REGIONID" : "H-L-N-BT",
+				"HARBOURID" : "H-L-N-BT-021",
+				"FACILITYID" : "H-L-N-BT-021-LGP-067",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "67-190"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.272074312526086, 51.87173303215922]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 60,
+				"FEATUREID" : "H-L-N-EU-224-LGP-081-125",
+				"REGIONID" : "H-L-N-EU",
+				"HARBOURID" : "H-L-N-EU-224",
+				"FACILITYID" : "H-L-N-EU-224-LGP-081",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "81-315"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.189331049328374, 51.93603539081161]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 61,
+				"FEATUREID" : "H-L-N-EU-224-LGP-081-320",
+				"REGIONID" : "H-L-N-EU",
+				"HARBOURID" : "H-L-N-EU-224",
+				"FACILITYID" : "H-L-N-EU-224-LGP-081",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "81-125"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.193394616220002, 51.93399719392294]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 62,
+				"FEATUREID" : "H-L-N-EU-224-LGP-081-135",
+				"REGIONID" : "H-L-N-EU",
+				"HARBOURID" : "H-L-N-EU-224",
+				"FACILITYID" : "H-L-N-EU-224-LGP-081",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "81-305"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.188828430422848, 51.935796552207385]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 63,
+				"FEATUREID" : "H-L-N-EU-224-LGP-081-295",
+				"REGIONID" : "H-L-N-EU",
+				"HARBOURID" : "H-L-N-EU-224",
+				"FACILITYID" : "H-L-N-EU-224-LGP-081",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "81-135"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.193006072439244, 51.93370119241632]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 64,
+				"FEATUREID" : "H-L-N-EU-224-LGP-078-130",
+				"REGIONID" : "H-L-N-EU",
+				"HARBOURID" : "H-L-N-EU-224",
+				"FACILITYID" : "H-L-N-EU-224-LGP-078",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "82-130"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.198041856432739, 51.93192345972878]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 65,
+				"FEATUREID" : "H-L-N-EU-224-LGP-078-310",
+				"REGIONID" : "H-L-N-EU",
+				"HARBOURID" : "H-L-N-EU-224",
+				"FACILITYID" : "H-L-N-EU-224-LGP-078",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "82-310"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.196116330605741, 51.93288435854342]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 66,
+				"FEATUREID" : "H-L-N-EU-224-LGP-079-315",
+				"REGIONID" : "H-L-N-EU",
+				"HARBOURID" : "H-L-N-EU-224",
+				"FACILITYID" : "H-L-N-EU-224-LGP-079",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "83-315"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.19932593003395, 51.9314804718997]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 67,
+				"FEATUREID" : "H-L-N-EU-224-LGP-079-295",
+				"REGIONID" : "H-L-N-EU",
+				"HARBOURID" : "H-L-N-EU-224",
+				"FACILITYID" : "H-L-N-EU-224-LGP-079",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "83-295"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.198912670712567, 51.93116167761272]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 68,
+				"FEATUREID" : "H-L-N-EU-224-LGP-079-115",
+				"REGIONID" : "H-L-N-EU",
+				"HARBOURID" : "H-L-N-EU-224",
+				"FACILITYID" : "H-L-N-EU-224-LGP-079",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "83-115"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.202428914163979, 51.93001698000161]
+			}
+		}, {
+			"type" : "Feature",
+			"properties" : {
+				"OBJECTID" : 69,
+				"FEATUREID" : "H-L-N-EU-224-LGP-079-140",
+				"REGIONID" : "H-L-N-EU",
+				"HARBOURID" : "H-L-N-EU-224",
+				"FACILITYID" : "H-L-N-EU-224-LGP-079",
+				"FACSECID" : null,
+				"PORTMAINT" : 0,
+				"STATUS" : 0,
+				"DATASOURCE" : "Laatste boeientoets data LN 17 01-2013.xls",
+				"SURVEYMETH" : 0,
+				"SURVEYPREC" : 0,
+				"SURVEYDATE" : null,
+				"FUNCSTARTD" : null,
+				"FUNCENDDAT" : null,
+				"CREATEDBY" : "Arcgis_Prod",
+				"CREATEDDAT" : "2015/01/28",
+				"EDITEDBY" : "Arcgis_Prod",
+				"EDITEDDATE" : "2015/01/28",
+				"ASTNAME" : "83-140"
+			},
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [4.201954325536908, 51.92966976876604]
+			}
+		}
+	]
+}

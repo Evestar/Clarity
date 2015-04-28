@@ -58,6 +58,7 @@ public class PointOfInterest {
             case Ligplaats: return "POIa.png";
             case Boei: return "POIb.png";
             case Bolder: return "POIc.png";
+            case Meerpaal: return "POIa.png";
             default: return "ExamplePOI.png";
         }
     }
