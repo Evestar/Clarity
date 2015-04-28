@@ -39,8 +39,10 @@ import com.metaio.sdk.jni.IGeometry;
 import com.metaio.sdk.jni.IMetaioSDKCallback;
 import com.metaio.sdk.jni.LLACoordinate;
 import com.metaio.tools.io.AssetsManager;
+import com.riftwalkers.clarity.Database.PointsOfInterestDAO;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -51,6 +53,7 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
     private ArrayList<PointOfInterest> pointOfInterestList;
 
     private PointOfInterest zoekPOI;
+    private PointsOfInterestDAO pointsOfInterestDAO;
 
     // SharedPreference and information
     SharedPreferences sharedPreferences;
@@ -159,9 +162,6 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
                 }
             }
         });
-
-        //fill meerpalen list with the objects in the local JSON file
-        getMeerpalenListFromJSON();
     }
 
     @Override
@@ -247,31 +247,11 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
         metaioSDK.setLLAObjectRenderingLimits(5, 200);
         metaioSDK.setRendererClippingPlaneLimits(10, 220000);
 
-        pointOfInterestList = new ArrayList<PointOfInterest>();
-
-        /*createPOI(0,"Schip info x meter",  51.888689, 4.487128, PoiType.Ligplaats);
-        createPOI(1,"boei info x meter",   51.888348, 4.484435, PoiType.Boei);
-        createPOI(2,"boei info x meter",   51.887325, 4.483684, PoiType.Boei);
-        createPOI(3,"bolder info x meter", 51.885825, 4.484510, PoiType.Bolder);
-        createPOI(4,"bolder info x meter", 51.885239, 4.486806, PoiType.Bolder);
-        createPOI(5,"bolder info x meter", 51.888547, 4.492725, PoiType.Bolder);
-        createPOI(6,"bolder info x meter", 51.886077, 4.490636, PoiType.Bolder);
-        createPOI(7,"bolder info x meter", 51.887682, 4.488394, PoiType.Bolder);
-        createPOI(8,"bolder info x meter", 51.887149, 4.489338, PoiType.Bolder);
-
-        createPOI(9,"bolder info x meter", 51.889334, 4.493962, PoiType.Bolder);
-       createPOI(1,"Fokker",51.824507, 4.678926,PoiType.Ligplaats);
-        createPOI(2,"Haven",51.823230, 4.684425,PoiType.Ligplaats);
-        createPOI(3,"Schooldwarsstraat",51.826066, 4.682022,PoiType.Bolder);*/
-
-
-        //for now take the first 10 meerpalen from the meerpalenlist and draw them
-        for(int i = 0; i < 10; i++) {
-            pointOfInterestList.add(meerpalenList.get(i));
-        }
+        pointsOfInterestDAO = new PointsOfInterestDAO(this);
+        pointOfInterestList = pointsOfInterestDAO.getAllPointsOfInterest();
 
         //draw each poi in the arrayList
-        for(int i=0;i<pointOfInterestList.size();i++) {
+        for(int i=0;i<20;i++) {
             //get type of POI and image
             File POIbackground = AssetsManager.getAssetPathAsFile(getApplicationContext(), pointOfInterestList.get(i).GetImageName());
 
@@ -308,103 +288,10 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
     {
     }
 
-
-    private void createPOI(int id, String desc, LLACoordinate cord, PoiType type){
-        PointOfInterest poi = new PointOfInterest();
-
-        poi.setId(id);
-        poi.setDescription(desc);
-        poi.setCoordinate(cord);
-        poi.setType(type);
-
-        pointOfInterestList.add(poi);
-    }
-
-    private void createPOI(int id, String desc, double lat, double lng, PoiType type){
-        PointOfInterest poi = new PointOfInterest();
-
-        poi.setId(id);
-        poi.setDescription(desc);
-        poi.setCoordinate(new LLACoordinate(lat, lng, 0 ,0));
-        poi.setType(type);
-
-        pointOfInterestList.add(poi);
-    }
-
     @Override
     public void onBackPressed() {
 
         Toast.makeText(getApplicationContext(), "Use the slide menu to go back.", Toast.LENGTH_SHORT).show();
-    }
-
-    public void getMeerpalenListFromJSON() {
-
-        try {
-            String jsonFileContent = ReadJSONFile(R.raw.json_meerpalen);
-
-            //get JSON string
-            JSONObject reader = new JSONObject(jsonFileContent);
-
-            // Skip initial objects
-            JSONArray featureArray = reader.getJSONArray("features");
-
-            for (int i = 0; i < featureArray.length(); i++) {
-                JSONObject meerpaal = featureArray.getJSONObject(i);
-
-                JSONObject properties = meerpaal.getJSONObject("properties");
-                String objectId = properties.getString("OBJECTID");
-                String objectType = properties.getString("ASTNAME");
-
-                JSONObject geometry = meerpaal.getJSONObject("geometry");
-                JSONArray coordinates = geometry.getJSONArray("coordinates");
-                String lat = coordinates.getString(1);
-                String lng = coordinates.getString(0);
-
-                //make meerpaalPOI with info from meerpalenJSON
-                PointOfInterest poi = new PointOfInterest();
-
-                poi.setId(Integer.parseInt(objectId));
-                poi.setDescription("hoi");
-                poi.setCoordinate(new LLACoordinate(Double.parseDouble(lat), Double.parseDouble(lng), 0, 0));
-
-                PoiType poiType = PoiType.Bolder;
-                switch (objectType)
-                {
-                    case "Meerpaal" : poiType = PoiType.Meerpaal; break;
-                    default:poiType = PoiType.Bolder; break;
-                }
-
-                poi.setType(poiType);
-
-                meerpalenList.add(poi);
-            }
-
-
-        }
-        catch (Exception ex)
-        {
-            Log.e("Main",ex.getMessage());
-        }
-    }
-
-    public String ReadJSONFile(int resourceId)
-    {
-        //
-        try {
-            InputStream inputStream = getResources().openRawResource(resourceId);
-
-            BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
-            StringBuilder total = new StringBuilder();
-            String line;
-            while ((line = r.readLine()) != null) {
-                total.append(line);
-            }
-            return total.toString();
-        }
-        catch (Exception ex)
-        {
-            return null;
-        }
     }
 
     public static class PlaceholderFragment extends Fragment {

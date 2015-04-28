@@ -15,6 +15,10 @@ public class PointOfInterest {
         Id = id;
     }
 
+    public void setFeatureId(String featureId) {
+        this.featureId = featureId;
+    }
+
     public void setType(PoiType type) {
         Type = type;
     }
@@ -34,6 +38,10 @@ public class PointOfInterest {
     public int getId() {
 
         return Id;
+    }
+
+    public String getFeatureId() {
+        return featureId;
     }
 
     public PoiType getType() {
@@ -65,6 +73,6 @@ public class PointOfInterest {
 
     @Override
     public String toString(){
-        return "OBJECTID: " + String.valueOf(getId()) + " FEATUREID: " + getDescription();
+        return "OBJECTID: " + String.valueOf(getId()) + " FEATUREID: " + getFeatureId();
     }
 }
