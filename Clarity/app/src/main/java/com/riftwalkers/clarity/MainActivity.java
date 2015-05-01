@@ -2,6 +2,7 @@ package com.riftwalkers.clarity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,16 +32,13 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends ARViewActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks{
+    private SharedPreferences sharedPreferences; // SharedPreference and information
+    private long oldTime; // Back button override timer
     private NavigationDrawerFragment mNavigationDrawerFragment;
-
     private ArrayList<PointOfInterest> meerpalenList;
     private ArrayList<PointOfInterest> pointOfInterestList;
-
     private PointOfInterest zoekPOI;
     private PointsOfInterestDAO pointsOfInterestDAO;
-
-    // SharedPreference and information
-    SharedPreferences sharedPreferences;
 
     @Override
     protected int getGUILayout() {
@@ -177,9 +175,6 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if(id == R.id.action_search) {
@@ -198,7 +193,7 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
                 mSurfaceView.queueEvent(new Runnable() {
                     @Override
                     public void run() {
-                        if((zoekPOI != null)) {
+                        if ((zoekPOI != null)) {
                             metaioSDK.unloadGeometry(zoekPOI.getGeometry());
                         }
 
@@ -232,16 +227,25 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
         pointOfInterestList = pointsOfInterestDAO.getAllPointsOfInterest();
 
         //draw each poi in the arrayList
-        for(int i=0;i<20;i++) {
+        for(int i=0;i<pointOfInterestList.size();i++) {
             //get type of POI and image
             File POIbackground = AssetsManager.getAssetPathAsFile(getApplicationContext(), pointOfInterestList.get(i).GetImageName());
 
-            if(POIbackground != null) {
-                pointOfInterestList.get(i).setGeometry(createGeometry(pointOfInterestList.get(i).getCoordinate(), POIbackground, 100));
-            } else {
-
-                // todo: dit gaat niet werken, POIbg altijd null, wanneer niet Null dan bovenste stuk...
-                MetaioDebug.log(Log.ERROR, "Error loading geometry: " + POIbackground);
+            float[] results = new float[3];
+            Location.distanceBetween(
+                    pointOfInterestList.get(i).getCoordinate().getLatitude(),
+                    pointOfInterestList.get(i).getCoordinate().getLongitude(),
+                    mSensors.getLocation().getLatitude(),
+                    mSensors.getLocation().getLongitude(),
+                    results
+            );
+            if(results[0] < 200) {
+                if (POIbackground != null) {
+                    pointOfInterestList.get(i).setGeometry(createGeometry(pointOfInterestList.get(i).getCoordinate(), POIbackground, 100));
+                } else {
+                    // todo: dit gaat niet werken, POIbg altijd null, wanneer niet Null dan bovenste stuk...
+                    MetaioDebug.log(Log.ERROR, "Error loading geometry: " + POIbackground);
+                }
             }
         }
     }
@@ -287,6 +291,9 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
+        public PlaceholderFragment() {
+        }
+
         /**
          * Returns a new instance of this fragment for the given section
          * number.
@@ -297,9 +304,6 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
             return fragment;
-        }
-
-        public PlaceholderFragment() {
         }
 
         @Override
