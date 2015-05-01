@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.riftwalkers.clarity.R;
@@ -47,6 +48,8 @@ public class RoleSelector extends Activity {
         } else if(!sharedPreferences.getBoolean("SETUPCOMPLETED",false)) {
             Toast.makeText(this, "Please wait while required data is loaded...", Toast.LENGTH_LONG).show();
 
+            final TextView loadingTextView = (TextView) findViewById(R.id.loadingScreenText);
+
             final AssetsExtracter assetsExtracter = new AssetsExtracter();
             assetsExtracter.setContext(this);
             assetsExtracter.setActivity(this);
@@ -57,6 +60,22 @@ public class RoleSelector extends Activity {
                     editor.putBoolean("SETUPCOMPLETED", true);
                     editor.apply();
                     Toast.makeText(getApplicationContext(), "All assets are loaded", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void OnStageChange(final String stage) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(stage.equals("Meerpalen")) {
+                                loadingTextView.setText("Meerpalen inladen");
+                            } else if(stage.equals("Ligplaatsen")) {
+                                loadingTextView.setText("Ligplaatsen inladen");
+                            } else if(stage.equals("Boeien")) {
+                                loadingTextView.setText("Boeien inladen");
+                            }
+                        }
+                    });
                 }
             });
             assetsExtracter.execute(0);

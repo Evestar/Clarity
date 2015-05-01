@@ -43,14 +43,24 @@ public class AssetsExtracter extends AsyncTask<Integer, Integer, Boolean>
             AssetsManager.extractAllAssets(context, true);
 
             try {
+                // Meerpalen
                 String jsonFileContent = JSONHelperClass.ReadJSONFile(activity.getResources(), R.raw.json_meerpalen);
+                if(myAssetsExtracterInterface != null)
+                    myAssetsExtracterInterface.OnStageChange("Meerpalen");
+                loadJsonToDAO(jsonFileContent);
 
-                //get JSON string
-                JSONObject reader = new JSONObject(jsonFileContent);
+                // Ligplaatsen
+                jsonFileContent = JSONHelperClass.ReadJSONFile(activity.getResources(), R.raw.json_ligplaatsen);
+                if(myAssetsExtracterInterface != null)
+                    myAssetsExtracterInterface.OnStageChange("Ligplaatsen");
+                loadJsonToDAO(jsonFileContent);
 
-                // Skip initial objects
-                JSONArray featureArray = reader.getJSONArray("features");
-                new PointsOfInterestDAO(activity.getApplicationContext()).insertJsonArray(featureArray);
+                // Boeien
+                jsonFileContent = JSONHelperClass.ReadJSONFile(activity.getResources(), R.raw.json_afmeerboeien);
+                if(myAssetsExtracterInterface != null)
+                    myAssetsExtracterInterface.OnStageChange("Boeien");
+                loadJsonToDAO(jsonFileContent);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -70,7 +80,14 @@ public class AssetsExtracter extends AsyncTask<Integer, Integer, Boolean>
             myAssetsExtracterInterface.finished();
     }
 
+    private void loadJsonToDAO(String jsonFileContent) throws JSONException{
+        JSONObject reader = new JSONObject(jsonFileContent);
+        JSONArray featureArray = reader.getJSONArray("features");
+        new PointsOfInterestDAO(activity.getApplicationContext()).insertJsonArray(featureArray);
+    }
+
     public interface MyAssetsExtracterInterface {
         public void finished();
+        public void OnStageChange(String stage);
     }
 }

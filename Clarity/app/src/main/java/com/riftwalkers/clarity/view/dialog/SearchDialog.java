@@ -52,7 +52,7 @@ public class SearchDialog extends Dialog {
         ligplaatsenArray = new ArrayList<>();
 
         for(PointOfInterest poi: pointOfInterests) {
-            if(poi.getType().equals(PoiType.Bolder)) {
+            if(poi.getType().equals(PoiType.Meerpaal)) {
                 palenArray.add(poi);
             } else if(poi.getType().equals(PoiType.Ligplaats)) {
                 ligplaatsenArray.add(poi);

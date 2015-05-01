@@ -31092,19 +31092,6 @@
 				"type" : "Polygon",
 				"coordinates" : [[[4.326052920465095, 51.86717673418055], [4.32351293566978, 51.8671384151698], [4.323512418160584, 51.86715158832694], [4.323502319348027, 51.867407975820605], [4.326042316441647, 51.8674462950754], [4.326052920465095, 51.86717673418055]]]
 			}
-		}, {
-			"type" : "Feature",
-			"properties" : {
-				"OBJECTID" : 472,
-				"FEATUREID" : "Z100/9/609",
-				"COMPLEXID" : "09",
-				"HISTORICAL" : 0,
-				"HISTORYTYP" : 0,
-				"SYSTEMSTAR" : "2013/10/03",
-				"SYSTEMENDD" : null,
-				"SNUNR" : "0019",
-				"ZZEIGE" : "Havenbedrijf",
-				"ZZGEBR" : "Klant",
-				"ZZLIGPLG" : null,
-				"ZZHVAFKNAA" : "BOTLEK",
-				"ZZHVNAAM" :
+		}
+        ]
+}

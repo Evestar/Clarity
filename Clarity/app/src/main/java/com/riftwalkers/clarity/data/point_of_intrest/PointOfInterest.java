@@ -65,8 +65,7 @@ public class PointOfInterest {
         switch (this.Type){
             case Ligplaats: return "POIa.png";
             case Boei: return "POIb.png";
-            case Bolder: return "POIc.png";
-            case Meerpaal: return "POIa.png";
+            case Meerpaal: return "POIc.png";
             default: return "ExamplePOI.png";
         }
     }

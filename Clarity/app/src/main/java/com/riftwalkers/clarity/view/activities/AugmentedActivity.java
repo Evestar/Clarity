@@ -94,13 +94,13 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(!isChecked) {
                     for (PointOfInterest poi : pointOfInterestList) {
-                        if (poi.getType().equals(PoiType.Bolder)) {
+                        if (poi.getType().equals(PoiType.Meerpaal)) {
                             poi.getGeometry().setVisible(false);
                         }
                     }
                 } else {
                     for (PointOfInterest poi : pointOfInterestList) {
-                        if (poi.getType().equals(PoiType.Bolder)) {
+                        if (poi.getType().equals(PoiType.Meerpaal)) {
                             poi.getGeometry().setVisible(true);
                         }
                     }
