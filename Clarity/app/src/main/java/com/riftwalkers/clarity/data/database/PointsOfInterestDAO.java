@@ -1,4 +1,4 @@
-package com.riftwalkers.clarity.Database;
+package com.riftwalkers.clarity.data.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,8 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.metaio.sdk.jni.LLACoordinate;
-import com.riftwalkers.clarity.PoiType;
-import com.riftwalkers.clarity.PointOfInterest;
+import com.riftwalkers.clarity.data.point_of_intrest.PoiType;
+import com.riftwalkers.clarity.data.point_of_intrest.PointOfInterest;
 
 import org.json.JSONArray;
 import org.json.JSONException;

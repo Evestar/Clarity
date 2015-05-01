@@ -1,4 +1,4 @@
-package com.riftwalkers.clarity;
+package com.riftwalkers.clarity.view.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,13 +25,19 @@ import com.metaio.sdk.jni.IGeometry;
 import com.metaio.sdk.jni.IMetaioSDKCallback;
 import com.metaio.sdk.jni.LLACoordinate;
 import com.metaio.tools.io.AssetsManager;
-import com.riftwalkers.clarity.Database.PointsOfInterestDAO;
+import com.riftwalkers.clarity.view.activities.RoleSelector;
+import com.riftwalkers.clarity.view.fragment.NavigationDrawerFragment;
+import com.riftwalkers.clarity.R;
+import com.riftwalkers.clarity.view.dialog.SearchDialog;
+import com.riftwalkers.clarity.data.point_of_intrest.PoiType;
+import com.riftwalkers.clarity.data.point_of_intrest.PointOfInterest;
+import com.riftwalkers.clarity.data.database.PointsOfInterestDAO;
 
 import java.io.File;
 import java.util.ArrayList;
 
 
-public class MainActivity extends ARViewActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks{
+public class AugmentedActivity extends ARViewActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
     private SharedPreferences sharedPreferences; // SharedPreference and information
     private long oldTime; // Back button override timer
     private NavigationDrawerFragment mNavigationDrawerFragment;

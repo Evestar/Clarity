@@ -1,4 +1,4 @@
-package com.riftwalkers.clarity;
+package com.riftwalkers.clarity.data.point_of_intrest;
 
 import com.metaio.sdk.jni.IGeometry;
 import com.metaio.sdk.jni.LLACoordinate;

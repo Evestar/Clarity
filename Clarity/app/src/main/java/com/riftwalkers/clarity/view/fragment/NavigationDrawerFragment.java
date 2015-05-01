@@ -1,4 +1,4 @@
-package com.riftwalkers.clarity;
+package com.riftwalkers.clarity.view.fragment;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import com.riftwalkers.clarity.R;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.

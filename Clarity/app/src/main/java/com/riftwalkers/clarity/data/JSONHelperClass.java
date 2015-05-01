@@ -1,4 +1,4 @@
-package com.riftwalkers.clarity;
+package com.riftwalkers.clarity.data;
 
 import android.content.res.Resources;
 

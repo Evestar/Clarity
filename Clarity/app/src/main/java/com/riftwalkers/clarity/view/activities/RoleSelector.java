@@ -1,4 +1,4 @@
-package com.riftwalkers.clarity;
+package com.riftwalkers.clarity.view.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.riftwalkers.clarity.R;
+import com.riftwalkers.clarity.data.AssetsExtracter;
 
 /**
  * Created by marcel on 13-4-2015.
@@ -39,7 +42,7 @@ public class RoleSelector extends Activity {
         if((sharedPreferences.getInt("choice",0) > choise) && (sharedPreferences.getBoolean("SETUPCOMPLETED",false))){
             choise = sharedPreferences.getInt("choice",0);
 
-            Intent intent = new Intent(RoleSelector.this, MainActivity.class);
+            Intent intent = new Intent(RoleSelector.this, AugmentedActivity.class);
             startActivity(intent);
         } else if(!sharedPreferences.getBoolean("SETUPCOMPLETED",false)) {
             Toast.makeText(this, "Please wait while required data is loaded...", Toast.LENGTH_LONG).show();
@@ -104,7 +107,7 @@ public class RoleSelector extends Activity {
                 choise = 1;
                 editor.putInt("choice", choise);
                 editor.commit();
-                Intent intent = new Intent(RoleSelector.this, MainActivity.class);
+                Intent intent = new Intent(RoleSelector.this, AugmentedActivity.class);
                 startActivity(intent);
             }
         });
@@ -115,7 +118,7 @@ public class RoleSelector extends Activity {
                 choise = 2;
                 editor.putInt("choice", choise);
                 editor.commit();
-                Intent intent = new Intent(RoleSelector.this, MainActivity.class);
+                Intent intent = new Intent(RoleSelector.this, AugmentedActivity.class);
                 startActivity(intent);
             }
         });
@@ -126,7 +129,7 @@ public class RoleSelector extends Activity {
                 choise = 3;
                 editor.putInt("choice", choise);
                 editor.commit();
-                Intent intent = new Intent(RoleSelector.this, MainActivity.class);
+                Intent intent = new Intent(RoleSelector.this, AugmentedActivity.class);
                 startActivity(intent);
             }
         });

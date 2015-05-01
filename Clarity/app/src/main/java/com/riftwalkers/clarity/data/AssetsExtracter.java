@@ -1,4 +1,4 @@
-package com.riftwalkers.clarity;
+package com.riftwalkers.clarity.data;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,7 +7,9 @@ import android.util.Log;
 
 import com.metaio.sdk.MetaioDebug;
 import com.metaio.tools.io.AssetsManager;
-import com.riftwalkers.clarity.Database.PointsOfInterestDAO;
+import com.riftwalkers.clarity.R;
+import com.riftwalkers.clarity.data.JSONHelperClass;
+import com.riftwalkers.clarity.data.database.PointsOfInterestDAO;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,7 +43,7 @@ public class AssetsExtracter extends AsyncTask<Integer, Integer, Boolean>
             AssetsManager.extractAllAssets(context, true);
 
             try {
-                String jsonFileContent = JSONHelperClass.ReadJSONFile(activity.getResources(),R.raw.json_meerpalen);
+                String jsonFileContent = JSONHelperClass.ReadJSONFile(activity.getResources(), R.raw.json_meerpalen);
 
                 //get JSON string
                 JSONObject reader = new JSONObject(jsonFileContent);

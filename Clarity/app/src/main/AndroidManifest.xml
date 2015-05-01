@@ -44,7 +44,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".RoleSelector"
+            android:name=".view.activities.RoleSelector"
             android:label="@string/title_activity_main"
             android:screenOrientation="landscape" >
             <intent-filter>
@@ -54,7 +54,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".view.activities.AugmentedActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="landscape" >
         </activity>
