@@ -1,11 +1,8 @@
 package com.riftwalkers.clarity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -13,25 +10,13 @@ import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ListView;
 import android.widget.Toast;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.metaio.sdk.ARViewActivity;
 import com.metaio.sdk.MetaioDebug;
@@ -41,9 +26,8 @@ import com.metaio.sdk.jni.LLACoordinate;
 import com.metaio.tools.io.AssetsManager;
 import com.riftwalkers.clarity.Database.PointsOfInterestDAO;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.io.File;
+import java.util.ArrayList;
 
 
 public class MainActivity extends ARViewActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks{
@@ -57,9 +41,6 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
 
     // SharedPreference and information
     SharedPreferences sharedPreferences;
-
-    // Back button override timer
-    long oldTime;
 
     @Override
     protected int getGUILayout() {
@@ -96,7 +77,7 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
             @Override
             public void onClick(View v) {
                 editor.putInt("choice", 0);
-                editor.commit();
+                editor.apply();
                 Intent i = new Intent(getApplicationContext(), RoleSelector.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
@@ -107,7 +88,7 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
         meerpalenCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked == false) {
+                if(!isChecked) {
                     for (PointOfInterest poi : pointOfInterestList) {
                         if (poi.getType().equals(PoiType.Bolder)) {
                             poi.getGeometry().setVisible(false);
@@ -127,7 +108,7 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
         ligplaatsenCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked == false) {
+                if(!isChecked) {
                     for (PointOfInterest poi : pointOfInterestList) {
                         if (poi.getType().equals(PoiType.Ligplaats)) {
                             poi.getGeometry().setVisible(false);
@@ -147,7 +128,7 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
         aanmeerboeienCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked == false) {
+                if (!isChecked) {
                     for (PointOfInterest poi : pointOfInterestList) {
                         if (poi.getType().equals(PoiType.Boei)) {
                             poi.getGeometry().setVisible(false);
@@ -258,6 +239,8 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
             if(POIbackground != null) {
                 pointOfInterestList.get(i).setGeometry(createGeometry(pointOfInterestList.get(i).getCoordinate(), POIbackground, 100));
             } else {
+
+                // todo: dit gaat niet werken, POIbg altijd null, wanneer niet Null dan bovenste stuk...
                 MetaioDebug.log(Log.ERROR, "Error loading geometry: " + POIbackground);
             }
         }
@@ -278,6 +261,7 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
 
             return geometry;
         } else {
+            // todo: dit gaat niet werken, geometry altijd null, wanneer niet Null dan bovenste stuk...
             MetaioDebug.log(Log.ERROR, "Error loading geometry: " + geometry);
             return null;
         }
@@ -286,6 +270,8 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
     @Override
     protected void onGeometryTouched(final IGeometry geometry)
     {
+        //todo: Maak event voor object clicks...
+
     }
 
     @Override
@@ -319,8 +305,7 @@ public class MainActivity extends ARViewActivity implements NavigationDrawerFrag
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main_activity, container, false);
-            return rootView;
+            return inflater.inflate(R.layout.fragment_main_activity, container, false);
         }
     }
 }
