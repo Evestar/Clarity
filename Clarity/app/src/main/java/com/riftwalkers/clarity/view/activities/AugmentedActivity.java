@@ -25,13 +25,12 @@ import com.metaio.sdk.jni.IGeometry;
 import com.metaio.sdk.jni.IMetaioSDKCallback;
 import com.metaio.sdk.jni.LLACoordinate;
 import com.metaio.tools.io.AssetsManager;
-import com.riftwalkers.clarity.view.activities.RoleSelector;
-import com.riftwalkers.clarity.view.fragment.NavigationDrawerFragment;
 import com.riftwalkers.clarity.R;
-import com.riftwalkers.clarity.view.dialog.SearchDialog;
+import com.riftwalkers.clarity.data.point_of_intrest.PoiList;
 import com.riftwalkers.clarity.data.point_of_intrest.PoiType;
 import com.riftwalkers.clarity.data.point_of_intrest.PointOfInterest;
-import com.riftwalkers.clarity.data.database.PointsOfInterestDAO;
+import com.riftwalkers.clarity.view.dialog.SearchDialog;
+import com.riftwalkers.clarity.view.fragment.NavigationDrawerFragment;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -42,9 +41,8 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
     private long oldTime; // Back button override timer
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private ArrayList<PointOfInterest> meerpalenList;
-    private ArrayList<PointOfInterest> pointOfInterestList;
+    private PoiList pointOfInterestList;
     private PointOfInterest zoekPOI;
-    private PointsOfInterestDAO pointsOfInterestDAO;
 
     @Override
     protected int getGUILayout() {
@@ -81,7 +79,7 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
             @Override
             public void onClick(View v) {
                 editor.putInt("choice", 0);
-                editor.apply();
+                editor.commit();
                 Intent i = new Intent(getApplicationContext(), RoleSelector.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
@@ -229,11 +227,10 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
         metaioSDK.setLLAObjectRenderingLimits(5, 200);
         metaioSDK.setRendererClippingPlaneLimits(10, 220000);
 
-        pointsOfInterestDAO = new PointsOfInterestDAO(this);
-        pointOfInterestList = pointsOfInterestDAO.getAllPointsOfInterest();
+        pointOfInterestList = new PoiList(this);
 
         //draw each poi in the arrayList
-        for(int i=0;i<pointOfInterestList.size();i++) {
+        for(int i=0;i<5;i++) {
             //get type of POI and image
             File POIbackground = AssetsManager.getAssetPathAsFile(getApplicationContext(), pointOfInterestList.get(i).GetImageName());
 
@@ -245,7 +242,7 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
                     mSensors.getLocation().getLongitude(),
                     results
             );
-            if(results[0] < 200) {
+            if(results[0] < 200000) {
                 if (POIbackground != null) {
                     pointOfInterestList.get(i).setGeometry(createGeometry(pointOfInterestList.get(i).getCoordinate(), POIbackground, 100));
                 } else {

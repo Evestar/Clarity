@@ -43,7 +43,18 @@ public class RoleSelector extends Activity {
         if((sharedPreferences.getInt("choice",0) > choise) && (sharedPreferences.getBoolean("SETUPCOMPLETED",false))){
             choise = sharedPreferences.getInt("choice",0);
 
-            Intent intent = new Intent(RoleSelector.this, AugmentedActivity.class);
+            Intent intent;
+            if(choise == 1){
+                intent = new Intent(RoleSelector.this, AugmentedActivity.class);
+            } else if(choise == 2) {
+                intent = new Intent(RoleSelector.this, RoleSelector.class);
+                editor.putInt("choice", 0);
+                editor.apply();
+            } else {
+                intent = new Intent(RoleSelector.this, RoleSelector.class);
+                editor.putInt("choice", 0);
+                editor.apply();
+            }
             startActivity(intent);
         } else if(!sharedPreferences.getBoolean("SETUPCOMPLETED",false)) {
             Toast.makeText(this, "Please wait while required data is loaded...", Toast.LENGTH_LONG).show();
@@ -67,12 +78,16 @@ public class RoleSelector extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if(stage.equals("Meerpalen")) {
-                                loadingTextView.setText("Meerpalen inladen");
-                            } else if(stage.equals("Ligplaatsen")) {
-                                loadingTextView.setText("Ligplaatsen inladen");
-                            } else if(stage.equals("Boeien")) {
-                                loadingTextView.setText("Boeien inladen");
+                            switch (stage) {
+                                case "Meerpalen":
+                                    loadingTextView.setText("Meerpalen inladen");
+                                    break;
+                                case "Ligplaatsen":
+                                    loadingTextView.setText("Ligplaatsen inladen");
+                                    break;
+                                case "Boeien":
+                                    loadingTextView.setText("Boeien inladen");
+                                    break;
                             }
                         }
                     });
@@ -137,7 +152,7 @@ public class RoleSelector extends Activity {
                 choise = 2;
                 editor.putInt("choice", choise);
                 editor.commit();
-                Intent intent = new Intent(RoleSelector.this, AugmentedActivity.class);
+                Intent intent = new Intent(RoleSelector.this, MapsActivity.class);
                 startActivity(intent);
             }
         });
