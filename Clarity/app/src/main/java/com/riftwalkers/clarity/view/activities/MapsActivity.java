@@ -112,19 +112,19 @@ public class MapsActivity extends Activity {
 
             switch (poi.getType()){
                 case Boei:
-                    addAnMarker(yellow, poi);
+                    addAnMarker(yellow, poi, "Buoy: ["+poi.getId()+"]");
                     break;
                 case Ligplaats:
-                    addAnMarker(green, poi);
+                    addAnMarker(green, poi, "Berth: ["+poi.getId()+"]");;
                     break;
                 case Meerpaal:
-                    addAnMarker(red, poi);
+                    addAnMarker(red, poi, "Boulder: ["+poi.getId()+"]");
                     break;
             }
         }
     }
 
-    private void addAnMarker(Bitmap color, PointOfInterest poi){
+    private void addAnMarker(Bitmap color, PointOfInterest poi, String title){
         map.addMarker(
                 new MarkerOptions()
                         .position(
@@ -136,10 +136,7 @@ public class MapsActivity extends Activity {
                                 BitmapDescriptorFactory.fromBitmap(
                                         color
                                 ))
-                        .title(
-                                String.valueOf(
-                                        poi.getId()
-                                ))
+                        .title(title)
         );
     }
 
