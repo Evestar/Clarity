@@ -230,7 +230,7 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
         pointOfInterestList = new PoiList(this);
 
         //draw each poi in the arrayList
-        for(int i=0;i<5;i++) {
+        for(int i=0;i<pointOfInterestList.size();i++) {
             //get type of POI and image
             File POIbackground = AssetsManager.getAssetPathAsFile(getApplicationContext(), pointOfInterestList.get(i).GetImageName());
 
@@ -242,7 +242,7 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
                     mSensors.getLocation().getLongitude(),
                     results
             );
-            if(results[0] < 200000) {
+            if(results[0] < 200) {
                 if (POIbackground != null) {
                     pointOfInterestList.get(i).setGeometry(createGeometry(pointOfInterestList.get(i).getCoordinate(), POIbackground, 100));
                 } else {

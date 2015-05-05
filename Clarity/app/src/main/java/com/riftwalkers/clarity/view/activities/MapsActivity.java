@@ -106,8 +106,8 @@ public class MapsActivity extends Activity {
         greenCanvas.drawCircle(12, 12, 12, paint);
 
         PoiList list = new PoiList(this);
-        for (int i = 0; i < 20; i++) { // Use this during debug!
-//      for (int i = 0; i < list.size(); i++) {
+//      for (int i = 0; i < 20; i++) { // Use this during debug!
+        for (int i = 0; i < list.size(); i++) {
             PointOfInterest poi = list.get(i);
 
             switch (poi.getType()){
