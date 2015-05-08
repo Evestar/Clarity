@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.metaio.sdk.jni.LLACoordinate;
+import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 import com.riftwalkers.clarity.data.point_of_intrest.PoiType;
 import com.riftwalkers.clarity.data.point_of_intrest.PointOfInterest;
 
@@ -25,7 +26,7 @@ public class PointsOfInterestDAO {
         helper = new ClarityDBHelper(context);
     }
 
-    public void insertJsonArray(JSONArray jsonArray){
+    /*public void insertJsonArray(JSONArray jsonArray){
         db = helper.getWritableDatabase();
 
         for (int i = 0; i < jsonArray.length(); i++){
@@ -74,7 +75,7 @@ public class PointsOfInterestDAO {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
     public ArrayList<PointOfInterest> getAllPointsOfInterest(){
         db = helper.getReadableDatabase();
@@ -134,7 +135,28 @@ public class PointsOfInterestDAO {
         return pointOfInterests;
     }
 
-    class ClarityDBHelper extends SQLiteOpenHelper {
+    class ClarityDBHelper extends SQLiteAssetHelper {
+
+        private static final String MEERPALEN_TABLE_NAME = "MEERPALEN";
+        private static final String LIGPLAATSEN_TABLE_NAME = "LIGPLAATSEN";
+        private static final String BOEIEN_TABLE_NAME = "BOEIEN";
+
+        private static final String UID = "_id";
+        private static final String FEATUREID = "featureId";
+        private static final String TYPE = "type";
+        private static final String DESCRIPTION = "description";
+        private static final String LATITUDE = "latitude";
+        private static final String LONGITUDE = "longitude";
+
+        private static final String DATABASE_NAME = "Clarity";
+        private static final int DATABASE_VERSION = 1;
+
+        public ClarityDBHelper(Context context) {
+            super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        }
+    }
+
+    /*class ClarityDBHelper extends SQLiteOpenHelper {
 
         private static final String MEERPALEN_TABLE_NAME = "MEERPALEN";
         private static final String LIGPLAATSEN_TABLE_NAME = "LIGPLAATSEN";
@@ -172,7 +194,7 @@ public class PointsOfInterestDAO {
             db.execSQL("DROP TABLE IF EXISTS " + BOEIEN_TABLE_NAME);
             onCreate(db);
         }
-    }
+    }*/
 }
 
 

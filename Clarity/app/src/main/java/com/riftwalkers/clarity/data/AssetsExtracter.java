@@ -40,9 +40,10 @@ public class AssetsExtracter extends AsyncTask<Integer, Integer, Boolean>
     {
         try
         {
-            AssetsManager.extractAllAssets(context, true);
+            String[] ignoreList = {"databases","images","sounds","webkit"};
+            AssetsManager.extractAllAssets(context,"",ignoreList, true);
 
-            try {
+            /*try {
                 // Meerpalen
                 String jsonFileContent = JSONHelperClass.ReadJSONFile(activity.getResources(), R.raw.json_meerpalen);
                 if(myAssetsExtracterInterface != null)
@@ -63,7 +64,7 @@ public class AssetsExtracter extends AsyncTask<Integer, Integer, Boolean>
 
             } catch (JSONException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
         catch (IOException e)
         {
@@ -80,11 +81,11 @@ public class AssetsExtracter extends AsyncTask<Integer, Integer, Boolean>
             myAssetsExtracterInterface.finished();
     }
 
-    private void loadJsonToDAO(String jsonFileContent) throws JSONException{
+    /*private void loadJsonToDAO(String jsonFileContent) throws JSONException{
         JSONObject reader = new JSONObject(jsonFileContent);
         JSONArray featureArray = reader.getJSONArray("features");
         new PointsOfInterestDAO(activity.getApplicationContext()).insertJsonArray(featureArray);
-    }
+    }*/
 
     public interface MyAssetsExtracterInterface {
         public void finished();
