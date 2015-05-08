@@ -26,6 +26,7 @@ import com.metaio.sdk.jni.IMetaioSDKCallback;
 import com.metaio.sdk.jni.LLACoordinate;
 import com.metaio.tools.io.AssetsManager;
 import com.riftwalkers.clarity.R;
+import com.riftwalkers.clarity.data.GPSLocationProvider;
 import com.riftwalkers.clarity.data.point_of_intrest.PoiList;
 import com.riftwalkers.clarity.data.point_of_intrest.PoiType;
 import com.riftwalkers.clarity.data.point_of_intrest.PointOfInterest;
@@ -38,11 +39,18 @@ import java.util.ArrayList;
 
 public class AugmentedActivity extends ARViewActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
     private SharedPreferences sharedPreferences; // SharedPreference and information
+    private SharedPreferences.Editor editor;
     private long oldTime; // Back button override timer
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private ArrayList<PointOfInterest> meerpalenList;
     private PoiList pointOfInterestList;
     private PointOfInterest zoekPOI;
+    private GPSLocationProvider gpsLocationProvider;
+
+    private Button menuBackButton;
+    private CheckBox meerpalenCheckbox;
+    private CheckBox ligplaatsenCheckbox;
+    private CheckBox aanmeerboeienCheckbox;
 
     @Override
     protected int getGUILayout() {
@@ -62,9 +70,11 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
         super.onCreate(savedInstanceState);
         setContentView(mGUIView);
 
+        gpsLocationProvider = new GPSLocationProvider(mSensors, this);
+
         // Shared preff
         sharedPreferences = getSharedPreferences("ClarityApp", 0);
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor = sharedPreferences.edit();
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -73,78 +83,6 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-
-        Button menuBackButton = (Button) findViewById(R.id.backbuttonMenu);
-        menuBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.putInt("choice", 0);
-                editor.commit();
-                Intent i = new Intent(getApplicationContext(), RoleSelector.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
-            }
-        });
-
-        CheckBox meerpalenCheckbox = (CheckBox) findViewById(R.id.meerpalenCheckbox);
-        meerpalenCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!isChecked) {
-                    for (PointOfInterest poi : pointOfInterestList) {
-                        if (poi.getType().equals(PoiType.Meerpaal)) {
-                            poi.getGeometry().setVisible(false);
-                        }
-                    }
-                } else {
-                    for (PointOfInterest poi : pointOfInterestList) {
-                        if (poi.getType().equals(PoiType.Meerpaal)) {
-                            poi.getGeometry().setVisible(true);
-                        }
-                    }
-                }
-            }
-        });
-
-        CheckBox ligplaatsenCheckbox = (CheckBox) findViewById(R.id.ligplaatsenCheckbox);
-        ligplaatsenCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!isChecked) {
-                    for (PointOfInterest poi : pointOfInterestList) {
-                        if (poi.getType().equals(PoiType.Ligplaats)) {
-                            poi.getGeometry().setVisible(false);
-                        }
-                    }
-                } else {
-                    for (PointOfInterest poi : pointOfInterestList) {
-                        if (poi.getType().equals(PoiType.Ligplaats)) {
-                            poi.getGeometry().setVisible(true);
-                        }
-                    }
-                }
-            }
-        });
-
-        CheckBox aanmeerboeienCheckbox = (CheckBox) findViewById(R.id.aanmeerboeienCheckbox);
-        aanmeerboeienCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked) {
-                    for (PointOfInterest poi : pointOfInterestList) {
-                        if (poi.getType().equals(PoiType.Boei)) {
-                            poi.getGeometry().setVisible(false);
-                        }
-                    }
-                } else {
-                    for (PointOfInterest poi : pointOfInterestList) {
-                        if (poi.getType().equals(PoiType.Boei)) {
-                            poi.getGeometry().setVisible(true);
-                        }
-                    }
-                }
-            }
-        });
     }
 
     @Override
@@ -184,6 +122,8 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
         if(id == R.id.action_search) {
             Search(getCurrentFocus());
             return true;
+        } else if(id == R.id.refreshPosition) {
+            gpsLocationProvider.requestUpdate();
         }
 
         return super.onOptionsItemSelected(item);
@@ -201,10 +141,15 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
                             metaioSDK.unloadGeometry(zoekPOI.getGeometry());
                         }
 
+                        ligplaatsenCheckbox.setChecked(false);
+                        aanmeerboeienCheckbox.setChecked(false);
+                        meerpalenCheckbox.setChecked(false);
+
                         zoekPOI = poi;
 
                         File POIbackground = AssetsManager.getAssetPathAsFile(getApplicationContext(), "zoekPOI.png");
                         zoekPOI.setGeometry(createGeometry(poi.getCoordinate(), POIbackground, 100));
+                        zoekPOI.getGeometry().setVisible(true);
                     }
                 });
             }
@@ -242,7 +187,7 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
                     mSensors.getLocation().getLongitude(),
                     results
             );
-            if(results[0] < 200) {
+            if(results[0] < 20000) {
                 if (POIbackground != null) {
                     pointOfInterestList.get(i).setGeometry(createGeometry(pointOfInterestList.get(i).getCoordinate(), POIbackground, 100));
                 } else {
@@ -251,6 +196,8 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
                 }
             }
         }
+
+        setupViews();
     }
 
     /**
@@ -285,6 +232,86 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
     public void onBackPressed() {
 
         Toast.makeText(getApplicationContext(), "Use the slide menu to go back.", Toast.LENGTH_SHORT).show();
+    }
+
+    public void setupViews() {
+        menuBackButton = (Button) findViewById(R.id.backbuttonMenu);
+        menuBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.putInt("choice", 0);
+                editor.commit();
+                Intent i = new Intent(getApplicationContext(), RoleSelector.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+            }
+        });
+
+        meerpalenCheckbox = (CheckBox) findViewById(R.id.meerpalenCheckbox);
+        meerpalenCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!isChecked) {
+                    for (PointOfInterest poi : pointOfInterestList) {
+                        if (poi.getType().equals(PoiType.Meerpaal)) {
+                            if(poi.getGeometry() != null)
+                                poi.getGeometry().setVisible(false);
+                        }
+                    }
+                } else {
+                    for (PointOfInterest poi : pointOfInterestList) {
+                        if (poi.getType().equals(PoiType.Meerpaal)) {
+                            if(poi.getGeometry() != null)
+                                poi.getGeometry().setVisible(true);
+                        }
+                    }
+                }
+            }
+        });
+
+        ligplaatsenCheckbox = (CheckBox) findViewById(R.id.ligplaatsenCheckbox);
+        ligplaatsenCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!isChecked) {
+                    for (PointOfInterest poi : pointOfInterestList) {
+                        if (poi.getType().equals(PoiType.Ligplaats)) {
+                            if(poi.getGeometry() != null)
+                                poi.getGeometry().setVisible(false);
+                        }
+                    }
+                } else {
+                    for (PointOfInterest poi : pointOfInterestList) {
+                        if (poi.getType().equals(PoiType.Ligplaats)) {
+                            if(poi.getGeometry() != null)
+                                poi.getGeometry().setVisible(true);
+                        }
+                    }
+                }
+            }
+        });
+
+        aanmeerboeienCheckbox = (CheckBox) findViewById(R.id.aanmeerboeienCheckbox);
+        aanmeerboeienCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked) {
+                    for (PointOfInterest poi : pointOfInterestList) {
+                        if (poi.getType().equals(PoiType.Boei)) {
+                            if(poi.getGeometry() != null)
+                                poi.getGeometry().setVisible(false);
+                        }
+                    }
+                } else {
+                    for (PointOfInterest poi : pointOfInterestList) {
+                        if (poi.getType().equals(PoiType.Boei)) {
+                            if(poi.getGeometry() != null)
+                                poi.getGeometry().setVisible(true);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     public static class PlaceholderFragment extends Fragment {

@@ -5,6 +5,7 @@
     <string name="action_search">Zoek POI</string>
     <string name="action_settings">Settings</string>
 
+    <string name="action_refreshPosition">Update locatie</string>
     <string name="search_dialog_title">Zoeken naar POI\'s</string>
     <string name="search_dialog_searchbutton">Zoek!</string>
     <string-array name="drawer_array">
