@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.metaio.sdk.ARViewActivity;
@@ -40,7 +42,7 @@ import java.util.ArrayList;
 public class AugmentedActivity extends ARViewActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
     private SharedPreferences sharedPreferences; // SharedPreference and information
     private SharedPreferences.Editor editor;
-    private long oldTime; // Back button override timer
+    private int drawRange;
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private ArrayList<PointOfInterest> meerpalenList;
     private PoiList pointOfInterestList;
@@ -51,6 +53,8 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
     private CheckBox meerpalenCheckbox;
     private CheckBox ligplaatsenCheckbox;
     private CheckBox aanmeerboeienCheckbox;
+    private SeekBar rangeSelectSeekBar;
+    private TextView drawRangeView;
 
     @Override
     protected int getGUILayout() {
@@ -174,30 +178,41 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
 
         pointOfInterestList = new PoiList(this);
 
+        drawGeometries();
+
+        setupViews();
+    }
+
+    private void drawGeometries() {
         //draw each poi in the arrayList
-        for(int i=0;i<pointOfInterestList.size();i++) {
+        for(PointOfInterest poi : pointOfInterestList) {
             //get type of POI and image
-            File POIbackground = AssetsManager.getAssetPathAsFile(getApplicationContext(), pointOfInterestList.get(i).GetImageName());
+            File POIbackground = AssetsManager.getAssetPathAsFile(getApplicationContext(), poi.GetImageName());
 
             float[] results = new float[3];
             Location.distanceBetween(
-                    pointOfInterestList.get(i).getCoordinate().getLatitude(),
-                    pointOfInterestList.get(i).getCoordinate().getLongitude(),
+                    poi.getCoordinate().getLatitude(),
+                    poi.getCoordinate().getLongitude(),
                     mSensors.getLocation().getLatitude(),
                     mSensors.getLocation().getLongitude(),
                     results
             );
-            if(results[0] < 20000) {
+
+            if(results[0] < drawRange) {
                 if (POIbackground != null) {
-                    pointOfInterestList.get(i).setGeometry(createGeometry(pointOfInterestList.get(i).getCoordinate(), POIbackground, 100));
+                    if(poi.getGeometry() == null) {
+                        poi.setGeometry(createGeometry(poi.getCoordinate(), POIbackground, 100));
+                    }
                 } else {
-                    // todo: dit gaat niet werken, POIbg altijd null, wanneer niet Null dan bovenste stuk...
                     MetaioDebug.log(Log.ERROR, "Error loading geometry: " + POIbackground);
+                }
+            } else {
+                if(poi.getGeometry() != null) {
+                    metaioSDK.unloadGeometry(poi.getGeometry());
+                    poi.setGeometry(null);
                 }
             }
         }
-
-        setupViews();
     }
 
     /**
@@ -312,6 +327,33 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
                 }
             }
         });
+
+        drawRangeView = (TextView) findViewById(R.id.drawRangeView);
+
+        rangeSelectSeekBar = (SeekBar) findViewById(R.id.rangeSeekbar);
+        rangeSelectSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) { }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) { }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                drawRange = rangeSelectSeekBar.getProgress();
+                drawRangeView.setText(rangeSelectSeekBar.getProgress() + " m");
+                drawGeometries();
+            }
+        });
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                drawRange = rangeSelectSeekBar.getProgress();
+                drawRangeView.setText(drawRange + " m");
+            }
+        });
+
     }
 
     public static class PlaceholderFragment extends Fragment {
