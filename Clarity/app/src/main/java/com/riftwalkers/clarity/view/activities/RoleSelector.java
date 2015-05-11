@@ -3,7 +3,10 @@ package com.riftwalkers.clarity.view.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Picture;
+import android.graphics.drawable.PictureDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -140,13 +143,18 @@ public class RoleSelector extends Activity {
         SVG svg;
 
         svg = SVGParser.getSVGFromResource(getResources(), R.raw.ar_icon);
-        Drawable ar = svg.createPictureDrawable();
+        Picture ar = svg.getPicture();
 
         svg = SVGParser.getSVGFromResource(getResources(), R.raw.map_icon);
-        Drawable maps = svg.createPictureDrawable();
+        Picture maps = svg.getPicture();
 
-        threeDimAR.setImageDrawable(ar);
-        twoDimMaps.setImageDrawable(maps);
+
+        Toast.makeText(getApplicationContext(),maps.toString(), Toast.LENGTH_SHORT).show();
+
+
+        threeDimAR.setImageBitmap(pictureDrawable2Bitmap(ar));
+        twoDimMaps.setImageBitmap(pictureDrawable2Bitmap(maps));
+
 
         threeDimAR.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,5 +177,13 @@ public class RoleSelector extends Activity {
                 startActivity(intent);
             }
         });
+    }
+
+    private Bitmap pictureDrawable2Bitmap(Picture picture) {
+        PictureDrawable pd = new PictureDrawable(picture);
+        Bitmap bitmap = Bitmap.createBitmap(pd.getIntrinsicWidth(), pd.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        canvas.drawPicture(pd.getPicture());
+        return bitmap;
     }
 }

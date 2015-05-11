@@ -23,4 +23,8 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="ar_icon_desciption">Augmented Reality</string>
+    <string name="maps_icon_description">Google Maps</string>
+
 </resources>

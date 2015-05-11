@@ -2,7 +2,9 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:baselineAligned="false">
+
     <LinearLayout
         android:layout_height="match_parent"
         android:layout_width="0dp"
@@ -12,11 +14,10 @@
         <ImageButton
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="Loodswezen"
+            android:contentDescription="@string/ar_icon_desciption"
             android:id="@+id/three_dim"
-            android:src="@drawable/ar_icon"
             android:scaleType="fitCenter"
-            android:background="#ffffffff" />
+            android:background="#FF3333" />
 
     </LinearLayout>
     <LinearLayout
@@ -28,11 +29,10 @@
         <ImageButton
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="Roeiers"
+            android:contentDescription="@string/maps_icon_description"
             android:id="@+id/two_dim"
-            android:src="@drawable/map_icon"
             android:scaleType="fitCenter"
-            android:background="#ffffffff" />
+            android:background="#66FF00" />
 
     </LinearLayout>
 

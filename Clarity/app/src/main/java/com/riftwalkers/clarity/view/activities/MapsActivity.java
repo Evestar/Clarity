@@ -1,6 +1,5 @@
 package com.riftwalkers.clarity.view.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -10,6 +9,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -24,7 +24,7 @@ import com.riftwalkers.clarity.R;
 import com.riftwalkers.clarity.data.point_of_intrest.PoiList;
 import com.riftwalkers.clarity.data.point_of_intrest.PointOfInterest;
 
-public class MapsActivity extends Activity {
+public class MapsActivity extends ActionBarActivity {
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -172,7 +172,6 @@ public class MapsActivity extends Activity {
 
     private class MyMarkerClickListener implements GoogleMap.OnMarkerClickListener {
 
-
         @Override
         public boolean onMarkerClick(Marker marker) {
             if (marker.getTitle() != null && !marker.isInfoWindowShown()) {
@@ -182,5 +181,7 @@ public class MapsActivity extends Activity {
             }
             return true;
         }
+
+
     }
 }
