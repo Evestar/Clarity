@@ -13,8 +13,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.larvalabs.svgandroid.SVG;
-import com.larvalabs.svgandroid.SVGParser;
 import com.riftwalkers.clarity.R;
 import com.riftwalkers.clarity.data.AssetsExtracter;
 
@@ -139,22 +137,6 @@ public class RoleSelector extends Activity {
 
         threeDimAR = (ImageButton) findViewById(R.id.three_dim);
         twoDimMaps = (ImageButton) findViewById(R.id.two_dim);
-
-        SVG svg;
-
-        svg = SVGParser.getSVGFromResource(getResources(), R.raw.ar_icon);
-        Picture ar = svg.getPicture();
-
-        svg = SVGParser.getSVGFromResource(getResources(), R.raw.map_icon);
-        Picture maps = svg.getPicture();
-
-
-        Toast.makeText(getApplicationContext(),maps.toString(), Toast.LENGTH_SHORT).show();
-
-
-        threeDimAR.setImageBitmap(pictureDrawable2Bitmap(ar));
-        twoDimMaps.setImageBitmap(pictureDrawable2Bitmap(maps));
-
 
         threeDimAR.setOnClickListener(new View.OnClickListener() {
             @Override

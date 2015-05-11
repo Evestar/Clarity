@@ -17,7 +17,8 @@
             android:contentDescription="@string/ar_icon_desciption"
             android:id="@+id/three_dim"
             android:scaleType="fitCenter"
-            android:background="#FF3333" />
+            android:src="@drawable/ar_icon"
+            android:background="#FFF"/>
 
     </LinearLayout>
     <LinearLayout
@@ -32,7 +33,8 @@
             android:contentDescription="@string/maps_icon_description"
             android:id="@+id/two_dim"
             android:scaleType="fitCenter"
-            android:background="#66FF00" />
+            android:src="@drawable/map_icon"
+            android:background="#FFF"/>
 
     </LinearLayout>
 
