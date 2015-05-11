@@ -175,11 +175,10 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
         metaioSDK.setLLAObjectRenderingLimits(5, 200);
         metaioSDK.setRendererClippingPlaneLimits(10, 220000);
 
-        pointOfInterestList = new PoiList(this);
-
-        drawGeometries();
-
         setupViews();
+
+        pointOfInterestList = new PoiList(this);
+        drawGeometries();
     }
 
     private void drawGeometries() {
@@ -200,7 +199,7 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
             if(results[0] < drawRange) {
                 if (POIbackground != null) {
                     if(poi.getGeometry() == null) {
-                        poi.setGeometry(createGeometry(poi.getCoordinate(), POIbackground, 100));
+                        poi.setGeometry(createGeometry(poi.getCoordinate(), POIbackground, 80));
                     }
                 } else {
                     MetaioDebug.log(Log.ERROR, "Error loading geometry: " + POIbackground);
