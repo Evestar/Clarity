@@ -38,7 +38,6 @@ import com.riftwalkers.clarity.view.fragment.NavigationDrawerFragment;
 import java.io.File;
 import java.util.ArrayList;
 
-
 public class AugmentedActivity extends ARViewActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
     private SharedPreferences sharedPreferences; // SharedPreference and information
     private SharedPreferences.Editor editor;
@@ -245,7 +244,6 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
 
     @Override
     public void onBackPressed() {
-
         Toast.makeText(getApplicationContext(), "Use the slide menu to go back.", Toast.LENGTH_SHORT).show();
     }
 

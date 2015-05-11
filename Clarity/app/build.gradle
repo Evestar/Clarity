@@ -20,9 +20,10 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.google.android.gms:play-services:7.3.0'
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     compile project(':metaioSDK')
+    compile files('libs/svg-android.jar')
 }

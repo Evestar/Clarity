@@ -3,12 +3,15 @@ package com.riftwalkers.clarity.view.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.larvalabs.svgandroid.SVG;
+import com.larvalabs.svgandroid.SVGParser;
 import com.riftwalkers.clarity.R;
 import com.riftwalkers.clarity.data.AssetsExtracter;
 
@@ -21,7 +24,7 @@ public class RoleSelector extends Activity {
     SharedPreferences sharedPreferences;
     int choise = 0;
     // Different buttons
-    Button pilot, rower, ect;
+    ImageButton threeDimAR, twoDimMaps;
 
     // Back button override timer
     long oldTime;
@@ -131,11 +134,21 @@ public class RoleSelector extends Activity {
     public void changeLayout(final SharedPreferences.Editor editor){
         setContentView(R.layout.activity_roleselector);
 
-        pilot = (Button) findViewById(R.id.loods);
-        rower = (Button) findViewById(R.id.roei);
-        ect = (Button) findViewById(R.id.ect);
+        threeDimAR = (ImageButton) findViewById(R.id.three_dim);
+        twoDimMaps = (ImageButton) findViewById(R.id.two_dim);
 
-        pilot.setOnClickListener(new View.OnClickListener() {
+        SVG svg;
+
+        svg = SVGParser.getSVGFromResource(getResources(), R.raw.ar_icon);
+        Drawable ar = svg.createPictureDrawable();
+
+        svg = SVGParser.getSVGFromResource(getResources(), R.raw.map_icon);
+        Drawable maps = svg.createPictureDrawable();
+
+        threeDimAR.setImageDrawable(ar);
+        twoDimMaps.setImageDrawable(maps);
+
+        threeDimAR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 choise = 1;
@@ -146,24 +159,13 @@ public class RoleSelector extends Activity {
             }
         });
 
-        rower.setOnClickListener(new View.OnClickListener() {
+        twoDimMaps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 choise = 2;
                 editor.putInt("choice", choise);
                 editor.commit();
                 Intent intent = new Intent(RoleSelector.this, MapsActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        ect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                choise = 3;
-                editor.putInt("choice", choise);
-                editor.commit();
-                Intent intent = new Intent(RoleSelector.this, AugmentedActivity.class);
                 startActivity(intent);
             }
         });
