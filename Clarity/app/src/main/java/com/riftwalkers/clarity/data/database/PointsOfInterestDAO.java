@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.location.Location;
+import android.location.LocationManager;
 
 import com.metaio.sdk.jni.LLACoordinate;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
@@ -89,12 +91,16 @@ public class PointsOfInterestDAO {
             PointOfInterest poi = new PointOfInterest();
             poi.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(helper.UID))));
             poi.setFeatureId(cursor.getString(cursor.getColumnIndex(helper.FEATUREID)));
-            poi.setCoordinate(
-                    new LLACoordinate(
+            Location location = new Location("");
+            location.setLatitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(helper.LATITUDE))));
+            location.setLongitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(helper.LONGITUDE))));
+
+            poi.setCoordinate(location);
+                    /*new LLACoordinate(Double.parseDouble(cursor.getString(cursor.getColumnIndex(helper.LATITUDE))),Double.parseDouble(cursor.getString(cursor.getColumnIndex(helper.LONGITUDE)),
                             Double.parseDouble(cursor.getString(cursor.getColumnIndex(helper.LATITUDE))),
                             Double.parseDouble(cursor.getString(cursor.getColumnIndex(helper.LONGITUDE))),
                             0,
-                            0));
+                            0));*/
             poi.setType(PoiType.Meerpaal);
 
             pointOfInterests.add(poi);
@@ -105,12 +111,16 @@ public class PointsOfInterestDAO {
             PointOfInterest poi = new PointOfInterest();
             poi.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(helper.UID))));
             poi.setFeatureId(cursor.getString(cursor.getColumnIndex(helper.FEATUREID)));
-            poi.setCoordinate(
-                    new LLACoordinate(
+            Location location = new Location("");
+            location.setLatitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(helper.LATITUDE))));
+            location.setLongitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(helper.LONGITUDE))));
+
+            poi.setCoordinate(location);
+                    /*new LLACoordinate(
                             Double.parseDouble(cursor.getString(cursor.getColumnIndex(helper.LATITUDE))),
                             Double.parseDouble(cursor.getString(cursor.getColumnIndex(helper.LONGITUDE))),
                             0,
-                            0));
+                            0));*/
             poi.setType(PoiType.Ligplaats);
 
             pointOfInterests.add(poi);
@@ -121,12 +131,16 @@ public class PointsOfInterestDAO {
             PointOfInterest poi = new PointOfInterest();
             poi.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(helper.UID))));
             poi.setFeatureId(cursor.getString(cursor.getColumnIndex(helper.FEATUREID)));
-            poi.setCoordinate(
-                    new LLACoordinate(
+            Location location = new Location("");
+            location.setLatitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(helper.LATITUDE))));
+            location.setLongitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(helper.LONGITUDE))));
+
+            poi.setCoordinate(location);
+                    /*new LLACoordinate(
                             Double.parseDouble(cursor.getString(cursor.getColumnIndex(helper.LATITUDE))),
                             Double.parseDouble(cursor.getString(cursor.getColumnIndex(helper.LONGITUDE))),
                             0,
-                            0));
+                            0));*/
             poi.setType(PoiType.Boei);
 
             pointOfInterests.add(poi);

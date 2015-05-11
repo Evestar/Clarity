@@ -38,7 +38,7 @@ import com.riftwalkers.clarity.view.fragment.NavigationDrawerFragment;
 import java.io.File;
 import java.util.ArrayList;
 
-public class AugmentedActivity extends ARViewActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+/*public class AugmentedActivity extends ARViewActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
     private SharedPreferences sharedPreferences; // SharedPreference and information
     private SharedPreferences.Editor editor;
     private int drawRange;
@@ -57,7 +57,7 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
 
     @Override
     protected int getGUILayout() {
-        return R.layout.activity_inapp;
+        return R.layout.navigationdrawer_layout;
     }
 
     @Override
@@ -213,12 +213,12 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
         }
     }
 
-    /**
+    *//**
      *
      * @param coordinate - The coordinate for the geometry
      * @param iconFile - The File which you want to use for the icon
      * @param scale - The scale of the geometry
-     */
+     *//*
     public IGeometry createGeometry(LLACoordinate coordinate, File iconFile, int scale) {
         IGeometry geometry = metaioSDK.createGeometryFromImage(iconFile, true,false);
         if(geometry != null) {
@@ -353,20 +353,20 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
 
     }
 
-    public static class PlaceholderFragment extends Fragment {
-        /**
+    *//*public static class PlaceholderFragment extends Fragment {
+        *//**//**
          * The fragment argument representing the section number for this
          * fragment.
-         */
+         *//**//*
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         public PlaceholderFragment() {
         }
 
-        /**
+        *//**//**
          * Returns a new instance of this fragment for the given section
          * number.
-         */
+         *//**//*
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
@@ -380,5 +380,5 @@ public class AugmentedActivity extends ARViewActivity implements NavigationDrawe
                                  Bundle savedInstanceState) {
             return inflater.inflate(R.layout.fragment_main_activity, container, false);
         }
-    }
-}
+    }*//*
+}*/

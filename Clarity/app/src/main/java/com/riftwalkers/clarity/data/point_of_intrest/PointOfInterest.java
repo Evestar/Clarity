@@ -1,5 +1,7 @@
 package com.riftwalkers.clarity.data.point_of_intrest;
 
+import android.location.Location;
+
 import com.metaio.sdk.jni.IGeometry;
 import com.metaio.sdk.jni.LLACoordinate;
 
@@ -8,7 +10,7 @@ public class PointOfInterest {
     private String featureId;
     private PoiType Type;
     private String Description;
-    private LLACoordinate Coordinate;
+    private Location Coordinate;
     private IGeometry geometry;
 
     public void setId(int id) {
@@ -27,7 +29,7 @@ public class PointOfInterest {
         Description = description;
     }
 
-    public void setCoordinate(LLACoordinate coordinate) {
+    public void setCoordinate(Location coordinate) {
         Coordinate = coordinate;
     }
 
@@ -52,7 +54,7 @@ public class PointOfInterest {
         return Description;
     }
 
-    public LLACoordinate getCoordinate() {
+    public Location getCoordinate() {
         return Coordinate;
     }
 

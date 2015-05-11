@@ -24,7 +24,7 @@ import com.riftwalkers.clarity.R;
 import com.riftwalkers.clarity.data.point_of_intrest.PoiList;
 import com.riftwalkers.clarity.data.point_of_intrest.PointOfInterest;
 
-public class MapsActivity extends ActionBarActivity {
+/*public class MapsActivity extends ActionBarActivity {
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -38,7 +38,7 @@ public class MapsActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.maps_activity);
+        setContentView(R.layout.maps_fragment);
 
         // Shared preff
         sharedPreferences = getSharedPreferences("ClarityApp", 0);
@@ -184,4 +184,4 @@ public class MapsActivity extends ActionBarActivity {
 
 
     }
-}
+}*/

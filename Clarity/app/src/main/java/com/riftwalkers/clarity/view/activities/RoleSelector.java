@@ -19,7 +19,7 @@ import com.riftwalkers.clarity.data.AssetsExtracter;
 /**
  * Created by marcel on 13-4-2015.
  */
-public class RoleSelector extends Activity {
+/*public class RoleSelector extends Activity {
 
     // SharedPreference and information
     SharedPreferences sharedPreferences;
@@ -133,7 +133,7 @@ public class RoleSelector extends Activity {
     }
 
     public void changeLayout(final SharedPreferences.Editor editor){
-        setContentView(R.layout.activity_roleselector);
+        setContentView(R.layout.roleselector_fragment);
 
         threeDimAR = (ImageButton) findViewById(R.id.three_dim);
         twoDimMaps = (ImageButton) findViewById(R.id.two_dim);
@@ -168,4 +168,4 @@ public class RoleSelector extends Activity {
         canvas.drawPicture(pd.getPicture());
         return bitmap;
     }
-}
+}*/

@@ -7,31 +7,37 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
-import com.metaio.sdk.SensorsComponentAndroid;
-import com.metaio.sdk.jni.LLACoordinate;
+import com.riftwalkers.clarity.data.interfaces.LocationListenerObserver;
+
+import java.util.ArrayList;
 
 public class GPSLocationProvider implements LocationListener {
 
-    private SensorsComponentAndroid mSensors;
     private Activity activity;
     private LocationManager locationManager;
+    private Location lastKnownLocation;
 
-    public GPSLocationProvider(SensorsComponentAndroid sensorsComponentAndroid, Activity activity) {
-        mSensors = sensorsComponentAndroid;
+    private ArrayList<LocationListenerObserver> locationListenObservers;
+
+    public GPSLocationProvider(Activity activity) {
         this.activity = activity;
 
+        locationListenObservers = new ArrayList<>();
+
         locationManager = (LocationManager) this.activity.getSystemService(Context.LOCATION_SERVICE);
+        lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-        Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        mSensors.setManualLocation(new LLACoordinate(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(), 0,0));
-
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, this);
     }
-
 
     @Override
     public void onLocationChanged(Location location) {
-        mSensors.setManualLocation(new LLACoordinate(location.getLatitude(), location.getLongitude(), 0,0));
+        for(LocationListenerObserver locationListenerObserver : locationListenObservers) {
+            locationListenerObserver.observerOnLocationChanged(location);
+        }
+
+        lastKnownLocation = location;
+
         System.out.println("Location updated!");
     }
 
@@ -52,5 +58,17 @@ public class GPSLocationProvider implements LocationListener {
 
     public void requestUpdate() {
         locationManager.requestSingleUpdate(locationManager.GPS_PROVIDER, this, null);
+    }
+
+    public void addLocationListenObserver(LocationListenerObserver locationListenerObserver) {
+        locationListenObservers.add(locationListenerObserver);
+    }
+
+    public void removeLocationListenObserver(LocationListenerObserver locationListenerObserver) {
+        locationListenObservers.remove(locationListenerObserver);
+    }
+
+    public Location getLastKnownLocation() {
+        return lastKnownLocation;
     }
 }
