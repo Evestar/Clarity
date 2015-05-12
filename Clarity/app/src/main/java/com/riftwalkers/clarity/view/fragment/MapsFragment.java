@@ -24,6 +24,7 @@ import com.riftwalkers.clarity.R;
 import com.riftwalkers.clarity.data.interfaces.LocationListenerObserver;
 import com.riftwalkers.clarity.data.point_of_intrest.PoiList;
 import com.riftwalkers.clarity.data.point_of_intrest.PointOfInterest;
+import com.riftwalkers.clarity.view.activities.MainActivity;
 
 public class MapsFragment extends BaseFragment implements OnMapReadyCallback,LocationListenerObserver,Runnable {
 
@@ -150,7 +151,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         Canvas greenCanvas = new Canvas(green);
         greenCanvas.drawCircle(12, 12, 12, paint);
 
-        PoiList list = new PoiList(getActivity());
+        PoiList list = ((MainActivity) getActivity()).pointOfInterestList;
 //      for (int i = 0; i < 20; i++) { // Use this during debug!
         for (int i = 0; i < list.size(); i++) {
             PointOfInterest poi = list.get(i);
