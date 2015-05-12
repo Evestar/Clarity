@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.riftwalkers.clarity.R;
@@ -35,6 +36,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navigationdrawer_layout);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         sharedPreferences = getSharedPreferences("ClarityApp", 0);
         editor = sharedPreferences.edit();
@@ -114,7 +116,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
         if(fragmentClass.equals(ARFragment.class)) {
             currentFragment = new ARFragment();
-            currentFragment.setEditor(editor);
+            currentFragment.setLocationProvider(locationProvider);
         } else if(fragmentClass.equals(MapsFragment.class)) {
             currentFragment = new MapsFragment();
             currentFragment.setLocationProvider(locationProvider);
@@ -123,6 +125,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         }
 
         currentFragment.setFragmentListener(this);
+        currentFragment.setEditor(editor);
 
         getFragmentManager().beginTransaction().replace(R.id.container, currentFragment).commit();
     }

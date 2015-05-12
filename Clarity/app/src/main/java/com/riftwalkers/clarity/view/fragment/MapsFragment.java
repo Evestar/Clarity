@@ -9,6 +9,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,22 +28,33 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.riftwalkers.clarity.R;
 import com.riftwalkers.clarity.data.interfaces.LocationListenerObserver;
 import com.riftwalkers.clarity.data.point_of_intrest.PoiList;
+import com.riftwalkers.clarity.data.point_of_intrest.PoiType;
 import com.riftwalkers.clarity.data.point_of_intrest.PointOfInterest;
 import com.riftwalkers.clarity.view.activities.MainActivity;
+
+import java.util.ArrayList;
 
 public class MapsFragment extends BaseFragment implements OnMapReadyCallback,LocationListenerObserver,Runnable {
 
     private MapFragment map;
     private GoogleMap googleMap;
-
     private Marker user;
 
-    Thread thread;
+    private Thread thread;
     private boolean active = true;
+    private long lastMovedTime;
+    private boolean hasMoved = false;
+    private long currentTime;
 
-    long lastMovedTime;
-    boolean hasMoved = false;
-    long currentTime;
+    private PoiList pointOfInterestList;
+    private PoiList tempPoiList;
+    private int drawRange;
+    private Button menuBackButton;
+    private CheckBox meerpalenCheckbox;
+    private CheckBox ligplaatsenCheckbox;
+    private CheckBox aanmeerboeienCheckbox;
+    private TextView drawRangeView;
+    private SeekBar rangeSelectSeekBar;
 
 
     @Override
@@ -55,6 +71,10 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         //locationProvider.addLocationListenObserver(this);
 
         thread = new Thread(this);
+        pointOfInterestList = ((MainActivity) getActivity()).pointOfInterestList;
+        tempPoiList = (PoiList) pointOfInterestList.clone();
+
+        setupViews();
     }
 
     @Override
@@ -151,10 +171,9 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         Canvas greenCanvas = new Canvas(green);
         greenCanvas.drawCircle(12, 12, 12, paint);
 
-        PoiList list = ((MainActivity) getActivity()).pointOfInterestList;
 //      for (int i = 0; i < 20; i++) { // Use this during debug!
-        for (int i = 0; i < list.size(); i++) {
-            PointOfInterest poi = list.get(i);
+        for (int i = 0; i < tempPoiList.size(); i++) {
+            PointOfInterest poi = tempPoiList.get(i);
 
             if (poi.getCoordinate().getLatitude() > sw.getLatitude() &&
                     poi.getCoordinate().getLatitude() < ne.getLatitude() &&
@@ -215,5 +234,130 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                 }
             }
         }
+    }
+
+    public void setupViews() {
+        menuBackButton = (Button) getActivity().findViewById(R.id.backbuttonMenu);
+        menuBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.putInt("choice", 0);
+                editor.commit();
+                if(fragmentListener != null)
+                    fragmentListener.ChangeFragment(RoleSelectorFragment.class);
+            }
+        });
+
+        meerpalenCheckbox = (CheckBox) getActivity().findViewById(R.id.meerpalenCheckbox);
+        meerpalenCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(!isChecked) {
+                    ArrayList<PointOfInterest> tempList = new ArrayList<PointOfInterest>();
+                    for (PointOfInterest poi : tempPoiList) {
+                        if (poi.getType().equals(PoiType.Meerpaal)) {
+                            tempList.add(poi);
+                        }
+                    }
+                    tempPoiList.removeAll(tempList);
+                    tempList = null;
+                } else {
+                    for (PointOfInterest poi : pointOfInterestList) {
+                        if (poi.getType().equals(PoiType.Meerpaal)) {
+                            tempPoiList.add(poi);
+                        }
+                    }
+                }
+                drawMarkers();
+            }
+        });
+
+        ligplaatsenCheckbox = (CheckBox) getActivity().findViewById(R.id.ligplaatsenCheckbox);
+        ligplaatsenCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!isChecked) {
+                    ArrayList<PointOfInterest> removeList = new ArrayList<PointOfInterest>();
+                    for (PointOfInterest poi : tempPoiList) {
+                        if (poi.getType().equals(PoiType.Ligplaats)) {
+                            removeList.add(poi);
+                        }
+                    }
+                    tempPoiList.removeAll(removeList);
+                    removeList = null;
+                } else {
+                    for (PointOfInterest poi : pointOfInterestList) {
+                        if (poi.getType().equals(PoiType.Ligplaats)) {
+                            tempPoiList.add(poi);
+                        }
+                    }
+                }
+                drawMarkers();
+            }
+        });
+
+        aanmeerboeienCheckbox = (CheckBox) getActivity().findViewById(R.id.aanmeerboeienCheckbox);
+        aanmeerboeienCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked) {
+                    ArrayList<PointOfInterest> removeList = new ArrayList<PointOfInterest>();
+                    for (PointOfInterest poi : tempPoiList) {
+                        if (poi.getType().equals(PoiType.Boei)) {
+                            removeList.add(poi);
+                        }
+                    }
+                    tempPoiList.removeAll(removeList);
+                    removeList = null;
+                } else {
+                    for (PointOfInterest poi : pointOfInterestList) {
+                        if (poi.getType().equals(PoiType.Boei)) {
+                            tempPoiList.add(poi);
+                        }
+                    }
+                }
+                drawMarkers();
+            }
+        });
+
+        drawRangeView = (TextView) getActivity().findViewById(R.id.drawRangeView);
+
+        rangeSelectSeekBar = (SeekBar) getActivity().findViewById(R.id.rangeSeekbar);
+        rangeSelectSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) { }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) { }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                drawRange = rangeSelectSeekBar.getProgress();
+                drawRangeView.setText(rangeSelectSeekBar.getProgress() + " m");
+            }
+        });
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                drawRange = rangeSelectSeekBar.getProgress();
+                drawRangeView.setText(drawRange + " m");
+            }
+        });
+
+    }
+
+    public void drawMarkers() {
+        Log.w("","Redraw markers");
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LatLngBounds bounds = googleMap.getProjection()
+                        .getVisibleRegion().latLngBounds;
+
+                createMarker(bounds);
+            }
+        });
     }
 }
