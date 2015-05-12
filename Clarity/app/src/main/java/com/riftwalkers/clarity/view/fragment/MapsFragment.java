@@ -46,6 +46,15 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if (map != null)
+            getFragmentManager().beginTransaction().remove(map).commit();
+
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
 
