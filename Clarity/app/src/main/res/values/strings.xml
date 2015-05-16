@@ -19,7 +19,7 @@
     <string name="meerpalenCheckbox">Meerpalen</string>
     <string name="aanmeerboeienCheckbox">Afmeerboeien</string>
     <string name="ligplaatsenCheckbox">Ligplaatsen</string>
-    <string name="rangeLsbel">Bereik</string>
+    <string name="rangeLabel">Bereik</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

@@ -21,7 +21,7 @@ import com.riftwalkers.clarity.view.fragment.MapsFragment;
 import com.riftwalkers.clarity.view.fragment.NavigationDrawerFragment;
 import com.riftwalkers.clarity.view.fragment.RoleSelectorFragment;
 
-public class MainActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, ChangeFragmentListener {
+public class MainActivity extends ActionBarActivity implements ChangeFragmentListener {
 
     private SharedPreferences sharedPreferences; // SharedPreference and information
     private SharedPreferences.Editor editor;
@@ -32,17 +32,24 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
     private GPSLocationProvider locationProvider;
 
+    private View navigationDrawerView;
+    private View blankFragmentView;
+
+    private Menu menu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.navigationdrawer_layout);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+        navigationDrawerView = getLayoutInflater().inflate(R.layout.navigationdrawer_layout, null);
+        blankFragmentView = getLayoutInflater().inflate(R.layout.blank_fragment_layout, null);
+        setContentView(navigationDrawerView);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         sharedPreferences = getSharedPreferences("ClarityApp", 0);
         editor = sharedPreferences.edit();
 
         pointOfInterestList = new PoiList(this);
-
         locationProvider = new GPSLocationProvider(this);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -53,6 +60,13 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        setContentView(blankFragmentView);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         currentFragment = new RoleSelectorFragment();
         currentFragment.setFragmentListener(this);
         getFragmentManager().beginTransaction().replace(R.id.container, currentFragment).commit();
@@ -60,17 +74,28 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
+        return super.onCreateOptionsMenu(menu);
+    }
 
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.main_activity2, menu);
-            restoreActionBar();
-            return true;
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+
+        if((currentFragment instanceof ARFragment) || (currentFragment instanceof MapsFragment)) {
+            if(mNavigationDrawerFragment.isClosed()) {
+                getMenuInflater().inflate(R.menu.main_activity2, menu);
+                restoreActionBar();
+            } else {
+                getMenuInflater().inflate(R.menu.global, menu);
+                restoreActionBar();
+            }
+        } else {
+            getMenuInflater().inflate(R.menu.global, menu);
+            hideActionBar();
         }
 
-        return super.onCreateOptionsMenu(menu);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -80,8 +105,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         if(id == R.id.action_search) {
             //Search(getCurrentFocus());
             return true;
-        } else if(id == R.id.refreshPosition) {
-            //gpsLocationProvider.requestUpdate();
         }
 
         return super.onOptionsItemSelected(item);
@@ -93,9 +116,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) { }
-
-    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
@@ -103,9 +123,17 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         }
     }
 
+    public void hideActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayShowHomeEnabled(false);
+    }
+
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(R.string.app_name);
     }
@@ -114,16 +142,22 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     public void ChangeFragment(Class fragmentClass) {
         currentFragment.unsetFragmentListener();
         currentFragment.unsetLocationProvider();
+        mNavigationDrawerFragment.CloseDrawer();
 
         if(fragmentClass.equals(ARFragment.class)) {
+            setContentView(navigationDrawerView);
             currentFragment = new ARFragment();
             currentFragment.setLocationProvider(locationProvider);
         } else if(fragmentClass.equals(MapsFragment.class)) {
+            setContentView(navigationDrawerView);
             currentFragment = new MapsFragment();
             currentFragment.setLocationProvider(locationProvider);
         } else if(fragmentClass.equals(RoleSelectorFragment.class)) {
+            setContentView(blankFragmentView);
             currentFragment = new RoleSelectorFragment();
         }
+
+        onPrepareOptionsMenu(menu);
 
         currentFragment.setFragmentListener(this);
         currentFragment.setEditor(editor);

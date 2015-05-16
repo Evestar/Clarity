@@ -232,28 +232,33 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
             }
         });
 
-        drawRangeView = (TextView) getActivity().findViewById(R.id.drawRangeView);
-
-        rangeSelectSeekBar = (SeekBar) getActivity().findViewById(R.id.rangeSeekbar);
-        rangeSelectSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                drawRangeView.setText(rangeSelectSeekBar.getProgress() + " m");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) { }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                drawRange = rangeSelectSeekBar.getProgress();
-                drawRangeView.setText(rangeSelectSeekBar.getProgress() + " m");
-            }
-        });
-
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                TextView rangeLabel = (TextView) getActivity().findViewById(R.id.rangeLabel);
+                rangeLabel.setVisibility(View.VISIBLE);
+
+                drawRangeView = (TextView) getActivity().findViewById(R.id.drawRangeView);
+                drawRangeView.setVisibility(View.VISIBLE);
+
+                rangeSelectSeekBar = (SeekBar) getActivity().findViewById(R.id.rangeSeekbar);
+                rangeSelectSeekBar.setVisibility(View.VISIBLE);
+                rangeSelectSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        drawRangeView.setText(rangeSelectSeekBar.getProgress() + " m");
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) { }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        drawRange = rangeSelectSeekBar.getProgress();
+                        drawRangeView.setText(rangeSelectSeekBar.getProgress() + " m");
+                    }
+                });
+
                 drawRange = rangeSelectSeekBar.getProgress();
                 drawRangeView.setText(drawRange + " m");
             }

@@ -1,12 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.riftwalkers.clarity.MainActivity2Activity">
+    xmlns:tools="http://schemas.android.com/tools" >
 
-    <item android:id="@+id/refreshPosition"
+    <!--<item android:id="@+id/refreshPosition"
         android:icon="@android:drawable/ic_menu_rotate"
         android:title="@string/action_refreshPosition"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom" />-->
 
     <item android:id="@+id/action_search"
         android:icon="@android:drawable/ic_menu_search"

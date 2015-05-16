@@ -48,13 +48,11 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
     private PoiList pointOfInterestList;
     private PoiList tempPoiList;
-    private int drawRange;
+
     private Button menuBackButton;
     private CheckBox meerpalenCheckbox;
     private CheckBox ligplaatsenCheckbox;
     private CheckBox aanmeerboeienCheckbox;
-    private TextView drawRangeView;
-    private SeekBar rangeSelectSeekBar;
 
 
     @Override
@@ -321,10 +319,21 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
             }
         });
 
-        drawRangeView = (TextView) getActivity().findViewById(R.id.drawRangeView);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView rangeLabel = (TextView) getActivity().findViewById(R.id.rangeLabel);
+                rangeLabel.setVisibility(View.GONE);
 
-        rangeSelectSeekBar = (SeekBar) getActivity().findViewById(R.id.rangeSeekbar);
-        rangeSelectSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                TextView drawRangeView = (TextView) getActivity().findViewById(R.id.drawRangeView);
+                drawRangeView.setVisibility(View.GONE);
+
+                SeekBar rangeSelectSeekBar = (SeekBar) getActivity().findViewById(R.id.rangeSeekbar);
+                rangeSelectSeekBar.setVisibility(View.GONE);
+            }
+        });
+
+        /*rangeSelectSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) { }
 
@@ -336,20 +345,11 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                 drawRange = rangeSelectSeekBar.getProgress();
                 drawRangeView.setText(rangeSelectSeekBar.getProgress() + " m");
             }
-        });
-
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                drawRange = rangeSelectSeekBar.getProgress();
-                drawRangeView.setText(drawRange + " m");
-            }
-        });
+        });*/
 
     }
 
     public void drawMarkers() {
-        Log.w("","Redraw markers");
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
