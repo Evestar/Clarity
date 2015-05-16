@@ -113,6 +113,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     @Override
     public void ChangeFragment(Class fragmentClass) {
         currentFragment.unsetFragmentListener();
+        currentFragment.unsetLocationProvider();
 
         if(fragmentClass.equals(ARFragment.class)) {
             currentFragment = new ARFragment();

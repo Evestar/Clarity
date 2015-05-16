@@ -25,6 +25,10 @@ public abstract class BaseFragment extends Fragment {
         this.locationProvider = locationProvider;
     }
 
+    public void unsetLocationProvider() {
+        this.locationProvider = null;
+    }
+
     public void setEditor(SharedPreferences.Editor editor) {
         this.editor = editor;
     }

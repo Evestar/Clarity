@@ -201,7 +201,7 @@ public abstract class AbstractARFragment extends BaseFragment implements MetaioS
 
         if (mSurfaceView != null)
         {
-            ViewGroup v = (ViewGroup) getActivity().findViewById(android.R.id.content);
+            ViewGroup v = (ViewGroup) getView().findViewById(R.id.arFragment_FrameLayout);
             v.removeAllViews();
         }
 
@@ -240,7 +240,7 @@ public abstract class AbstractARFragment extends BaseFragment implements MetaioS
             mSensors = null;
         }
 
-        Memory.unbindViews(getActivity().findViewById(android.R.id.content));
+        //Memory.unbindViews(getView().findViewById(R.id.arFragment_FrameLayout));
         mSurfaceView = null;
 
         System.runFinalization();

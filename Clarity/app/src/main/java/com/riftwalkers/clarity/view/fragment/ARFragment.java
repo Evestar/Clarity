@@ -237,7 +237,9 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         rangeSelectSeekBar = (SeekBar) getActivity().findViewById(R.id.rangeSeekbar);
         rangeSelectSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) { }
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                drawRangeView.setText(rangeSelectSeekBar.getProgress() + " m");
+            }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) { }
@@ -261,6 +263,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
 
     @Override
     public void observerOnLocationChanged(Location location) {
-        mSensors.setManualLocation(new LLACoordinate(location.getLatitude(), location.getLongitude(), 0, 0));
+        if(mSensors != null)
+            mSensors.setManualLocation(new LLACoordinate(location.getLatitude(), location.getLongitude(), 0, 0));
     }
 }
