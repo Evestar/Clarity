@@ -90,7 +90,8 @@ public class MainActivity extends ActionBarActivity implements ChangeFragmentLis
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.clear();
+        if(menu != null)
+            menu.clear();
 
         if((currentFragment instanceof ARFragment) || (currentFragment instanceof MapsFragment)) {
             if(mNavigationDrawerFragment.isClosed()) {
