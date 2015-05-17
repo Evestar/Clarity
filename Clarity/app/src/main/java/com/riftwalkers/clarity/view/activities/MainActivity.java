@@ -21,6 +21,8 @@ import com.riftwalkers.clarity.view.fragment.MapsFragment;
 import com.riftwalkers.clarity.view.fragment.NavigationDrawerFragment;
 import com.riftwalkers.clarity.view.fragment.RoleSelectorFragment;
 
+import static java.lang.System.currentTimeMillis;
+
 public class MainActivity extends ActionBarActivity implements ChangeFragmentListener {
 
     private SharedPreferences sharedPreferences; // SharedPreference and information
@@ -38,6 +40,8 @@ public class MainActivity extends ActionBarActivity implements ChangeFragmentLis
     private Menu menu;
 
     private boolean onRoleselector = true;
+
+    private long oldTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,10 +119,23 @@ public class MainActivity extends ActionBarActivity implements ChangeFragmentLis
 
     @Override
     public void onBackPressed() {
-        if(onRoleselector){
-            System.exit(0);
+        if(currentTimeMillis() < oldTime+1500 ){
+
+            if(onRoleselector){
+                System.exit(0);
+            } else {
+                ChangeFragment(RoleSelectorFragment.class);
+            }
+
+        } else{
+            oldTime = currentTimeMillis();
+
+            if(onRoleselector){
+                Toast.makeText(getApplicationContext(),"Press back again to exit.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(),"Press back again to return.", Toast.LENGTH_SHORT).show();
+            }
         }
-        Toast.makeText(getApplicationContext(), "Use the slide menu to go back.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
