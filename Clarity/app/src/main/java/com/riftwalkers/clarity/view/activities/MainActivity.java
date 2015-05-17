@@ -75,6 +75,7 @@ public class MainActivity extends ActionBarActivity implements ChangeFragmentLis
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
+        getMenuInflater().inflate(R.menu.global, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
