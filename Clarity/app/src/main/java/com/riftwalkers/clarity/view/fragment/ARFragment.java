@@ -105,9 +105,6 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     private void drawGeometries() {
         //draw each poi in the arrayList
         for(PointOfInterest poi : pointOfInterestList) {
-            //get type of POI and image
-            File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), poi.GetImageName());
-
             float[] results = new float[3];
             Location.distanceBetween(
                     poi.getCoordinate().getLatitude(),
@@ -118,17 +115,20 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
             );
 
             if(results[0] < drawRange) {
-                if (POIbackground != null) {
-                    if(poi.getGeometry() == null) {
-                        LLACoordinate coordinate = new LLACoordinate(
-                                poi.getCoordinate().getLatitude(),
-                                poi.getCoordinate().getLongitude(),
-                                0,
-                                0);
-                        poi.setGeometry(createGeometry(coordinate, POIbackground, 80));
+                if(poi.getGeometry() == null) {
+                    //get type of POI and image
+                    File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), poi.GetImageName());
+
+                    if (POIbackground != null) {
+                            LLACoordinate coordinate = new LLACoordinate(
+                                    poi.getCoordinate().getLatitude(),
+                                    poi.getCoordinate().getLongitude(),
+                                    0,
+                                    0);
+                            poi.setGeometry(createGeometry(coordinate, POIbackground, 80));
+                    } else {
+                        MetaioDebug.log(Log.ERROR, "Error loading POIbackground: " + POIbackground);
                     }
-                } else {
-                    MetaioDebug.log(Log.ERROR, "Error loading geometry: " + POIbackground);
                 }
             } else {
                 if(poi.getGeometry() != null) {
@@ -255,7 +255,12 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         drawRange = rangeSelectSeekBar.getProgress();
-                        drawRangeView.setText(rangeSelectSeekBar.getProgress() + " m");
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                drawGeometries();
+                            }
+                        });
                     }
                 });
 
