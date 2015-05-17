@@ -43,6 +43,10 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     private TextView drawRangeView;
     private SeekBar rangeSelectSeekBar;
 
+    public ARFragment() {
+        pointOfInterestList = ((MainActivity) getActivity()).pointOfInterestList;
+    }
+
     @Override
     protected IMetaioSDKCallback getMetaioSDKCallbackHandler() {
         return null;
@@ -56,7 +60,6 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         metaioSDK.setLLAObjectRenderingLimits(5, 200);
         metaioSDK.setRendererClippingPlaneLimits(10, 220000);
 
-        pointOfInterestList = ((MainActivity) getActivity()).pointOfInterestList;
         locationProvider.addLocationListenObserver(this);
 
         setupViews();
