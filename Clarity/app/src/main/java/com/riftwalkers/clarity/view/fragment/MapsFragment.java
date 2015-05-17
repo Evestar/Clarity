@@ -34,6 +34,7 @@ import com.riftwalkers.clarity.view.activities.MainActivity;
 
 import java.util.ArrayList;
 
+@SuppressWarnings({"UnusedAssignment", "FieldCanBeLocal"})
 public class MapsFragment extends BaseFragment implements OnMapReadyCallback,LocationListenerObserver,Runnable {
 
     private MapFragment map;
@@ -41,7 +42,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
     private Marker user;
 
     private Thread thread;
-    private boolean active = true;
+    private static boolean mapsActive = true;
     private long lastMovedTime;
     private boolean hasMoved = false;
     private long currentTime;
@@ -69,7 +70,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         //locationProvider.addLocationListenObserver(this);
 
         thread = new Thread(this);
-        pointOfInterestList = ((MainActivity) getActivity()).pointOfInterestList;
+        pointOfInterestList = MainActivity.pointOfInterestList;
         tempPoiList = (PoiList) pointOfInterestList.clone();
 
         setupViews();
@@ -211,7 +212,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
     @Override
     public void run() {
-        while (active) {
+        while (mapsActive) {
             currentTime = System.currentTimeMillis();
             if (hasMoved) {
                 if (lastMovedTime + 500 < currentTime) {
@@ -252,7 +253,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if(!isChecked) {
-                    ArrayList<PointOfInterest> tempList = new ArrayList<PointOfInterest>();
+                    ArrayList<PointOfInterest> tempList = new ArrayList<>();
                     for (PointOfInterest poi : tempPoiList) {
                         if (poi.getType().equals(PoiType.Meerpaal)) {
                             tempList.add(poi);
@@ -276,7 +277,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(!isChecked) {
-                    ArrayList<PointOfInterest> removeList = new ArrayList<PointOfInterest>();
+                    ArrayList<PointOfInterest> removeList = new ArrayList<>();
                     for (PointOfInterest poi : tempPoiList) {
                         if (poi.getType().equals(PoiType.Ligplaats)) {
                             removeList.add(poi);
@@ -300,7 +301,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked) {
-                    ArrayList<PointOfInterest> removeList = new ArrayList<PointOfInterest>();
+                    ArrayList<PointOfInterest> removeList = new ArrayList<>();
                     for (PointOfInterest poi : tempPoiList) {
                         if (poi.getType().equals(PoiType.Boei)) {
                             removeList.add(poi);
@@ -359,5 +360,9 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                 createMarker(bounds);
             }
         });
+    }
+
+    public static void setActive(boolean active) {
+        mapsActive = active;
     }
 }

@@ -37,6 +37,8 @@ public class MainActivity extends ActionBarActivity implements ChangeFragmentLis
 
     private Menu menu;
 
+    private boolean onRoleselector = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +115,9 @@ public class MainActivity extends ActionBarActivity implements ChangeFragmentLis
 
     @Override
     public void onBackPressed() {
+        if(onRoleselector){
+            System.exit(0);
+        }
         Toast.makeText(getApplicationContext(), "Use the slide menu to go back.", Toast.LENGTH_SHORT).show();
     }
 
@@ -149,13 +154,19 @@ public class MainActivity extends ActionBarActivity implements ChangeFragmentLis
             setContentView(navigationDrawerView);
             currentFragment = new ARFragment();
             currentFragment.setLocationProvider(locationProvider);
+            MapsFragment.setActive(false);
+            onRoleselector = false;
         } else if(fragmentClass.equals(MapsFragment.class)) {
             setContentView(navigationDrawerView);
             currentFragment = new MapsFragment();
             currentFragment.setLocationProvider(locationProvider);
+            MapsFragment.setActive(true);
+            onRoleselector = false;
         } else if(fragmentClass.equals(RoleSelectorFragment.class)) {
             setContentView(blankFragmentView);
             currentFragment = new RoleSelectorFragment();
+            MapsFragment.setActive(false);
+            onRoleselector = true;
         }
 
         onPrepareOptionsMenu(menu);
