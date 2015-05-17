@@ -58,7 +58,7 @@ public class RoleSelectorFragment extends BaseFragment{
             assetsExtracter.execute(0);
         }
 
-        if((sharedPreferences.getInt("choice",0) > choise) && (sharedPreferences.getBoolean("SETUPCOMPLETED",false))) {
+        /*if((sharedPreferences.getInt("choice",0) > choise) && (sharedPreferences.getBoolean("SETUPCOMPLETED",false))) {
             choise = sharedPreferences.getInt("choice", 0);
 
             if (choise == 1) {
@@ -74,7 +74,7 @@ public class RoleSelectorFragment extends BaseFragment{
                     fragmentListener.ChangeFragment(MapsFragment.class);
                 }
             }
-        }
+        }*/
     }
 
     private void activateButtons() {
