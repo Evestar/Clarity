@@ -32,6 +32,7 @@ import com.riftwalkers.clarity.data.point_of_intrest.PoiList;
 import com.riftwalkers.clarity.data.point_of_intrest.PoiType;
 import com.riftwalkers.clarity.data.point_of_intrest.PointOfInterest;
 import com.riftwalkers.clarity.view.activities.MainActivity;
+import com.riftwalkers.clarity.view.dialog.SearchDialog;
 
 import java.util.ArrayList;
 
@@ -50,6 +51,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
     private PoiList pointOfInterestList;
     private PoiList tempPoiList;
+    private PointOfInterest zoekPOI;
 
     private Button menuBackButton;
     private CheckBox meerpalenCheckbox;
@@ -171,6 +173,12 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         Canvas greenCanvas = new Canvas(green);
         greenCanvas.drawCircle(12, 12, 12, paint);
 
+        // BLUE
+        Bitmap blue = Bitmap.createBitmap(24, 24, Bitmap.Config.ARGB_8888);
+        paint.setARGB(255, 0, 0, 255);
+        Canvas blueCanvas = new Canvas(blue);
+        blueCanvas.drawCircle(12, 12, 12, paint);
+
 //      for (int i = 0; i < 20; i++) { // Use this during debug!
         for (int i = 0; i < tempPoiList.size(); i++) {
             PointOfInterest poi = tempPoiList.get(i);
@@ -190,6 +198,10 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                     case Meerpaal:
                         addAnMarker(red, poi, "Boulder: [" + poi.getId() + "]");
                         break;
+                }
+
+                if(zoekPOI != null) {
+                    addAnMarker(blue, zoekPOI, String.valueOf(zoekPOI.getId()));
                 }
             }
         }
@@ -369,6 +381,25 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
     @Override
     public void onSearchClick() {
+        SearchDialog searchDialog = new SearchDialog(getActivity(), pointOfInterestList);
+        searchDialog.setDialogResult(new SearchDialog.OnMyDialogResult() {
+            @Override
+            public void finish(final PointOfInterest poi) {
 
+                zoekPOI = poi;
+
+                meerpalenCheckbox.setChecked(false);
+                aanmeerboeienCheckbox.setChecked(false);
+                ligplaatsenCheckbox.setChecked(false);
+
+                tempPoiList.add(zoekPOI);
+
+                createMarker(googleMap.getProjection()
+                        .getVisibleRegion().latLngBounds);
+
+                googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(zoekPOI.getCoordinate().getLatitude(), zoekPOI.getCoordinate().getLongitude()), 16, 0, 0)));
+            }
+        });
+        searchDialog.show();
     }
 }
