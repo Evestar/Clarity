@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.riftwalkers.clarity.R;
 import com.riftwalkers.clarity.data.GPSLocationProvider;
 import com.riftwalkers.clarity.data.interfaces.ChangeFragmentListener;
+import com.riftwalkers.clarity.data.interfaces.SearchButtonClickListener;
 import com.riftwalkers.clarity.data.point_of_intrest.PoiList;
 import com.riftwalkers.clarity.view.fragment.ARFragment;
 import com.riftwalkers.clarity.view.fragment.BaseFragment;
@@ -24,6 +25,8 @@ import com.riftwalkers.clarity.view.fragment.RoleSelectorFragment;
 import static java.lang.System.currentTimeMillis;
 
 public class MainActivity extends ActionBarActivity implements ChangeFragmentListener {
+
+    private SearchButtonClickListener searchButtonClickListener;
 
     private SharedPreferences sharedPreferences; // SharedPreference and information
     private SharedPreferences.Editor editor;
@@ -110,7 +113,8 @@ public class MainActivity extends ActionBarActivity implements ChangeFragmentLis
         int id = item.getItemId();
 
         if(id == R.id.action_search) {
-            //Search(getCurrentFocus());
+            if(searchButtonClickListener != null)
+                searchButtonClickListener.onSearchClick();
             return true;
         }
 
@@ -173,17 +177,20 @@ public class MainActivity extends ActionBarActivity implements ChangeFragmentLis
             currentFragment.setLocationProvider(locationProvider);
             MapsFragment.setActive(false);
             onRoleselector = false;
+            searchButtonClickListener = ((ARFragment) currentFragment);
         } else if(fragmentClass.equals(MapsFragment.class)) {
             setContentView(navigationDrawerView);
             currentFragment = new MapsFragment();
             currentFragment.setLocationProvider(locationProvider);
             MapsFragment.setActive(true);
             onRoleselector = false;
+            searchButtonClickListener = ((MapsFragment) currentFragment);
         } else if(fragmentClass.equals(RoleSelectorFragment.class)) {
             setContentView(blankFragmentView);
             currentFragment = new RoleSelectorFragment();
             MapsFragment.setActive(false);
             onRoleselector = true;
+            searchButtonClickListener = null;
         }
 
         onPrepareOptionsMenu(menu);

@@ -20,6 +20,7 @@ import com.metaio.sdk.jni.LLACoordinate;
 import com.metaio.tools.io.AssetsManager;
 import com.riftwalkers.clarity.R;
 import com.riftwalkers.clarity.data.interfaces.LocationListenerObserver;
+import com.riftwalkers.clarity.data.interfaces.SearchButtonClickListener;
 import com.riftwalkers.clarity.data.point_of_intrest.PoiList;
 import com.riftwalkers.clarity.data.point_of_intrest.PoiType;
 import com.riftwalkers.clarity.data.point_of_intrest.PointOfInterest;
@@ -28,7 +29,7 @@ import com.riftwalkers.clarity.view.dialog.SearchDialog;
 
 import java.io.File;
 
-public class ARFragment extends AbstractARFragment implements LocationListenerObserver {
+public class ARFragment extends AbstractARFragment implements LocationListenerObserver, SearchButtonClickListener {
 
     private PointOfInterest zoekPOI;
     private PoiList pointOfInterestList;
@@ -65,41 +66,6 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     @Override
     protected void onGeometryTouched(IGeometry geometry) {
         Log.wtf("",geometry.toString());
-    }
-
-    public void Search(View view) {
-        SearchDialog searchDialog = new SearchDialog(getActivity(), pointOfInterestList);
-        searchDialog.setDialogResult(new SearchDialog.OnMyDialogResult() {
-            @Override
-            public void finish(final PointOfInterest poi) {
-                mSurfaceView.queueEvent(new Runnable() {
-                    @Override
-                    public void run() {
-                        if ((zoekPOI != null)) {
-                            metaioSDK.unloadGeometry(zoekPOI.getGeometry());
-                        }
-
-                        ligplaatsenCheckbox.setChecked(false);
-                        aanmeerboeienCheckbox.setChecked(false);
-                        meerpalenCheckbox.setChecked(false);
-
-                        zoekPOI = poi;
-
-                        File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), "zoekPOI.png");
-
-                        LLACoordinate coordinate = new LLACoordinate(
-                                poi.getCoordinate().getLatitude(),
-                                poi.getCoordinate().getLongitude(),
-                                0,
-                                0);
-
-                        zoekPOI.setGeometry(createGeometry(coordinate, POIbackground, 100));
-                        zoekPOI.getGeometry().setVisible(true);
-                    }
-                });
-            }
-        });
-        searchDialog.show();
     }
 
     private void drawGeometries() {
@@ -275,5 +241,41 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     public void observerOnLocationChanged(Location location) {
         if(mSensors != null)
             mSensors.setManualLocation(new LLACoordinate(location.getLatitude(), location.getLongitude(), 0, 0));
+    }
+
+    @Override
+    public void onSearchClick() {
+        SearchDialog searchDialog = new SearchDialog(getActivity(), pointOfInterestList);
+        searchDialog.setDialogResult(new SearchDialog.OnMyDialogResult() {
+            @Override
+            public void finish(final PointOfInterest poi) {
+                mSurfaceView.queueEvent(new Runnable() {
+                    @Override
+                    public void run() {
+                        if ((zoekPOI != null)) {
+                            metaioSDK.unloadGeometry(zoekPOI.getGeometry());
+                        }
+
+                        ligplaatsenCheckbox.setChecked(false);
+                        aanmeerboeienCheckbox.setChecked(false);
+                        meerpalenCheckbox.setChecked(false);
+
+                        zoekPOI = poi;
+
+                        File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), "zoekPOI.png");
+
+                        LLACoordinate coordinate = new LLACoordinate(
+                                poi.getCoordinate().getLatitude(),
+                                poi.getCoordinate().getLongitude(),
+                                0,
+                                0);
+
+                        zoekPOI.setGeometry(createGeometry(coordinate, POIbackground, 100));
+                        zoekPOI.getGeometry().setVisible(true);
+                    }
+                });
+            }
+        });
+        searchDialog.show();
     }
 }

@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.riftwalkers.clarity.R;
 import com.riftwalkers.clarity.data.interfaces.LocationListenerObserver;
+import com.riftwalkers.clarity.data.interfaces.SearchButtonClickListener;
 import com.riftwalkers.clarity.data.point_of_intrest.PoiList;
 import com.riftwalkers.clarity.data.point_of_intrest.PoiType;
 import com.riftwalkers.clarity.data.point_of_intrest.PointOfInterest;
@@ -35,7 +36,7 @@ import com.riftwalkers.clarity.view.activities.MainActivity;
 import java.util.ArrayList;
 
 @SuppressWarnings({"UnusedAssignment", "FieldCanBeLocal"})
-public class MapsFragment extends BaseFragment implements OnMapReadyCallback,LocationListenerObserver,Runnable {
+public class MapsFragment extends BaseFragment implements OnMapReadyCallback,LocationListenerObserver,Runnable,SearchButtonClickListener {
 
     private MapFragment map;
     private GoogleMap googleMap;
@@ -364,5 +365,10 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
     public static void setActive(boolean active) {
         mapsActive = active;
+    }
+
+    @Override
+    public void onSearchClick() {
+
     }
 }
