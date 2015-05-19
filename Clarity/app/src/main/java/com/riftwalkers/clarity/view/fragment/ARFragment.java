@@ -224,7 +224,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         drawRange = rangeSelectSeekBar.getProgress();
-                        getActivity().runOnUiThread(new Runnable() {
+                        mSurfaceView.queueEvent(new Runnable() {
                             @Override
                             public void run() {
                                 drawGeometries();
