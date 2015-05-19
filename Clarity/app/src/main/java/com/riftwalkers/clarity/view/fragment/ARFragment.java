@@ -1,15 +1,12 @@
 package com.riftwalkers.clarity.view.fragment;
 
-import android.content.SharedPreferences;
 import android.location.Location;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -42,6 +39,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     private CheckBox aanmeerboeienCheckbox;
     private TextView drawRangeView;
     private SeekBar rangeSelectSeekBar;
+    private ImageView switchbutton;
 
     public ARFragment() {
         pointOfInterestList = ((MainActivity) getActivity()).pointOfInterestList;
@@ -235,6 +233,16 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
 
                 drawRange = rangeSelectSeekBar.getProgress();
                 drawRangeView.setText(drawRange + " m");
+            }
+        });
+
+        switchbutton = (ImageView) getView().findViewById(R.id.switchbuttonAR);
+
+        switchbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(fragmentListener != null)
+                    fragmentListener.ChangeFragment(MapsFragment.class);
             }
         });
 

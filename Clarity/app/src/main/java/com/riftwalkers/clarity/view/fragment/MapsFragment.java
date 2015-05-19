@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -57,6 +58,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
     private CheckBox meerpalenCheckbox;
     private CheckBox ligplaatsenCheckbox;
     private CheckBox aanmeerboeienCheckbox;
+    private ImageView switchbutton;
 
 
     @Override
@@ -347,19 +349,15 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
             }
         });
 
-        /*rangeSelectSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) { }
+        switchbutton = (ImageView) getView().findViewById(R.id.switchbuttonMaps);
 
+        switchbutton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) { }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                drawRange = rangeSelectSeekBar.getProgress();
-                drawRangeView.setText(rangeSelectSeekBar.getProgress() + " m");
+            public void onClick(View v) {
+                if(fragmentListener != null)
+                    fragmentListener.ChangeFragment(ARFragment.class);
             }
-        });*/
+        });
 
     }
 

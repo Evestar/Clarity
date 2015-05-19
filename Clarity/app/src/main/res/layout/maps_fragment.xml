@@ -10,4 +10,15 @@ xmlns:android="http://schemas.android.com/apk/res/android">
         android:name="com.google.android.gms.maps.MapFragment"
         />
 
+    <ImageView
+        android:id="@+id/switchbuttonMaps"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="right|bottom"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="25dp"
+        android:src="@drawable/ar_icon">
+
+    </ImageView>
+
 </FrameLayout>
