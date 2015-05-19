@@ -1,5 +1,12 @@
 package com.riftwalkers.clarity.view.fragment;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.util.Log;
 import android.view.View;
@@ -12,8 +19,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.metaio.sdk.MetaioDebug;
+import com.metaio.sdk.jni.ECOLOR_FORMAT;
 import com.metaio.sdk.jni.IGeometry;
 import com.metaio.sdk.jni.IMetaioSDKCallback;
+import com.metaio.sdk.jni.ImageStruct;
 import com.metaio.sdk.jni.LLACoordinate;
 import com.metaio.tools.io.AssetsManager;
 import com.riftwalkers.clarity.R;
@@ -26,8 +35,13 @@ import com.riftwalkers.clarity.view.activities.MainActivity;
 import com.riftwalkers.clarity.view.dialog.SearchDialog;
 
 import java.io.File;
+import java.nio.ByteBuffer;
 
 public class ARFragment extends AbstractARFragment implements LocationListenerObserver, SearchButtonClickListener {
+
+    private Bitmap bitmap;
+    private ByteBuffer byteBuffer;
+    private ImageStruct texture;
 
     private PointOfInterest zoekPOI;
     private PoiList pointOfInterestList;
@@ -100,6 +114,8 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                     results
             );
 
+            int distance = (int) results[0];
+
             if(results[0] < drawRange) {
                 if(poi.getGeometry() == null) {
                     //get type of POI and image
@@ -111,7 +127,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                                     poi.getCoordinate().getLongitude(),
                                     0,
                                     0);
-                            poi.setGeometry(createGeometry(coordinate, POIbackground, 80));
+                            poi.setGeometry(createGeometry(coordinate, POIbackground, 80, String.valueOf(poi.getId()), distance));
                     } else {
                         MetaioDebug.log(Log.ERROR, "Error loading POIbackground: " + POIbackground);
                     }
@@ -125,17 +141,35 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         }
     }
 
-    public IGeometry createGeometry(LLACoordinate coordinate, File iconFile, int scale) {
-        IGeometry geometry = metaioSDK.createGeometryFromImage(iconFile, true,false);
+    public IGeometry createGeometry(LLACoordinate coordinate, File iconFile, int scale, String id, int distance) {
+        bitmap = BitmapFactory.decodeFile(iconFile.getAbsolutePath());
+
+        bitmap = drawTextToBitmap(bitmap, id, distance);
+
+        byteBuffer = ByteBuffer.allocate(bitmap.getWidth()*bitmap.getHeight()*4);
+
+        bitmap.copyPixelsToBuffer(byteBuffer);
+
+        texture = new ImageStruct(byteBuffer.array(), bitmap.getWidth(), bitmap.getHeight(), ECOLOR_FORMAT.ECF_RGBA8, true, (System.currentTimeMillis()/1000));
+
+        //IGeometry geometry = metaioSDK.createGeometryFromImage(iconFile, true,false);
+        IGeometry geometry = metaioSDK.createGeometryFromImage(id,texture, true,false);
         if(geometry != null) {
             geometry.setTranslationLLA(coordinate);
             geometry.setLLALimitsEnabled(true);
             geometry.setScale(scale);
 
+            bitmap.recycle();
+            bitmap = null;
+
             return geometry;
         } else {
             // todo: dit gaat niet werken, geometry altijd null, wanneer niet Null dan bovenste stuk...
             MetaioDebug.log(Log.ERROR, "Error loading geometry: " + geometry);
+
+            bitmap.recycle();
+            bitmap = null;
+
             return null;
         }
     }
@@ -310,12 +344,66 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                                 0,
                                 0);
 
-                        zoekPOI.setGeometry(createGeometry(coordinate, POIbackground, 100));
+                        float[] results = new float[3];
+                        Location.distanceBetween(
+                                zoekPOI.getCoordinate().getLatitude(),
+                                zoekPOI.getCoordinate().getLongitude(),
+                                mSensors.getLocation().getLatitude(),
+                                mSensors.getLocation().getLongitude(),
+                                results
+                        );
+
+                        int distance = (int) results[0];
+
+                        zoekPOI.setGeometry(createGeometry(coordinate, POIbackground, 100,String.valueOf(zoekPOI.getId()), distance));
                         zoekPOI.getGeometry().setVisible(true);
                     }
                 });
             }
         });
         searchDialog.show();
+    }
+
+    public Bitmap drawTextToBitmap(Bitmap baseImage, String text, int distance) {
+
+        Bitmap.Config bitmapConfig = bitmap.getConfig();
+        // set default bitmap config if none
+        if(bitmapConfig == null) {
+            bitmapConfig = Bitmap.Config.ARGB_8888;
+        }
+
+        baseImage = baseImage.copy(bitmapConfig, true);
+
+        Canvas canvas = new Canvas(baseImage);
+        // new antialised Paint
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        // text color - #3D3D3D
+        paint.setColor(Color.rgb(61, 61, 61));
+        // text size in pixels
+        paint.setTextSize(24);
+        // bold text
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+
+        // draw text to the Canvas center
+        Rect bounds = new Rect();
+        paint.getTextBounds(text, 0, text.length(), bounds);
+        int x = (baseImage.getWidth() - bounds.width())/2;
+        int y = (baseImage.getHeight() + bounds.height())/3;
+
+        canvas.drawText(text, x, y, paint);
+
+        paint.setColor(Color.WHITE);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawRect(40, ((baseImage.getHeight() / 5) * 4), baseImage.getWidth()-40, baseImage.getHeight(), paint);
+
+        paint.setColor(Color.BLUE);
+        bounds = new Rect();
+        text = String.valueOf(distance) + " m";
+        paint.getTextBounds(text, 0, text.length(), bounds);
+        x = (baseImage.getWidth() - bounds.width())/2;
+        y = baseImage.getHeight()-12;
+        canvas.drawText(String.valueOf(distance) + " m", x, y, paint);
+
+        return baseImage;
     }
 }
