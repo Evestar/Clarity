@@ -57,7 +57,7 @@ public class GPSLocationProvider implements LocationListener {
     }
 
     public void requestUpdate() {
-        locationManager.requestSingleUpdate(locationManager.GPS_PROVIDER, this, null);
+        locationManager.requestSingleUpdate(locationManager.NETWORK_PROVIDER, this, null);
     }
 
     public void addLocationListenObserver(LocationListenerObserver locationListenerObserver) {

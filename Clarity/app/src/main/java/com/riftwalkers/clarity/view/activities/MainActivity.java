@@ -70,12 +70,6 @@ public class MainActivity extends ActionBarActivity implements ChangeFragmentLis
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
         setContentView(blankFragmentView);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
         currentFragment = new RoleSelectorFragment();
         currentFragment.setFragmentListener(this);
         getFragmentManager().beginTransaction().replace(R.id.container, currentFragment).commit();

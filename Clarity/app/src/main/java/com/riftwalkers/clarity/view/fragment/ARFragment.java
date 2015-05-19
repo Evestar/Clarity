@@ -69,6 +69,12 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         Log.wtf("",geometry.toString());
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        locationProvider.requestUpdate();
+    }
+
     private void drawGeometries() {
         //draw each poi in the arrayList
         for(PointOfInterest poi : pointOfInterestList) {
