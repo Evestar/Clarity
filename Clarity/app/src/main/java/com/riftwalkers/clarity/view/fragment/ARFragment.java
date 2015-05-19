@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -40,6 +41,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     private TextView drawRangeView;
     private SeekBar rangeSelectSeekBar;
     private ImageView switchbutton;
+    private FrameLayout infoBox;
 
     public ARFragment() {
         pointOfInterestList = ((MainActivity) getActivity()).pointOfInterestList;
@@ -66,7 +68,18 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
 
     @Override
     protected void onGeometryTouched(IGeometry geometry) {
+
         Log.wtf("",geometry.toString());
+
+        //Show poi info in the poi info box when touched
+        getView().findViewById(R.id.poi_info).setVisibility(View.VISIBLE);
+
+        //get poi id and show it in the info box (for now it takes the first poi in the list)
+        String poiID = Integer.toString(pointOfInterestList.get(0).getId());
+
+        String infoText = "POI id: " + poiID;
+        TextView infoID = (TextView)getView().findViewById(R.id.info_id);
+        infoID.setText(infoText);
     }
 
     @Override
@@ -249,6 +262,16 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
             public void onClick(View v) {
                 if(fragmentListener != null)
                     fragmentListener.ChangeFragment(MapsFragment.class);
+            }
+        });
+
+        //setup onClickListener for the info box
+        infoBox = (FrameLayout) getView().findViewById(R.id.poi_info);
+
+        infoBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                infoBox.setVisibility(View.INVISIBLE);
             }
         });
 

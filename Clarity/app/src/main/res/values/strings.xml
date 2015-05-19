@@ -27,4 +27,6 @@
     <string name="ar_icon_desciption">Augmented Reality</string>
     <string name="maps_icon_description">Google Maps</string>
 
+    <string name="poi_info_id">POI id: </string>
+
 </resources>

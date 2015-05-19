@@ -10,6 +10,29 @@
 
     </FrameLayout>
 
+    <FrameLayout
+        android:id="@+id/poi_info"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:background="@drawable/poiinfobackground"
+        android:visibility="invisible"
+        android:padding="20dp"
+        android:clickable="true"
+        android:layout_gravity="right|top"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="25dp"
+    >
+
+        <TextView
+            android:id="@+id/info_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/poi_info_id"
+            android:textColor="#FFF"
+        />
+
+    </FrameLayout>
+
     <ImageView
         android:id="@+id/switchbuttonAR"
         android:layout_width="50dp"
