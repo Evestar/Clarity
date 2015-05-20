@@ -132,7 +132,6 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         ne.setLongitude(bounds.northeast.longitude);
         ne.setLatitude(bounds.northeast.latitude);
 
-
         Paint paint = new Paint();
         paint.setAntiAlias(true);
 
@@ -190,15 +189,25 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                     poi.getCoordinate().getLongitude() > sw.getLongitude() &&
                     poi.getCoordinate().getLongitude() < ne.getLongitude()) {
 
+                float[] results = new float[3];
+                Location.distanceBetween(
+                        poi.getCoordinate().getLatitude(),
+                        poi.getCoordinate().getLongitude(),
+                        user.getPosition().latitude,
+                        user.getPosition().longitude,
+                        results
+                );
+                int distance = (int) results[0];
+
                 switch (poi.getType()) {
                     case Boei:
-                        addAnMarker(yellow, poi, "Buoy: [" + poi.getId() + "]");
+                        addAnMarker(yellow, poi, "Buoy: [" + poi.getId() + "] - Distance Off [" + distance +"m]");
                         break;
                     case Ligplaats:
-                        addAnMarker(green, poi, "Berth: [" + poi.getId() + "]");
+                        addAnMarker(green, poi, "Berth: [" + poi.getId() + "] - Distance Off [" + distance +"m]");
                         break;
                     case Meerpaal:
-                        addAnMarker(red, poi, "Boulder: [" + poi.getId() + "]");
+                        addAnMarker(red, poi, "Boulder: [" + poi.getId() + "] - Distance Off: [" + distance +"m]");
                         break;
                 }
 
