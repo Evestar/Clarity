@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.android.gms.common.server.converter.StringToIntConverter;
 import com.metaio.sdk.MetaioDebug;
 import com.metaio.sdk.jni.ECOLOR_FORMAT;
 import com.metaio.sdk.jni.IGeometry;
@@ -88,12 +89,32 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         //Show poi info in the poi info box when touched
         getView().findViewById(R.id.poi_info).setVisibility(View.VISIBLE);
 
-        //get poi id and show it in the info box (for now it takes the first poi in the list)
-        //String poiID = Integer.toString(pointOfInterestList.get(0).getId());
-        String poiID = geometry.getName();
-        String infoText = "POI id: " + poiID;
+        //link geometry with poi in poiList
+        String geometryID = geometry.getName();
+        PointOfInterest linkedPoi = pointOfInterestList.get(Integer.parseInt(geometryID)-1);
+
+        //get and draw poi id
+        String idText = "POI id: " + linkedPoi.getId();//poiID;
         TextView infoID = (TextView)getView().findViewById(R.id.info_id);
-        infoID.setText(infoText);
+        infoID.setText(idText);
+
+        //get and draw poi type
+        String typeText = "POI type: " + linkedPoi.getType().toString();
+        TextView infoType = (TextView)getView().findViewById(R.id.info_type);
+        infoType.setText(typeText);
+
+        //get and draw poi coordinates
+        String infoLat = Double.toString(linkedPoi.getCoordinate().getLatitude());
+        String infoLong = Double.toString(linkedPoi.getCoordinate().getLongitude());
+
+        String latitudeText = "lat: " + infoLat;
+        TextView infoLatView = (TextView)getView().findViewById(R.id.info_latitude);
+        infoLatView.setText(latitudeText);
+
+        String longitudeText = "long: " + infoLong;
+        TextView infoLongView = (TextView)getView().findViewById(R.id.info_longitude);
+        infoLongView.setText(longitudeText);
+
     }
 
     @Override

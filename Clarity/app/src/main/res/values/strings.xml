@@ -28,5 +28,8 @@
     <string name="maps_icon_description">Google Maps</string>
 
     <string name="poi_info_id">POI id: </string>
+    <string name="poi_info_type">type: </string>
+    <string name="poi_info_latitude">lat: </string>
+    <string name="poi_info_longitude">long: </string>
 
 </resources>
