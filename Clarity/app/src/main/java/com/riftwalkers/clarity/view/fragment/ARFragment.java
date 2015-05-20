@@ -89,8 +89,8 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         getView().findViewById(R.id.poi_info).setVisibility(View.VISIBLE);
 
         //get poi id and show it in the info box (for now it takes the first poi in the list)
-        String poiID = Integer.toString(pointOfInterestList.get(0).getId());
-
+        //String poiID = Integer.toString(pointOfInterestList.get(0).getId());
+        String poiID = geometry.getName();
         String infoText = "POI id: " + poiID;
         TextView infoID = (TextView)getView().findViewById(R.id.info_id);
         infoID.setText(infoText);
@@ -158,6 +158,8 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
             geometry.setTranslationLLA(coordinate);
             geometry.setLLALimitsEnabled(true);
             geometry.setScale(scale);
+            //set name to id for future references for getting information out of the poi in onGeometryTouched
+            geometry.setName(id);
 
             bitmap.recycle();
             bitmap = null;
