@@ -58,6 +58,9 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     private ImageView switchbutton;
     private FrameLayout infoBox;
 
+    public static boolean isSearchingFromMaps = false;
+    public static int idOfSearchedPOI;
+
     public ARFragment() {
         pointOfInterestList = ((MainActivity) getActivity()).pointOfInterestList;
     }
@@ -125,41 +128,68 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
 
     private void drawGeometries() {
         //draw each poi in the arrayList
-        for(PointOfInterest poi : pointOfInterestList) {
-            float[] results = new float[3];
-            Location.distanceBetween(
-                    poi.getCoordinate().getLatitude(),
-                    poi.getCoordinate().getLongitude(),
-                    mSensors.getLocation().getLatitude(),
-                    mSensors.getLocation().getLongitude(),
-                    results
-            );
 
-            int distance = (int) results[0];
+        if(isSearchingFromMaps){
+            for(PointOfInterest poi : pointOfInterestList) {
+                if(idOfSearchedPOI == poi.getId()) {
+                    int distance = getDistance(poi);
+                    if (poi.getGeometry() == null) {
+                        File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), "zoekPOI.png");
 
-            if(results[0] < drawRange) {
-                if(poi.getGeometry() == null) {
-                    //get type of POI and image
-                    File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), poi.GetImageName());
-
-                    if (POIbackground != null) {
+                        if (POIbackground != null) {
                             LLACoordinate coordinate = new LLACoordinate(
                                     poi.getCoordinate().getLatitude(),
                                     poi.getCoordinate().getLongitude(),
                                     0,
                                     0);
                             poi.setGeometry(createGeometry(coordinate, POIbackground, 80, String.valueOf(poi.getId()), distance));
-                    } else {
-                        MetaioDebug.log(Log.ERROR, "Error loading POIbackground: " + POIbackground);
+                        } else {
+                            MetaioDebug.log(Log.ERROR, "Error loading POIbackground: " + POIbackground);
+                        }
                     }
                 }
-            } else {
-                if(poi.getGeometry() != null) {
-                    metaioSDK.unloadGeometry(poi.getGeometry());
-                    poi.setGeometry(null);
+            }
+
+        } else {
+            for (PointOfInterest poi : pointOfInterestList) {
+                int distance = getDistance(poi);
+                if (distance < drawRange) {
+                    if (poi.getGeometry() == null) {
+                        //get type of POI and image
+                        File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), poi.GetImageName());
+
+                        if (POIbackground != null) {
+                            LLACoordinate coordinate = new LLACoordinate(
+                                    poi.getCoordinate().getLatitude(),
+                                    poi.getCoordinate().getLongitude(),
+                                    0,
+                                    0);
+                            poi.setGeometry(createGeometry(coordinate, POIbackground, 80, String.valueOf(poi.getId()), distance));
+                        } else {
+                            MetaioDebug.log(Log.ERROR, "Error loading POIbackground: " + POIbackground);
+                        }
+                    }
+                } else {
+                    if (poi.getGeometry() != null) {
+                        metaioSDK.unloadGeometry(poi.getGeometry());
+                        poi.setGeometry(null);
+                    }
                 }
             }
         }
+    }
+
+    private int getDistance(PointOfInterest poi){
+        float[] results = new float[3];
+        Location.distanceBetween(
+                poi.getCoordinate().getLatitude(),
+                poi.getCoordinate().getLongitude(),
+                mSensors.getLocation().getLatitude(),
+                mSensors.getLocation().getLongitude(),
+                results
+        );
+
+        return (int) results[0];
     }
 
     public IGeometry createGeometry(LLACoordinate coordinate, File iconFile, int scale, String id, int distance) {
@@ -331,7 +361,6 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                 infoBox.setVisibility(View.INVISIBLE);
             }
         });
-
     }
 
     @Override

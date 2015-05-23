@@ -15,6 +15,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -37,7 +38,7 @@ import com.riftwalkers.clarity.view.dialog.SearchDialog;
 
 import java.util.ArrayList;
 
-@SuppressWarnings({"UnusedAssignment", "FieldCanBeLocal"})
+@SuppressWarnings({"UnusedAssignment", "FieldCanBeLocal", "ConstantConditions"})
 public class MapsFragment extends BaseFragment implements OnMapReadyCallback,LocationListenerObserver,Runnable,SearchButtonClickListener {
 
     private MapFragment map;
@@ -60,6 +61,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
     private CheckBox aanmeerboeienCheckbox;
     private ImageView switchbutton;
 
+    private int markerTaps;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -98,7 +100,17 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         googleMap.getUiSettings().setMapToolbarEnabled(false);
         googleMap.getUiSettings().setRotateGesturesEnabled(false);
         googleMap.getUiSettings().setCompassEnabled(false);
-        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(locationProvider.getLastKnownLocation().getLatitude(), locationProvider.getLastKnownLocation().getLongitude()), 16, 0, 0)));
+        googleMap.moveCamera(
+                CameraUpdateFactory.newCameraPosition(
+                        new CameraPosition(
+                                new LatLng(                                                     // Location
+                                        locationProvider.getLastKnownLocation().getLatitude(),  // Latitude
+                                        locationProvider.getLastKnownLocation().getLongitude()),// Longitude
+                                16,                                                             // Zoom level
+                                0,                                                              // Tilt level
+                                0)                                                              // Bearing level
+                )
+        );
 
         googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
@@ -111,6 +123,27 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         LatLngBounds bounds = googleMap.getProjection()
                 .getVisibleRegion().latLngBounds;
         createMarker(bounds);
+
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                int id = Integer.parseInt(marker.getTitle().split("'")[1]);
+                if(!marker.isInfoWindowShown()){
+                    markerTaps = 0;
+                    marker.showInfoWindow();
+                    Toast.makeText(getActivity(), "Tap again to open Augmented Reality",Toast.LENGTH_SHORT).show();
+                }
+                markerTaps++;
+    //            if(markerTaps > 1){ // Commented for working purpose!
+                    Toast.makeText(getActivity(), "Searching for "+id,Toast.LENGTH_SHORT).show();
+                    ARFragment.isSearchingFromMaps = true;
+                    ARFragment.idOfSearchedPOI = id;
+                    fragmentListener.ChangeFragment(ARFragment.class);
+    //            }
+
+                return true;
+            }
+        });
 
         thread.start();
     }
@@ -201,13 +234,13 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
                 switch (poi.getType()) {
                     case Boei:
-                        addAnMarker(yellow, poi, "Buoy: [" + poi.getId() + "] - Distance Off [" + distance +"m]");
+                        addAnMarker(yellow, poi, "Buoy: ('" + poi.getId() + "') - Distance Off ('" + distance +"m')");
                         break;
                     case Ligplaats:
-                        addAnMarker(green, poi, "Berth: [" + poi.getId() + "] - Distance Off [" + distance +"m]");
+                        addAnMarker(green, poi, "Berth: ('" + poi.getId() + "') - Distance Off ('" + distance +"m')");
                         break;
                     case Meerpaal:
-                        addAnMarker(red, poi, "Boulder: [" + poi.getId() + "] - Distance Off: [" + distance +"m]");
+                        addAnMarker(red, poi, "Boulder: ('" + poi.getId() + "') - Distance Off: ('" + distance +"m')");
                         break;
                 }
 
