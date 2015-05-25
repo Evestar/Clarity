@@ -165,15 +165,6 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         ne.setLongitude(bounds.northeast.longitude);
         ne.setLatitude(bounds.northeast.latitude);
 
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-
-        // user
-        Bitmap userBitmap = Bitmap.createBitmap(24, 24, Bitmap.Config.ARGB_8888);
-        paint.setARGB(255, 0, 255, 255);
-        Canvas userCanvas = new Canvas(userBitmap);
-        userCanvas.drawCircle(12, 12, 12, paint);
-
         user = googleMap.addMarker(
                 new MarkerOptions()
                         .position(
@@ -183,37 +174,11 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                                 ))
                         .icon(
                                 BitmapDescriptorFactory.fromBitmap(
-                                        userBitmap
+                                        getMarkerBitmap(102, 0, 102)
                                 ))
         );
 
         // poi's
-
-        // RED
-        Bitmap red = Bitmap.createBitmap(24, 24, Bitmap.Config.ARGB_8888);
-        paint.setARGB(255, 255, 0, 0);
-        Canvas redCanvas = new Canvas(red);
-        redCanvas.drawCircle(12, 12, 12, paint);
-
-        // YELLOW
-        Bitmap yellow = Bitmap.createBitmap(24, 24, Bitmap.Config.ARGB_8888);
-        paint.setARGB(255, 255, 255, 0);
-        Canvas yellowCanvas = new Canvas(yellow);
-        yellowCanvas.drawCircle(12, 12, 12, paint);
-
-        // GREEN
-        Bitmap green = Bitmap.createBitmap(24, 24, Bitmap.Config.ARGB_8888);
-        paint.setARGB(255, 0, 255, 0);
-        Canvas greenCanvas = new Canvas(green);
-        greenCanvas.drawCircle(12, 12, 12, paint);
-
-        // BLUE
-        Bitmap blue = Bitmap.createBitmap(24, 24, Bitmap.Config.ARGB_8888);
-        paint.setARGB(255, 0, 0, 255);
-        Canvas blueCanvas = new Canvas(blue);
-        blueCanvas.drawCircle(12, 12, 12, paint);
-
-//      for (int i = 0; i < 20; i++) { // Use this during debug!
         for (int i = 0; i < tempPoiList.size(); i++) {
             PointOfInterest poi = tempPoiList.get(i);
 
@@ -234,21 +199,33 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
                 switch (poi.getType()) {
                     case Boei:
-                        addAnMarker(yellow, poi, "Buoy: ('" + poi.getId() + "') - Distance Off ('" + distance +"m')");
+                        addAnMarker(getMarkerBitmap(0, 0, 255), poi, "Buoy: ('" + poi.getId() + "') - Distance Off ('" + distance +"m')");
                         break;
                     case Ligplaats:
-                        addAnMarker(green, poi, "Berth: ('" + poi.getId() + "') - Distance Off ('" + distance +"m')");
+                        addAnMarker(getMarkerBitmap(0,155,0), poi, "Berth: ('" + poi.getId() + "') - Distance Off ('" + distance +"m')");
                         break;
                     case Meerpaal:
-                        addAnMarker(red, poi, "Boulder: ('" + poi.getId() + "') - Distance Off: ('" + distance +"m')");
+                        addAnMarker(getMarkerBitmap(255,0,0), poi, "Boulder: ('" + poi.getId() + "') - Distance Off: ('" + distance +"m')");
                         break;
                 }
 
                 if(zoekPOI != null) {
-                    addAnMarker(blue, zoekPOI, String.valueOf(zoekPOI.getId()));
+                    addAnMarker(getMarkerBitmap(255,0,255), zoekPOI, String.valueOf(zoekPOI.getId()));
                 }
             }
         }
+    }
+
+    private Bitmap getMarkerBitmap(int red, int green, int blue) {
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+
+        Bitmap bitmap = Bitmap.createBitmap(24, 24, Bitmap.Config.ARGB_8888);
+        paint.setARGB(255, red, green, blue);
+        Canvas redCanvas = new Canvas(bitmap);
+        redCanvas.drawCircle(12, 12, 12, paint);
+
+        return bitmap;
     }
 
     private void addAnMarker(Bitmap color, PointOfInterest poi, String title) {
