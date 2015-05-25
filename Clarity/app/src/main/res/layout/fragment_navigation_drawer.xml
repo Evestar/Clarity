@@ -17,33 +17,77 @@
         android:background="#cccc"
         tools:context="com.riftwalkers.clarity.view.fragment.NavigationDrawerFragment">
 
-
-        <Button
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/back_button_menu"
-            android:id="@+id/backbuttonMenu" />
+            android:baselineAligned="false">
 
-        <CheckBox
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/back_button_menu"
+                android:id="@+id/backbuttonMenu" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/meerpalenCheckbox"
+                android:id="@+id/meerpalenCheckbox"
+                android:checked="true" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/aanmeerboeienCheckbox"
+                android:id="@+id/aanmeerboeienCheckbox"
+                android:checked="true" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ligplaatsenCheckbox"
+                android:id="@+id/ligplaatsenCheckbox"
+                android:checked="true" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/meerpalenCheckbox"
-            android:id="@+id/meerpalenCheckbox"
-            android:checked="true" />
+            android:baselineAligned="false"
+            android:layout_gravity="right"
+            android:layout_marginTop="-100dp">
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/aanmeerboeienCheckbox"
-            android:id="@+id/aanmeerboeienCheckbox"
-            android:checked="true" />
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:id="@+id/legendaImageC"
+                android:layout_gravity="left"
+                android:src="@drawable/legenda_c"
+                android:layout_marginTop="5dp"/>
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ligplaatsenCheckbox"
-            android:id="@+id/ligplaatsenCheckbox"
-            android:checked="true" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:id="@+id/legendaImageB"
+                android:layout_gravity="left"
+                android:src="@drawable/legenda_b"
+                android:layout_marginTop="0dp" />
+
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:id="@+id/legendaImageA"
+                android:layout_gravity="left"
+                android:src="@drawable/legenda_a"
+                android:layout_marginTop="0dp" />
+
+
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -70,8 +114,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/rangeSeekbar"
             android:indeterminate="false"
-            android:max="500"
-            android:progress="200"
+            android:max="7000"
+            android:progress="5700"
             android:focusableInTouchMode="false" />
 
 
