@@ -50,6 +50,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     private int drawRange;
 
     private Button menuBackButton;
+    private Button infoNewMsgButton;
     private CheckBox meerpalenCheckbox;
     private CheckBox ligplaatsenCheckbox;
     private CheckBox aanmeerboeienCheckbox;
@@ -102,7 +103,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         infoID.setText(idText);
 
         //get and draw poi type
-        String typeText = "POI type: " + linkedPoi.getType().toString();
+        String typeText = "Type: " + linkedPoi.getType().toString();
         TextView infoType = (TextView)getView().findViewById(R.id.info_type);
         infoType.setText(typeText);
 
@@ -195,7 +196,8 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     public IGeometry createGeometry(LLACoordinate coordinate, File iconFile, int scale, String id, int distance) {
         bitmap = BitmapFactory.decodeFile(iconFile.getAbsolutePath());
 
-        bitmap = drawTextToBitmap(bitmap, id, distance);
+        //draw text and notification onto the poi image, boolean for if the poi has a new message
+        bitmap = drawTextToBitmap(bitmap, id, distance, true);
 
         byteBuffer = ByteBuffer.allocate(bitmap.getWidth()*bitmap.getHeight()*4);
 
@@ -361,6 +363,18 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                 infoBox.setVisibility(View.INVISIBLE);
             }
         });
+
+        //setup onClickListener for the info box's new msg button
+        infoNewMsgButton = (Button) getView().findViewById(R.id.button_new_msg);
+
+        infoNewMsgButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                MetaioDebug.log("whuat?");
+
+            }
+        });
     }
 
     @Override
@@ -416,7 +430,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         searchDialog.show();
     }
 
-    public Bitmap drawTextToBitmap(Bitmap baseImage, String text, int distance) {
+    public Bitmap drawTextToBitmap(Bitmap baseImage, String text, int distance, boolean hasNewMessage) {
 
         Bitmap.Config bitmapConfig = bitmap.getConfig();
         // set default bitmap config if none
@@ -455,6 +469,17 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         x = (baseImage.getWidth() - bounds.width())/2;
         y = baseImage.getHeight()-12;
         canvas.drawText(String.valueOf(distance) + " m", x, y, paint);
+
+        if(hasNewMessage) {
+            //draw new message notification TODO: to be moved to the checker of new messages at he POI
+            File notificationFile = AssetsManager.getAssetPathAsFile(getActivity(), "notification.png");
+            Bitmap notificationBitmap = BitmapFactory.decodeFile(notificationFile.getAbsolutePath());
+
+            paint.setColor(Color.WHITE);
+            x = (baseImage.getWidth() - bounds.width()) / 2 + 58;
+            y = 8;
+            canvas.drawBitmap(notificationBitmap, x, y, paint);
+        }
 
         return baseImage;
     }

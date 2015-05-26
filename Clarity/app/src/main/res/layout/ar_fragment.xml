@@ -55,6 +55,14 @@
             android:textColor="#FFF"
             android:layout_gravity="left|bottom" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="add msg"
+            android:id="@+id/button_new_msg"
+            android:layout_gravity="right|bottom"
+            android:clickable="true" />
+
     </FrameLayout>
 
     <ImageView
