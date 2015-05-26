@@ -114,8 +114,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/rangeSeekbar"
             android:indeterminate="false"
-            android:max="7000"
-            android:progress="5700"
+            android:max="500"
+            android:progress="200"
             android:focusableInTouchMode="false" />
 
 
