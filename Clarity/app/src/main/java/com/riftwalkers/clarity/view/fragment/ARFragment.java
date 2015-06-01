@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.google.android.gms.common.server.converter.StringToIntConverter;
 import com.metaio.sdk.MetaioDebug;
 import com.metaio.sdk.jni.ECOLOR_FORMAT;
 import com.metaio.sdk.jni.IGeometry;
@@ -131,26 +130,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         //draw each poi in the arrayList
 
         if(isSearchingFromMaps){
-            for(PointOfInterest poi : pointOfInterestList) {
-                if(idOfSearchedPOI == poi.getId()) {
-                    int distance = getDistance(poi);
-                    if (poi.getGeometry() == null) {
-                        File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), "zoekPOI.png");
-
-                        if (POIbackground != null) {
-                            LLACoordinate coordinate = new LLACoordinate(
-                                    poi.getCoordinate().getLatitude(),
-                                    poi.getCoordinate().getLongitude(),
-                                    0,
-                                    0);
-                            poi.setGeometry(createGeometry(coordinate, POIbackground, 80, String.valueOf(poi.getId()), distance));
-                        } else {
-                            MetaioDebug.log(Log.ERROR, "Error loading POIbackground: " + POIbackground);
-                        }
-                    }
-                }
-            }
-
+            searchFromMaps();
         } else {
             for (PointOfInterest poi : pointOfInterestList) {
                 int distance = getDistance(poi);
@@ -174,6 +154,32 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                     if (poi.getGeometry() != null) {
                         metaioSDK.unloadGeometry(poi.getGeometry());
                         poi.setGeometry(null);
+                    }
+                }
+            }
+        }
+    }
+
+    private void searchFromMaps(){
+        ligplaatsenCheckbox.setChecked(false);
+        aanmeerboeienCheckbox.setChecked(false);
+        meerpalenCheckbox.setChecked(false);
+
+        for(PointOfInterest poi : pointOfInterestList) {
+            if(idOfSearchedPOI == poi.getId()) {
+                int distance = getDistance(poi);
+                if (poi.getGeometry() == null) {
+                    File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), "zoekPOI.png");
+
+                    if (POIbackground != null) {
+                        LLACoordinate coordinate = new LLACoordinate(
+                                poi.getCoordinate().getLatitude(),
+                                poi.getCoordinate().getLongitude(),
+                                0,
+                                0);
+                        poi.setGeometry(createGeometry(coordinate, POIbackground, 80, String.valueOf(poi.getId()), distance));
+                    } else {
+                        MetaioDebug.log(Log.ERROR, "Error loading POIbackground: " + POIbackground);
                     }
                 }
             }
@@ -252,6 +258,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                                 poi.getGeometry().setVisible(false);
                         }
                     }
+                    setSearch(false);
                 } else {
                     for (PointOfInterest poi : pointOfInterestList) {
                         if (poi.getType().equals(PoiType.Meerpaal)) {
@@ -260,6 +267,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                         }
                     }
                 }
+
             }
         });
 
@@ -274,6 +282,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                                 poi.getGeometry().setVisible(false);
                         }
                     }
+                    setSearch(false);
                 } else {
                     for (PointOfInterest poi : pointOfInterestList) {
                         if (poi.getType().equals(PoiType.Ligplaats)) {
@@ -282,6 +291,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                         }
                     }
                 }
+
             }
         });
 
@@ -296,6 +306,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                                 poi.getGeometry().setVisible(false);
                         }
                     }
+                    setSearch(false);
                 } else {
                     for (PointOfInterest poi : pointOfInterestList) {
                         if (poi.getType().equals(PoiType.Boei)) {
@@ -304,6 +315,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                         }
                     }
                 }
+
             }
         });
 
@@ -375,6 +387,13 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
 
             }
         });
+    }
+
+    public void setSearch(boolean bool){
+        if(isSearchingFromMaps && !bool){
+            isSearchingFromMaps = false;
+            drawGeometries();
+        }
     }
 
     @Override
