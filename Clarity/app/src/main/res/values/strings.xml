@@ -19,6 +19,7 @@
     <string name="meerpalenCheckbox">Meerpalen</string>
     <string name="aanmeerboeienCheckbox">Afmeerboeien</string>
     <string name="ligplaatsenCheckbox">Ligplaatsen</string>
+    <string name="boldersCheckbox">Bolders</string>
     <string name="rangeLabel">Bereik</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -28,9 +29,7 @@
     <string name="maps_icon_description">Google Maps</string>
 
     <string name="poi_info_id">POI id: </string>
-    <string name="poi_info_type">type: </string>
-    <string name="poi_info_latitude">lat: </string>
-    <string name="poi_info_longitude">long: </string>
+    <string name="poi_info_type">Type: </string>
 
 
 </resources>

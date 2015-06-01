@@ -59,6 +59,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
     private CheckBox meerpalenCheckbox;
     private CheckBox ligplaatsenCheckbox;
     private CheckBox aanmeerboeienCheckbox;
+    private CheckBox boldersCheckbox;
     private ImageView switchbutton;
 
     private int LastMarkerCliked = 0;
@@ -214,6 +215,9 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                     case Meerpaal:
                         addAnMarker(getMarkerBitmap(255,0,0), poi, "Boulder: ('" + poi.getId() + "') - Distance Off: ('" + distance +"m')");
                         break;
+                    case Bolder:
+                        addAnMarker(getMarkerBitmap(230,99,24), poi, "Boulder: ('" + poi.getId() + "') - Distance Off: ('" + distance +"m')");
+                        break;
                 }
 
                 if(zoekPOI != null) {
@@ -361,6 +365,30 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
             }
         });
 
+        boldersCheckbox = (CheckBox) getActivity().findViewById(R.id.boldersCheckbox);
+        boldersCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked) {
+                    ArrayList<PointOfInterest> removeList = new ArrayList<>();
+                    for (PointOfInterest poi : tempPoiList) {
+                        if (poi.getType().equals(PoiType.Bolder)) {
+                            removeList.add(poi);
+                        }
+                    }
+                    tempPoiList.removeAll(removeList);
+                    removeList = null;
+                } else {
+                    for (PointOfInterest poi : pointOfInterestList) {
+                        if (poi.getType().equals(PoiType.Bolder)) {
+                            tempPoiList.add(poi);
+                        }
+                    }
+                }
+                drawMarkers();
+            }
+        });
+
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -415,6 +443,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                 meerpalenCheckbox.setChecked(false);
                 aanmeerboeienCheckbox.setChecked(false);
                 ligplaatsenCheckbox.setChecked(false);
+                boldersCheckbox.setChecked(false);
 
                 tempPoiList.add(zoekPOI);
 

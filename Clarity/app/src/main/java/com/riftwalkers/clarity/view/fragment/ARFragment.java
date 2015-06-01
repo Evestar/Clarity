@@ -53,6 +53,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     private CheckBox meerpalenCheckbox;
     private CheckBox ligplaatsenCheckbox;
     private CheckBox aanmeerboeienCheckbox;
+    private CheckBox boldersCheckbox;
     private TextView drawRangeView;
     private SeekBar rangeSelectSeekBar;
     private ImageView switchbutton;
@@ -106,17 +107,57 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         TextView infoType = (TextView)getView().findViewById(R.id.info_type);
         infoType.setText(typeText);
 
-        //get and draw poi coordinates
-        String infoLat = Double.toString(linkedPoi.getCoordinate().getLatitude());
-        String infoLong = Double.toString(linkedPoi.getCoordinate().getLongitude());
+        TextView row1 = (TextView)getView().findViewById(R.id.info_row1);
+        TextView row2 = (TextView)getView().findViewById(R.id.info_row2);
+        TextView row3 = (TextView)getView().findViewById(R.id.info_row3);
 
-        String latitudeText = "lat: " + infoLat;
-        TextView infoLatView = (TextView)getView().findViewById(R.id.info_latitude);
-        infoLatView.setText(latitudeText);
+        if(linkedPoi.getType() == PoiType.Bolder) {
+            String trekkracht;
+            String verankering;
 
-        String longitudeText = "long: " + infoLong;
-        TextView infoLongView = (TextView)getView().findViewById(R.id.info_longitude);
-        infoLongView.setText(longitudeText);
+            if(linkedPoi.getTrekkracht() != 0) {
+                trekkracht = String.valueOf(linkedPoi.getTrekkracht());
+            } else {
+                trekkracht = "Onbekend";
+            }
+
+            if(linkedPoi.getMethodeVerankering() != null) {
+                verankering = linkedPoi.getMethodeVerankering();
+            } else {
+                verankering = "Onbekend";
+            }
+
+            row1.setText("Methode verankering: " + verankering);
+            row2.setText("Toegestane trekkracht: " + trekkracht);
+            if(linkedPoi.getTrekkrachtEenheid() != null) {
+                row2.setText(row2.getText() + "(" + linkedPoi.getTrekkrachtEenheid() + ")");
+            }
+
+            if(linkedPoi.getNummer() != 0) {
+                row1.setText(row1.getText() + "\tNummer: " + linkedPoi.getNummer());
+            }
+
+        } else if(linkedPoi.getType() == PoiType.Meerpaal) {
+            if(linkedPoi.getTypePaal() != null) {
+                row1.setText("Type paal: " + linkedPoi.getTypePaal());
+            }
+            if(linkedPoi.getNummer() != 0) {
+                row2.setText("Nummer: " + linkedPoi.getNummer());
+            } else {
+                row2.setVisibility(View.GONE);
+            }
+        } else if(linkedPoi.getType() == PoiType.Ligplaats) {
+            row1.setText("Eigenaar: " + linkedPoi.getEigenaar());
+            row2.setText("Haven naam: " + linkedPoi.getHavenNaam() + "\tOever nummer: " + linkedPoi.getOeverNummer());
+        } else {
+            row2.setVisibility(View.GONE);
+        }
+
+        if(linkedPoi.getDescription() != null) {
+            row3.setText("Omschrijving: " + linkedPoi.getDescription());
+        } else {
+            row3.setVisibility(View.GONE);
+        }
 
     }
 
@@ -164,6 +205,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         ligplaatsenCheckbox.setChecked(false);
         aanmeerboeienCheckbox.setChecked(false);
         meerpalenCheckbox.setChecked(false);
+        boldersCheckbox.setChecked(false);
 
         for(PointOfInterest poi : pointOfInterestList) {
             if(idOfSearchedPOI == poi.getId()) {
@@ -251,10 +293,10 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         meerpalenCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!isChecked) {
+                if (!isChecked) {
                     for (PointOfInterest poi : pointOfInterestList) {
                         if (poi.getType().equals(PoiType.Meerpaal)) {
-                            if(poi.getGeometry() != null)
+                            if (poi.getGeometry() != null)
                                 poi.getGeometry().setVisible(false);
                         }
                     }
@@ -262,7 +304,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                 } else {
                     for (PointOfInterest poi : pointOfInterestList) {
                         if (poi.getType().equals(PoiType.Meerpaal)) {
-                            if(poi.getGeometry() != null)
+                            if (poi.getGeometry() != null)
                                 poi.getGeometry().setVisible(true);
                         }
                     }
@@ -310,6 +352,30 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                 } else {
                     for (PointOfInterest poi : pointOfInterestList) {
                         if (poi.getType().equals(PoiType.Boei)) {
+                            if(poi.getGeometry() != null)
+                                poi.getGeometry().setVisible(true);
+                        }
+                    }
+                }
+
+            }
+        });
+
+        boldersCheckbox = (CheckBox) getActivity().findViewById(R.id.boldersCheckbox);
+        boldersCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked) {
+                    for (PointOfInterest poi : pointOfInterestList) {
+                        if (poi.getType().equals(PoiType.Bolder)) {
+                            if(poi.getGeometry() != null)
+                                poi.getGeometry().setVisible(false);
+                        }
+                    }
+                    setSearch(false);
+                } else {
+                    for (PointOfInterest poi : pointOfInterestList) {
+                        if (poi.getType().equals(PoiType.Bolder)) {
                             if(poi.getGeometry() != null)
                                 poi.getGeometry().setVisible(true);
                         }
@@ -377,7 +443,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         });
 
         //setup onClickListener for the info box's new msg button
-        infoNewMsgButton = (Button) getView().findViewById(R.id.button_new_msg);
+        /*infoNewMsgButton = (Button) getView().findViewById(R.id.button_new_msg);
 
         infoNewMsgButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -386,7 +452,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                 MetaioDebug.log("whuat?");
 
             }
-        });
+        });*/
     }
 
     public void setSearch(boolean bool){
@@ -418,6 +484,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                         ligplaatsenCheckbox.setChecked(false);
                         aanmeerboeienCheckbox.setChecked(false);
                         meerpalenCheckbox.setChecked(false);
+                        boldersCheckbox.setChecked(false);
 
                         zoekPOI = poi;
 
@@ -489,7 +556,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         y = baseImage.getHeight()-12;
         canvas.drawText(String.valueOf(distance) + " m", x, y, paint);
 
-        if(hasNewMessage) {
+        /*if(hasNewMessage) {
             //draw new message notification TODO: to be moved to the checker of new messages at he POI
             File notificationFile = AssetsManager.getAssetPathAsFile(getActivity(), "notification.png");
             Bitmap notificationBitmap = BitmapFactory.decodeFile(notificationFile.getAbsolutePath());
@@ -498,7 +565,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
             x = (baseImage.getWidth() - bounds.width()) / 2 + 58;
             y = 8;
             canvas.drawBitmap(notificationBitmap, x, y, paint);
-        }
+        }*/
 
         return baseImage;
     }

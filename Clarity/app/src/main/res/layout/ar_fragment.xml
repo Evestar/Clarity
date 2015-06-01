@@ -28,8 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/poi_info_id"
-            android:textColor="#FFF"
-        />
+            android:textColor="#FFF" />
 
         <TextView
             android:id="@+id/info_type"
@@ -40,28 +39,33 @@
             android:layout_gravity="center_horizontal|top" />
 
         <TextView
-            android:id="@+id/info_latitude"
+            android:id="@+id/info_row1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/poi_info_latitude"
             android:textColor="#FFF"
             android:layout_gravity="left|center_vertical" />
 
         <TextView
-            android:id="@+id/info_longitude"
+            android:id="@+id/info_row2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/poi_info_longitude"
             android:textColor="#FFF"
             android:layout_gravity="left|bottom" />
 
-        <Button
+        <TextView
+            android:id="@+id/info_row3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFF"
+            android:layout_gravity="left|bottom" />
+
+        <!--<Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="add msg"
             android:id="@+id/button_new_msg"
             android:layout_gravity="right|bottom"
-            android:clickable="true" />
+            android:clickable="true" />-->
 
     </FrameLayout>
 
@@ -72,8 +76,6 @@
         android:layout_gravity="right|bottom"
         android:layout_marginRight="25dp"
         android:layout_marginBottom="25dp"
-        android:src="@drawable/map_icon">
-
-        </ImageView>
+        android:src="@drawable/map_icon" />
 
 </FrameLayout>

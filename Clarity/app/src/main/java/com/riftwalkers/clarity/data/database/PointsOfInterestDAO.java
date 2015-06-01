@@ -84,12 +84,14 @@ public class PointsOfInterestDAO {
 
         ArrayList<PointOfInterest> pointOfInterests = new ArrayList<>();
 
-        String[] columns = {helper.UID, helper.FEATUREID, helper.LATITUDE, helper.LONGITUDE};
+        String[] columns = {helper.UID, helper.FEATUREID, helper.LATITUDE, helper.LONGITUDE, helper.DESCRIPTION,
+                helper.MATERIAL, helper.METHODE_VERANKERING, helper.TREKKRACHT, helper.TREKKRACHT_EENHEID, helper.TYPE_PAAL,
+                helper.NUMMER, helper.EIGENAAR, helper.HAVEN_NAAM, helper.LIGPLAATS_AFMEER_TYPE, helper.OEVER_NUMMER};
 
         Cursor cursor = db.query(helper.MEERPALEN_TABLE_NAME,columns,null,null,null,null,null);
         while (cursor.moveToNext()){
             PointOfInterest poi = new PointOfInterest();
-            poi.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(helper.UID))));
+            poi.setId(cursor.getInt(cursor.getColumnIndex(helper.UID)));
             poi.setFeatureId(cursor.getString(cursor.getColumnIndex(helper.FEATUREID)));
             Location location = new Location("");
             location.setLatitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(helper.LATITUDE))));
@@ -102,6 +104,13 @@ public class PointsOfInterestDAO {
                             0,
                             0));*/
             poi.setType(PoiType.Meerpaal);
+
+            poi.setDescription(cursor.getString(cursor.getColumnIndex(helper.DESCRIPTION)));
+            poi.setMateriaal(cursor.getString(cursor.getColumnIndex(helper.MATERIAL)));
+            poi.setTrekkracht(cursor.getInt(cursor.getColumnIndex(helper.TREKKRACHT)));
+            poi.setTrekkrachtEenheid(cursor.getString(cursor.getColumnIndex(helper.TREKKRACHT_EENHEID)));
+            poi.setTypePaal(cursor.getString(cursor.getColumnIndex(helper.TYPE_PAAL)));
+            poi.setNummer(cursor.getInt(cursor.getColumnIndex(helper.NUMMER)));
 
             pointOfInterests.add(poi);
         }
@@ -122,6 +131,12 @@ public class PointsOfInterestDAO {
                             0,
                             0));*/
             poi.setType(PoiType.Ligplaats);
+
+            poi.setDescription(cursor.getString(cursor.getColumnIndex(helper.DESCRIPTION)));
+            poi.setEigenaar(cursor.getString(cursor.getColumnIndex(helper.EIGENAAR)));
+            poi.setHavenNaam(cursor.getString(cursor.getColumnIndex(helper.HAVEN_NAAM)));
+            poi.setLigplaatsAfmeerType(cursor.getString(cursor.getColumnIndex(helper.LIGPLAATS_AFMEER_TYPE)));
+            poi.setOeverNummer(cursor.getString(cursor.getColumnIndex(helper.OEVER_NUMMER)));
 
             pointOfInterests.add(poi);
         }
@@ -146,6 +161,32 @@ public class PointsOfInterestDAO {
             pointOfInterests.add(poi);
         }
 
+        cursor = db.query(helper.BOLDERS_TABLE_NAME,columns,null,null,null,null,null);
+        while (cursor.moveToNext()){
+            PointOfInterest poi = new PointOfInterest();
+            poi.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(helper.UID))));
+            poi.setFeatureId(cursor.getString(cursor.getColumnIndex(helper.FEATUREID)));
+            Location location = new Location("");
+            location.setLatitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(helper.LATITUDE))));
+            location.setLongitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(helper.LONGITUDE))));
+
+            poi.setCoordinate(location);
+                    /*new LLACoordinate(
+                            Double.parseDouble(cursor.getString(cursor.getColumnIndex(helper.LATITUDE))),
+                            Double.parseDouble(cursor.getString(cursor.getColumnIndex(helper.LONGITUDE))),
+                            0,
+                            0));*/
+            poi.setType(PoiType.Bolder);
+
+            poi.setDescription(cursor.getString(cursor.getColumnIndex(helper.DESCRIPTION)));
+            poi.setMateriaal(cursor.getString(cursor.getColumnIndex(helper.MATERIAL)));
+            poi.setMethodeVerankering(cursor.getString(cursor.getColumnIndex(helper.METHODE_VERANKERING)));
+            poi.setTrekkracht(cursor.getInt(cursor.getColumnIndex(helper.TREKKRACHT)));
+            poi.setTrekkrachtEenheid(cursor.getString(cursor.getColumnIndex(helper.TREKKRACHT_EENHEID)));
+
+            pointOfInterests.add(poi);
+        }
+
         return pointOfInterests;
     }
 
@@ -154,15 +195,25 @@ public class PointsOfInterestDAO {
         private static final String MEERPALEN_TABLE_NAME = "MEERPALEN";
         private static final String LIGPLAATSEN_TABLE_NAME = "LIGPLAATSEN";
         private static final String BOEIEN_TABLE_NAME = "BOEIEN";
+        private static final String BOLDERS_TABLE_NAME = "BOLDERS";
 
-        private static final String UID = "_id";
-        private static final String FEATUREID = "featureId";
-        private static final String TYPE = "type";
-        private static final String DESCRIPTION = "description";
+        private static final String UID = "OBJECTID";
+        private static final String FEATUREID = "FEATUREID";
+        private static final String DESCRIPTION = "O_DESCR";
         private static final String LATITUDE = "latitude";
         private static final String LONGITUDE = "longitude";
+        private static final String MATERIAL = "O_MAT_ALG";
+        private static final String METHODE_VERANKERING = "O_METH_VER";
+        private static final String TREKKRACHT = "O_TOEL_TRK";
+        private static final String TREKKRACHT_EENHEID = "O_TOEL_T_1";
+        private static final String TYPE_PAAL = "O_TYP_PLN";
+        private static final String NUMMER = "NUMMER";
+        private static final String EIGENAAR = "ZZEIGE";
+        private static final String HAVEN_NAAM = "ZZHVNAAM";
+        private static final String LIGPLAATS_AFMEER_TYPE = "ZZAFMVZ";
+        private static final String OEVER_NUMMER = "ZZOEVFRN";
 
-        private static final String DATABASE_NAME = "Clarity";
+        private static final String DATABASE_NAME = "ClarityNew";
         private static final int DATABASE_VERSION = 1;
 
         public ClarityDBHelper(Context context) {
