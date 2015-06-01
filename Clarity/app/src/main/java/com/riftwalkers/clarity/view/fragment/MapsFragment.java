@@ -61,7 +61,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
     private CheckBox aanmeerboeienCheckbox;
     private ImageView switchbutton;
 
-    private int markerTaps;
+    private int LastMarkerCliked = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -127,19 +127,25 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+
+                if (marker.getTitle().equals("urself")){
+                    return false;
+                }
+
                 int id = Integer.parseInt(marker.getTitle().split("'")[1]);
-                if(!marker.isInfoWindowShown()){
-                    markerTaps = 0;
+
+                if (LastMarkerCliked == 0 || LastMarkerCliked != id ){
+                    LastMarkerCliked = id;
                     marker.showInfoWindow();
                     Toast.makeText(getActivity(), "Tap again to open Augmented Reality",Toast.LENGTH_SHORT).show();
-                }
-                markerTaps++;
-    //            if(markerTaps > 1){ // Commented for working purpose!
+                } else if (LastMarkerCliked == id){
+                    // SAME MARKER -> SEARCH!
+
                     Toast.makeText(getActivity(), "Searching for "+id,Toast.LENGTH_SHORT).show();
                     ARFragment.isSearchingFromMaps = true;
                     ARFragment.idOfSearchedPOI = id;
                     fragmentListener.ChangeFragment(ARFragment.class);
-    //            }
+                }
 
                 return true;
             }
@@ -176,6 +182,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                                 BitmapDescriptorFactory.fromBitmap(
                                         getMarkerBitmap(102, 0, 102)
                                 ))
+                        .title("urself")
         );
 
         // poi's
