@@ -49,6 +49,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
     private static boolean mapsActive = true;
     private long lastMovedTime;
     private boolean hasMoved = false;
+    private boolean hasClicked = false;
     private long currentTime;
 
     private PoiList pointOfInterestList;
@@ -62,7 +63,9 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
     private CheckBox boldersCheckbox;
     private ImageView switchbutton;
 
-    private int LastMarkerCliked = 0;
+    private String LastMarkerCliked;
+    private int clicks = 0;
+    private ArrayList<SavedMarkerData> savedMarkers;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,6 +84,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         pointOfInterestList = MainActivity.pointOfInterestList;
         tempPoiList = (PoiList) pointOfInterestList.clone();
 
+        savedMarkers = new ArrayList<>();
         setupViews();
     }
 
@@ -97,10 +101,13 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
 
+        MyCustomInfoWindowAdapter customInfoWindowAdapter = new MyCustomInfoWindowAdapter();
+
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         googleMap.getUiSettings().setMapToolbarEnabled(false);
         googleMap.getUiSettings().setRotateGesturesEnabled(false);
         googleMap.getUiSettings().setCompassEnabled(false);
+        googleMap.setInfoWindowAdapter(customInfoWindowAdapter);
         googleMap.moveCamera(
                 CameraUpdateFactory.newCameraPosition(
                         new CameraPosition(
@@ -128,23 +135,30 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                hasClicked = true;
 
-                if (marker.getTitle().equals("urself")){
+                if (marker.getTitle().equals("you")) {
                     return false;
                 }
 
-                int id = Integer.parseInt(marker.getTitle().split("'")[1]);
+                Log.wtf("CLICKED MARKER ", String.valueOf(marker));
+                clicks++;
 
-                if (LastMarkerCliked == 0 || LastMarkerCliked != id ){
-                    LastMarkerCliked = id;
+                if (LastMarkerCliked == null || !LastMarkerCliked.equals(String.valueOf(marker))) {
+                    LastMarkerCliked = String.valueOf(marker);
                     marker.showInfoWindow();
-                    Toast.makeText(getActivity(), "Tap again to open Augmented Reality",Toast.LENGTH_SHORT).show();
-                } else if (LastMarkerCliked == id){
+                    if (clicks % 5 == 0) {
+                        Toast.makeText(getActivity(), "Tap again to open Augmented Reality", Toast.LENGTH_SHORT).show();
+                    }
+                } else if (LastMarkerCliked.equals(String.valueOf(marker))) {
                     // SAME MARKER -> SEARCH!
-
-                    Toast.makeText(getActivity(), "Searching for "+id,Toast.LENGTH_SHORT).show();
                     ARFragment.isSearchingFromMaps = true;
-                    ARFragment.idOfSearchedPOI = id;
+
+                    for (int i = 0; i < savedMarkers.size(); i++) {
+                        if (savedMarkers.get(i).marker == marker) {
+                            ARFragment.SearchedPOI = savedMarkers.get(i).poi;
+                        }
+                    }
                     fragmentListener.ChangeFragment(ARFragment.class);
                 }
 
@@ -163,6 +177,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
     private void createMarker(LatLngBounds bounds) {
         googleMap.clear();
+        savedMarkers.clear();
 
         Location sw = new Location("");
         sw.setLongitude(bounds.southwest.longitude);
@@ -183,7 +198,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                                 BitmapDescriptorFactory.fromBitmap(
                                         getMarkerBitmap(102, 0, 102)
                                 ))
-                        .title("urself")
+                        .title("you")
         );
 
         // poi's
@@ -205,26 +220,125 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                 );
                 int distance = (int) results[0];
 
+                String snippet;
+
                 switch (poi.getType()) {
                     case Boei:
-                        addAnMarker(getMarkerBitmap(0, 0, 255), poi, "Buoy: ('" + poi.getId() + "') - Distance Off ('" + distance +"m')");
+                        /*
+
+                        no longer of use in the app
+
+                        addAnMarker(
+                                getMarkerBitmap(0, 0, 255),
+                                poi,
+                                String.valueOf(poi.getType()) + "("+distance+")",
+                                ""
+                        );
+
+                        */
                         break;
                     case Ligplaats:
-                        addAnMarker(getMarkerBitmap(0,155,0), poi, "Berth: ('" + poi.getId() + "') - Distance Off ('" + distance +"m')");
+
+                        snippet = "";
+
+                        if(poi.getEigenaar()!=null){
+                            snippet += "Eigenaar : '"+poi.getEigenaar()+"'\n";
+                        } else {
+                            snippet += "Eigenaar : 'onbekend'\n";
+                        }
+                        if(poi.getHavenNaam()!=null){
+                            snippet += "Haven : '"+poi.getHavenNaam()+"'\n";
+                        } else {
+                            snippet += "Haven : 'onbekend'\n";
+                        }
+                        if(poi.getLigplaatsAfmeerType()!=null){
+                            snippet += "Afmeer Type : '"+poi.getLigplaatsAfmeerType()+"'";
+                        } else {
+                            snippet += "Afmeer Type : 'onbekend'";
+                        }
+
+                        addAnMarker(
+                                getMarkerBitmap(0,155,0),
+                                poi,
+                                String.valueOf(poi.getType()) + " ('" + distance +"m')",
+                                snippet
+                        );
                         break;
                     case Meerpaal:
-                        addAnMarker(getMarkerBitmap(255,0,0), poi, "Boulder: ('" + poi.getId() + "') - Distance Off: ('" + distance +"m')");
+
+                        snippet = "";
+
+                        if(poi.getTypePaal()!=null){
+                            snippet += "Type paal: '"+poi.getLigplaatsAfmeerType()+"'\n";
+                        } else {
+                            snippet += "Type paal: 'onbekend'\n";
+                        }
+
+                        if(poi.getMateriaal()!=null){
+                            snippet += "Matriaal : '"+poi.getMateriaal()+"'\n";
+                        } else {
+                            snippet += "Matriaal : 'onbekend'\n";
+                        }
+                        if(poi.getTrekkracht() != 0 ){
+                            snippet += "Trekkracht : '"+poi.getTrekkracht()+"'";
+                        } else {
+                            snippet += "Haven : 'onbekend'";
+                        }
+
+                        addAnMarker(
+                                getMarkerBitmap(255,0,0),
+                                poi,
+                                String.valueOf(poi.getType()) + " ('" + distance +"m')",
+                                snippet
+                        );
                         break;
                     case Bolder:
-                        addAnMarker(getMarkerBitmap(230,99,24), poi, "Boulder: ('" + poi.getId() + "') - Distance Off: ('" + distance +"m')");
+
+                        snippet = "";
+
+                        if(poi.getTypePaal()!=null){
+                            snippet += "Type paal: '"+poi.getLigplaatsAfmeerType()+"'\n";
+                        } else {
+                            snippet += "Type paal: 'onbekend'\n";
+                        }
+
+                        if(poi.getMateriaal()!=null){
+                            snippet += "Matriaal : '"+poi.getMateriaal()+"'\n";
+                        } else {
+                            snippet += "Matriaal : 'onbekend'\n";
+                        }
+                        if(poi.getTrekkracht() != 0 ){
+                            snippet += "Trekkracht : '"+poi.getTrekkracht()+"'";
+                        } else {
+                            snippet += "Haven : 'onbekend'";
+                        }
+
+                        addAnMarker(
+                                getMarkerBitmap(230,99,24),
+                                poi,
+                                String.valueOf(poi.getType()) + " ('" + distance +"m')",
+                                snippet
+                        );
                         break;
                 }
 
                 if(zoekPOI != null) {
-                    addAnMarker(getMarkerBitmap(255,0,255), zoekPOI, String.valueOf(zoekPOI.getId()));
+                    addAnMarker(getMarkerBitmap(255,0,255), zoekPOI, String.valueOf(zoekPOI.getId()),"");
                 }
+
+
             }
         }
+    }
+
+    private String getMarkerSnippet(PointOfInterest poi) {
+        String snippet = "";
+
+        if(poi.getDescription() != null) {
+            snippet += poi.getDescription()+"\n";
+        }
+
+        return snippet;
     }
 
     private Bitmap getMarkerBitmap(int red, int green, int blue) {
@@ -239,8 +353,8 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         return bitmap;
     }
 
-    private void addAnMarker(Bitmap color, PointOfInterest poi, String title) {
-        googleMap.addMarker(
+    private void addAnMarker(Bitmap color, PointOfInterest poi, String title, String snippet) {
+        Marker marker = googleMap.addMarker(
                 new MarkerOptions()
                         .position(
                                 new LatLng(
@@ -252,14 +366,17 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                                         color
                                 ))
                         .title(title)
+                        .snippet(snippet)
         );
+
+        savedMarkers.add(new SavedMarkerData(marker,poi));
     }
 
     @Override
     public void run() {
         while (mapsActive) {
             currentTime = System.currentTimeMillis();
-            if (hasMoved) {
+            if (hasMoved && !hasClicked) {
                 if (lastMovedTime + 500 < currentTime) {
 
                     // Drawing of makers
@@ -276,6 +393,14 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
                     hasMoved = false;
                 }
+            } else if(hasClicked){
+                try {
+                    Thread.sleep(500);
+                    hasMoved = false;
+                    hasClicked = false;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -287,7 +412,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
             public void onClick(View v) {
                 editor.putInt("choice", 0);
                 editor.commit();
-                if(fragmentListener != null)
+                if (fragmentListener != null)
                     fragmentListener.ChangeFragment(RoleSelectorFragment.class);
             }
         });
@@ -297,7 +422,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                if(!isChecked) {
+                if (!isChecked) {
                     ArrayList<PointOfInterest> tempList = new ArrayList<>();
                     for (PointOfInterest poi : tempPoiList) {
                         if (poi.getType().equals(PoiType.Meerpaal)) {
@@ -321,7 +446,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         ligplaatsenCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!isChecked) {
+                if (!isChecked) {
                     ArrayList<PointOfInterest> removeList = new ArrayList<>();
                     for (PointOfInterest poi : tempPoiList) {
                         if (poi.getType().equals(PoiType.Ligplaats)) {
@@ -454,5 +579,40 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
             }
         });
         searchDialog.show();
+    }
+
+    private class SavedMarkerData{
+        private Marker marker;
+        private PointOfInterest poi;
+
+        private SavedMarkerData(Marker marker, PointOfInterest poi) {
+            this.marker = marker;
+            this.poi = poi;
+        }
+    }
+
+    private class MyCustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+        private final View myMarkerView;
+
+        private MyCustomInfoWindowAdapter() {
+            this.myMarkerView = getActivity().getLayoutInflater().inflate(R.layout.custom_infowindow_layout, null);
+        }
+
+        @Override
+        public View getInfoWindow(Marker marker) {
+            return null;
+        }
+
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            TextView title = (TextView) myMarkerView.findViewById(R.id.titleview);
+            TextView info = (TextView) myMarkerView.findViewById(R.id.infoview);
+
+            title.setText(marker.getTitle());
+            info.setText(marker.getSnippet());
+
+            return myMarkerView;
+        }
     }
 }

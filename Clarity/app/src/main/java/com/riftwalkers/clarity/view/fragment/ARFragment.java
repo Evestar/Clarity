@@ -39,6 +39,7 @@ import java.nio.ByteBuffer;
 
 public class ARFragment extends AbstractARFragment implements LocationListenerObserver, SearchButtonClickListener {
 
+
     private Bitmap bitmap;
     private ByteBuffer byteBuffer;
     private ImageStruct texture;
@@ -60,7 +61,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     private FrameLayout infoBox;
 
     public static boolean isSearchingFromMaps = false;
-    public static int idOfSearchedPOI;
+    public static PointOfInterest SearchedPOI;
 
     public ARFragment() {
         pointOfInterestList = ((MainActivity) getActivity()).pointOfInterestList;
@@ -208,7 +209,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         boldersCheckbox.setChecked(false);
 
         for(PointOfInterest poi : pointOfInterestList) {
-            if(idOfSearchedPOI == poi.getId()) {
+            if(SearchedPOI.getCoordinate() == poi.getCoordinate()) {
                 int distance = getDistance(poi);
                 if (poi.getGeometry() == null) {
                     File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), "zoekPOI.png");

@@ -3,25 +3,24 @@ package com.riftwalkers.clarity.data.point_of_intrest;
 import android.location.Location;
 
 import com.metaio.sdk.jni.IGeometry;
-import com.metaio.sdk.jni.LLACoordinate;
 
 public class PointOfInterest {
-    private int Id;
-    private String featureId;
-    private PoiType Type;
-    private String Description;
-    private Location Coordinate;
-    private IGeometry geometry;
-    private String materiaal;
-    private String methodeVerankering;
-    private int trekkracht;
-    private String trekkrachtEenheid;
-    private String typePaal;
-    private int nummer;
-    private String eigenaar;
-    private String havenNaam;
-    private String ligplaatsAfmeerType;
-    private String oeverNummer;
+    private int Id;                             // Alles
+    private String featureId;                   // Willekeurig
+    private PoiType Type;                       // Alles
+    private String Description;                 // Alleen meerpalen, maar beperkt
+    private Location Coordinate;                // Alles
+    private IGeometry geometry;                 // Alles
+    private String materiaal;                   // Alleen meerpalen , maar beperkt
+    private String methodeVerankering;          // Alleen boulders , maar beperkt
+    private int trekkracht;                     // Alleen meerpalen & boulder, beperkt
+    private String trekkrachtEenheid;           // Alleen meerpalen & boulder, beperkt
+    private String typePaal;                    // Alleen meerpalen, ook beperkt
+    private int nummer;                         // Alleen boulder, ook beperkt
+    private String eigenaar;                    // Alleen ligplaats
+    private String havenNaam;                   // alleen ligplaats, heel beperkt
+    private String ligplaatsAfmeerType;         // alleen ligplaats, beperkt
+    private String oeverNummer;                 // alleen ligplaats, waarscheinlijk beperkt
 
     public String getMateriaal() {
         return materiaal;
