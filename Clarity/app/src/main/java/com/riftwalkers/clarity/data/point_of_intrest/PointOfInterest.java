@@ -166,4 +166,30 @@ public class PointOfInterest {
     public String toString(){
         return getDescription();
     }
+
+    public String getPaalNummer(){
+        if(getDescription()==null) return null;
+        String[] temp = getDescription().split(" ");
+        String a =  temp[temp.length-1];
+
+        try{
+            int last = Integer.parseInt(String.valueOf(a.charAt(a.length() - 1)));
+
+            return a;
+        } catch (Exception e){
+
+            return a.substring(0,a.length()-1);
+        }
+    }
+
+    public String getPaalHaven() {
+        if(getDescription()==null) return null;
+        String[] temp = getDescription().split(" ");
+
+        String a = "";
+        for (int i = 0; i < temp.length - 1; i++) {
+            a += temp[i]+" ";
+        }
+        return a.trim();
+    }
 }

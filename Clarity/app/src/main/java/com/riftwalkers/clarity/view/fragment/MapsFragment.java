@@ -3,6 +3,8 @@ package com.riftwalkers.clarity.view.fragment;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,7 +38,10 @@ import com.riftwalkers.clarity.data.point_of_intrest.PointOfInterest;
 import com.riftwalkers.clarity.view.activities.MainActivity;
 import com.riftwalkers.clarity.view.dialog.SearchDialog;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 @SuppressWarnings({"UnusedAssignment", "FieldCanBeLocal", "ConstantConditions"})
 public class MapsFragment extends BaseFragment implements OnMapReadyCallback,LocationListenerObserver,Runnable,SearchButtonClickListener {
@@ -187,18 +192,35 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         ne.setLongitude(bounds.northeast.longitude);
         ne.setLatitude(bounds.northeast.latitude);
 
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(getActivity(), Locale.getDefault());
+
+        LatLng lastKnown = new LatLng(
+                locationProvider.getLastKnownLocation().getLatitude(),
+                locationProvider.getLastKnownLocation().getLongitude()
+        );
+        String address = "Locatie informatie niet beschikbaar";
+        try {
+            addresses = geocoder.getFromLocation(lastKnown.latitude, lastKnown.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+            address = addresses.get(0).getPostalCode() +", "+ addresses.get(0).getLocality() +"\n"+addresses.get(0).getCountryName();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
         user = googleMap.addMarker(
                 new MarkerOptions()
-                        .position(
-                                new LatLng(
-                                        locationProvider.getLastKnownLocation().getLatitude(),
-                                        locationProvider.getLastKnownLocation().getLongitude()
-                                ))
+                        .position(lastKnown)
                         .icon(
                                 BitmapDescriptorFactory.fromBitmap(
                                         getMarkerBitmap(102, 0, 102)
-                                ))
+                                )
+                        )
                         .title("you")
+                        .snippet(address)
         );
 
         // poi's
@@ -242,83 +264,88 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                         snippet = "";
 
                         if(poi.getEigenaar()!=null){
-                            snippet += "Eigenaar : '"+poi.getEigenaar()+"'\n";
+                            snippet += "Eigenaar : "+poi.getEigenaar()+"\n";
                         } else {
-                            snippet += "Eigenaar : 'onbekend'\n";
+                            snippet += "Eigenaar : onbekend\n";
                         }
                         if(poi.getHavenNaam()!=null){
-                            snippet += "Haven : '"+poi.getHavenNaam()+"'\n";
+                            snippet += "Haven : "+poi.getHavenNaam()+"\n";
                         } else {
-                            snippet += "Haven : 'onbekend'\n";
+                            snippet += "Haven : onbekend\n";
                         }
                         if(poi.getLigplaatsAfmeerType()!=null){
-                            snippet += "Afmeer Type : '"+poi.getLigplaatsAfmeerType()+"'";
+                            snippet += "Afmeer Type : "+poi.getLigplaatsAfmeerType()+"";
                         } else {
-                            snippet += "Afmeer Type : 'onbekend'";
+                            snippet += "Afmeer Type : onbekend";
                         }
 
-                        addAnMarker(
-                                getMarkerBitmap(0,155,0),
-                                poi,
-                                String.valueOf(poi.getType()) + " ('" + distance +"m')",
-                                snippet
-                        );
+//                        addAnMarker(
+//                                getMarkerBitmap(0,155,0),
+//                                poi,
+//                                String.valueOf(poi.getType()) + " ('" + distance +"m')",
+//                                snippet
+//                        );
                         break;
                     case Meerpaal:
 
                         snippet = "";
 
                         if(poi.getTypePaal()!=null){
-                            snippet += "Type paal: '"+poi.getLigplaatsAfmeerType()+"'\n";
+                            snippet += "Type paal: "+poi.getTypePaal()+"\n";
                         } else {
-                            snippet += "Type paal: 'onbekend'\n";
+                            snippet += "Type paal: onbekend\n";
                         }
 
-                        if(poi.getMateriaal()!=null){
-                            snippet += "Matriaal : '"+poi.getMateriaal()+"'\n";
-                        } else {
-                            snippet += "Matriaal : 'onbekend'\n";
-                        }
                         if(poi.getTrekkracht() != 0 ){
-                            snippet += "Trekkracht : '"+poi.getTrekkracht()+"'";
+                            snippet += "Trekkracht : "+poi.getTrekkracht()+"KN\n";
                         } else {
-                            snippet += "Haven : 'onbekend'";
+                            snippet += "Trekkracht : onbekend\n";
                         }
 
-                        addAnMarker(
-                                getMarkerBitmap(255,0,0),
-                                poi,
-                                String.valueOf(poi.getType()) + " ('" + distance +"m')",
-                                snippet
-                        );
+                        if(poi.getPaalHaven() != null){
+                            snippet += "Haven : "+poi.getPaalHaven();
+                        } else {
+                            snippet += "Haven : onbekend";
+                        }
+
+                        if(poi.getPaalNummer() != null){
+                            addAnMarker(
+                                    getMarkerBitmap(255,0,0),
+                                    poi,
+                                    String.valueOf(poi.getPaalNummer()) + " ('" + distance +"m')",
+                                    snippet
+                            );
+                        }
                         break;
                     case Bolder:
 
                         snippet = "";
 
                         if(poi.getTypePaal()!=null){
-                            snippet += "Type paal: '"+poi.getLigplaatsAfmeerType()+"'\n";
+                            snippet += "Type paal: "+poi.getLigplaatsAfmeerType()+"\n";
                         } else {
-                            snippet += "Type paal: 'onbekend'\n";
+                            snippet += "Type paal: onbekend\n";
                         }
 
                         if(poi.getMateriaal()!=null){
-                            snippet += "Matriaal : '"+poi.getMateriaal()+"'\n";
+                            snippet += "Matriaal : "+poi.getMateriaal()+"\n";
                         } else {
-                            snippet += "Matriaal : 'onbekend'\n";
+                            snippet += "Matriaal : onbekend\n";
                         }
                         if(poi.getTrekkracht() != 0 ){
-                            snippet += "Trekkracht : '"+poi.getTrekkracht()+"'";
+                            snippet += "Trekkracht : "+poi.getTrekkracht()+"";
                         } else {
-                            snippet += "Haven : 'onbekend'";
+                            snippet += "Haven : onbekend";
                         }
 
-                        addAnMarker(
-                                getMarkerBitmap(230,99,24),
-                                poi,
-                                String.valueOf(poi.getType()) + " ('" + distance +"m')",
-                                snippet
-                        );
+//                        if(poi.getPaalNummer() != null){
+//                            addAnMarker(
+//                                    getMarkerBitmap(230,99,24),
+//                                    poi,
+//                                    String.valueOf(poi.getPaalNummer()) + " ('" + distance +"m')",
+//                                    snippet
+//                            );
+//                        }
                         break;
                 }
 
