@@ -16,6 +16,7 @@ import com.riftwalkers.clarity.data.GPSLocationProvider;
 import com.riftwalkers.clarity.data.interfaces.ChangeFragmentListener;
 import com.riftwalkers.clarity.data.interfaces.SearchButtonClickListener;
 import com.riftwalkers.clarity.data.point_of_intrest.PoiList;
+import com.riftwalkers.clarity.data.point_of_intrest.PointOfInterest;
 import com.riftwalkers.clarity.view.fragment.ARFragment;
 import com.riftwalkers.clarity.view.fragment.BaseFragment;
 import com.riftwalkers.clarity.view.fragment.MapsFragment;
@@ -30,7 +31,10 @@ public class MainActivity extends ActionBarActivity implements ChangeFragmentLis
 
     private SharedPreferences sharedPreferences; // SharedPreference and information
     private SharedPreferences.Editor editor;
+
     public static PoiList pointOfInterestList;
+    public static boolean isSearchingFromMaps = false;
+    public static PointOfInterest SearchedPOI;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private BaseFragment currentFragment;
