@@ -47,12 +47,12 @@
                     android:id="@+id/meerpalenCheckbox"
                     android:checked="true" />
 
-                <CheckBox
+                <!--<CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/aanmeerboeienCheckbox"
                     android:id="@+id/aanmeerboeienCheckbox"
-                    android:checked="true" />
+                    android:checked="true" />-->
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -87,7 +87,7 @@
                     android:contentDescription="@string/legend"/>
 
 
-                <ImageView
+                <!--<ImageView
                     android:layout_width="40dp"
                     android:layout_height="30dp"
                     android:id="@+id/legendaImageB"
@@ -96,7 +96,7 @@
                     android:layout_marginTop="0dp"
                     tools:ignore="RtlHardcoded"
                     android:contentDescription="@string/legend"/>
-
+                    android:layout_marginTop="0dp" />-->
 
                 <ImageView
                     android:layout_width="40dp"
