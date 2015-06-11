@@ -15,7 +15,7 @@
         <item>Meerpalen</item>
     </string-array>
 
-    <string name="back_button_menu">Terug</string>
+    <string name="back_button_menu">Menu</string>
     <string name="meerpalenCheckbox">Meerpalen</string>
     <string name="aanmeerboeienCheckbox">Afmeerboeien</string>
     <string name="ligplaatsenCheckbox">Ligplaatsen</string>
@@ -30,6 +30,8 @@
 
     <string name="poi_info_id">POI id: </string>
     <string name="poi_info_type">Type: </string>
+    <string name="nullDataShowBox">Show markers with missing data</string>
+    <string name="legend">Legend</string>
 
 
 </resources>

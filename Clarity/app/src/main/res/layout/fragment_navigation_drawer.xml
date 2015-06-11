@@ -3,7 +3,7 @@
     android:layout_height="match_parent" android:choiceMode="singleChoice"
     android:divider="@android:color/transparent" android:dividerHeight="0dp"
     android:background="#cccc" tools:context="com.riftwalkers.clarity.NavigationDrawerFragment" />-->
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -21,16 +21,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/back_button_menu"
-            android:id="@+id/backbuttonMenu" />
+            android:id="@+id/backbuttonMenu"
+            android:layout_marginBottom="38dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout"
+            android:baselineAligned="false">
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
                 android:layout_weight="2">
@@ -77,7 +82,9 @@
                     android:id="@+id/legendaImageC"
                     android:layout_gravity="left"
                     android:src="@drawable/legenda_c"
-                    android:layout_marginTop="5dp"/>
+                    android:layout_marginTop="5dp"
+                    tools:ignore="RtlHardcoded"
+                    android:contentDescription="@string/legend"/>
 
 
                 <ImageView
@@ -86,7 +93,9 @@
                     android:id="@+id/legendaImageB"
                     android:layout_gravity="left"
                     android:src="@drawable/legenda_b"
-                    android:layout_marginTop="0dp" />
+                    android:layout_marginTop="0dp"
+                    tools:ignore="RtlHardcoded"
+                    android:contentDescription="@string/legend"/>
 
 
                 <ImageView
@@ -95,7 +104,9 @@
                     android:id="@+id/legendaImageA"
                     android:layout_gravity="left"
                     android:src="@drawable/legenda_a"
-                    android:layout_marginTop="0dp" />
+                    android:layout_marginTop="0dp"
+                    tools:ignore="RtlHardcoded"
+                    android:contentDescription="@string/legend"/>
 
                 <ImageView
                     android:layout_width="40dp"
@@ -103,29 +114,48 @@
                     android:id="@+id/legendaImageD"
                     android:layout_gravity="left"
                     android:src="@drawable/legenda_d"
-                    android:layout_marginTop="0dp" />
+                    android:layout_marginTop="0dp"
+                    tools:ignore="RtlHardcoded"
+                    android:contentDescription="@string/legend"/>
 
 
             </LinearLayout>
+
         </LinearLayout>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/showNullers"
+            android:layout_below="@+id/linearLayout"
+            android:text="@string/nullDataShowBox"
+            android:checked="true"
+            />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/rangeSeekerText"
+
+            android:layout_below="@+id/showNullers"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/rangeLabel"
                 android:id="@+id/rangeLabel"
-                android:layout_marginLeft="16dp" />
+                android:layout_marginTop="12dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
                 android:id="@+id/drawRangeView"
-                android:layout_marginLeft="16dp" />
+                tools:ignore="RtlHardcoded" />
+
         </LinearLayout>
 
         <SeekBar
@@ -135,7 +165,9 @@
             android:indeterminate="false"
             android:max="500"
             android:progress="200"
-            android:focusableInTouchMode="false" />
+            android:focusableInTouchMode="false"
+            android:layout_below="@+id/rangeSeekerText"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-
-    </LinearLayout>
+    </RelativeLayout>
