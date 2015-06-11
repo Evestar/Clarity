@@ -176,10 +176,12 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
 
                     if(poi.getGeometry() != null) {
                         metaioSDK.unloadGeometry(poi.getGeometry());
-                        poi.setGeometry(null);
-                        if(poiGeometryHashMap.containsKey(poi)) {
-                            poiGeometryHashMap.remove(poi);
+
+                        if(poiGeometryHashMap.containsKey(poi.getGeometry())) {
+                            poiGeometryHashMap.remove(poi.getGeometry());
                         }
+
+                        poi.setGeometry(null);
                     }
                 } else {
 
@@ -203,10 +205,12 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                     } else {
                         if (poi.getGeometry() != null) {
                             metaioSDK.unloadGeometry(poi.getGeometry());
-                            poi.setGeometry(null);
-                            if(poiGeometryHashMap.containsKey(poi)) {
-                                poiGeometryHashMap.remove(poi);
+
+                            if(poiGeometryHashMap.containsKey(poi.getGeometry())) {
+                                poiGeometryHashMap.remove(poi.getGeometry());
                             }
+
+                            poi.setGeometry(null);
                         }
                     }
                 }
@@ -220,25 +224,22 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         meerpalenCheckbox.setChecked(false);
         boldersCheckbox.setChecked(false);
 
-        for(PointOfInterest poi : pointOfInterestList) {
-            if(MainActivity.SearchedPOI == poi) {
+        int distance = getDistance(MainActivity.SearchedPOI);
+        if (MainActivity.SearchedPOI.getGeometry() == null) {
+            File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), "zoekPOI.png");
 
-                int distance = getDistance(poi);
-                if (poi.getGeometry() == null) {
-                    File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), "zoekPOI.png");
+            createPOIGeometry(MainActivity.SearchedPOI, POIbackground, distance);
+        }
+    }
 
-                    if (POIbackground != null) {
-                        LLACoordinate coordinate = new LLACoordinate(
-                                poi.getCoordinates().get(0).getLatitude(),
-                                poi.getCoordinates().get(0).getLongitude(),
-                                0,
-                                0);
-                        poi.setGeometry(createGeometry(coordinate, POIbackground, 80, String.valueOf(poi.getId()), distance));
-                    }
-                }
-
-                break;
-            }
+    private void createPOIGeometry(PointOfInterest poi, File poiBackground, int distance) {
+        if (poiBackground != null) {
+            LLACoordinate coordinate = new LLACoordinate(
+                    poi.getCoordinates().get(0).getLatitude(),
+                    poi.getCoordinates().get(0).getLongitude(),
+                    0,
+                    0);
+            poi.setGeometry(createGeometry(coordinate, poiBackground, 80, String.valueOf(MainActivity.SearchedPOI.getId()), distance));
         }
     }
 
