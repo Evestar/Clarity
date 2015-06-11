@@ -4,147 +4,89 @@ import android.location.Location;
 
 import com.metaio.sdk.jni.IGeometry;
 
+import java.util.LinkedList;
+
 public class PointOfInterest {
     private int Id;                             // Alles
+    private PoiType poiType;                    // Alles
     private String featureId;                   // Willekeurig
-    private PoiType Type;                       // Alles
-    private String Description;                 // Alleen meerpalen, maar beperkt
-    private Location Coordinate;                // Alles
+    private String description;                 // Bolders en Meerpalen, maar beperkt
+    private String materiaal;                   // Bolders en meerpalen, maar beperkt
+    private String methodeVerankering;          // Alleen bolders, maar beperkt
+    private int trekkracht;                     // ALTIJD IN KN! Bolder en meerpalen, maar beperkt
+    private String typePaal;                    // Alleen meerpalen, maar beperkt
+    private int nummer;                         // Alleen meerpalen, maar beperkt
+    private String eigenaar;                    // Alleen ligplaats, BIJNA allemaal
+    private String havenNaam;                   // Alleen ligplaats, BIJNA allemaal
+    private String oeverFrontNummer;            // Alleen ligplaats, BIJNA allemaal
+    private String xmeTXT;                      // Alleen ligplaats, BIJNA allemaal -> Bijv. VOPAK 623
+    private String lxmeTXT;                     // Alleen ligplaats, BIJNA allemaal -> uitgebreidere naam van xmeTXT. Bijv. NIEUWE MAAS VOPAK 623 = havenNaam + xmeTXT
+
+    private LinkedList<Location> coordinates;   // Alles
     private IGeometry geometry;                 // Alles
-    private String materiaal;                   // Alleen meerpalen , maar beperkt
-    private String methodeVerankering;          // Alleen boulders , maar beperkt
-    private int trekkracht;                     // Alleen meerpalen & boulder, beperkt
-    private String trekkrachtEenheid;           // Alleen meerpalen & boulder, beperkt
-    private String typePaal;                    // Alleen meerpalen, ook beperkt
-    private int nummer;                         // Alleen boulder, ook beperkt
-    private String eigenaar;                    // Alleen ligplaats
-    private String havenNaam;                   // alleen ligplaats, heel beperkt
-    private String ligplaatsAfmeerType;         // alleen ligplaats, beperkt
-    private String oeverNummer;                 // alleen ligplaats, waarscheinlijk beperkt
 
-    public String getMateriaal() {
-        return materiaal;
-    }
-
-    public void setMateriaal(String materiaal) {
-        this.materiaal = materiaal;
-    }
-
-    public String getMethodeVerankering() {
-        return methodeVerankering;
-    }
-
-    public void setMethodeVerankering(String methodeVerankering) {
-        this.methodeVerankering = methodeVerankering;
-    }
-
-    public int getTrekkracht() {
-        return trekkracht;
-    }
-
-    public void setTrekkracht(int trekkracht) {
-        this.trekkracht = trekkracht;
-    }
-
-    public String getTrekkrachtEenheid() {
-        return trekkrachtEenheid;
-    }
-
-    public void setTrekkrachtEenheid(String trekkrachtEenheid) {
-        this.trekkrachtEenheid = trekkrachtEenheid;
-    }
-
-    public String getTypePaal() {
-        return typePaal;
-    }
-
-    public void setTypePaal(String typePaal) {
-        this.typePaal = typePaal;
-    }
-
-    public int getNummer() {
-        return nummer;
-    }
-
-    public void setNummer(int nummer) {
-        this.nummer = nummer;
-    }
-
-    public String getEigenaar() {
-        return eigenaar;
-    }
-
-    public void setEigenaar(String eigenaar) {
-        this.eigenaar = eigenaar;
-    }
-
-    public String getHavenNaam() {
-        return havenNaam;
-    }
-
-    public void setHavenNaam(String havenNaam) {
-        this.havenNaam = havenNaam;
-    }
-
-    public String getLigplaatsAfmeerType() {
-        return ligplaatsAfmeerType;
-    }
-
-    public void setLigplaatsAfmeerType(String ligplaatsAfmeerType) {
-        this.ligplaatsAfmeerType = ligplaatsAfmeerType;
-    }
-
-    public String getOeverNummer() {
-        return oeverNummer;
-    }
-
-    public void setOeverNummer(String oeverNummer) {
-        this.oeverNummer = oeverNummer;
-    }
-
-    public void setId(int id) {
-        Id = id;
-    }
-
-    public void setFeatureId(String featureId) {
-        this.featureId = featureId;
-    }
-
-    public void setType(PoiType type) {
-        Type = type;
-    }
-
-    public void setDescription(String description) {
-        Description = description;
-    }
-
-    public void setCoordinate(Location coordinate) {
-        Coordinate = coordinate;
-    }
-
-    public void setGeometry(IGeometry geometry) {
-        this.geometry = geometry;
+    public PointOfInterest() {
+        coordinates = new LinkedList<>();
     }
 
     public int getId() {
-
         return Id;
+    }
+
+    public PoiType getPoiType() {
+        return poiType;
     }
 
     public String getFeatureId() {
         return featureId;
     }
 
-    public PoiType getType() {
-        return Type;
-    }
-
     public String getDescription() {
-        return Description;
+        return description;
     }
 
-    public Location getCoordinate() {
-        return Coordinate;
+    public String getMateriaal() {
+        return materiaal;
+    }
+
+    public String getMethodeVerankering() {
+        return methodeVerankering;
+    }
+
+    public int getTrekkracht() {
+        return trekkracht;
+    }
+
+    public String getTypePaal() {
+        return typePaal;
+    }
+
+    public int getNummer() {
+        return nummer;
+    }
+
+    public String getEigenaar() {
+        return eigenaar;
+    }
+
+    public String getHavenNaam() {
+        return havenNaam;
+    }
+
+    public String getOeverFrontNummer() {
+        return oeverFrontNummer;
+    }
+
+    public String getXmeTXT() {
+        return xmeTXT;
+    }
+
+    public String getLxmeTXT() {
+        return lxmeTXT;
+    }
+
+    public LinkedList<Location> getCoordinates() {
+        return coordinates;
     }
 
     public IGeometry getGeometry() {
@@ -153,18 +95,72 @@ public class PointOfInterest {
 
     public String GetImageName()
     {
-        switch (this.Type){
+        switch (this.poiType){
             case Ligplaats: return "POIa.png";
-            case Boei: return "POIb.png";
             case Meerpaal: return "POIc.png";
             case Bolder: return "backup3.png";
             default: return "ExamplePOI.png";
         }
     }
 
-    @Override
-    public String toString(){
-        return getDescription();
+    public void setId(int id) {
+        Id = id;
+    }
+
+    public void setPoiType(PoiType poiType) {
+        this.poiType = poiType;
+    }
+
+    public void setFeatureId(String featureId) {
+        this.featureId = featureId;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setMateriaal(String materiaal) {
+        this.materiaal = materiaal;
+    }
+
+    public void setMethodeVerankering(String methodeVerankering) {
+        this.methodeVerankering = methodeVerankering;
+    }
+
+    public void setTrekkracht(int trekkracht) {
+        this.trekkracht = trekkracht;
+    }
+
+    public void setTypePaal(String typePaal) {
+        this.typePaal = typePaal;
+    }
+
+    public void setNummer(int nummer) {
+        this.nummer = nummer;
+    }
+
+    public void setEigenaar(String eigenaar) {
+        this.eigenaar = eigenaar;
+    }
+
+    public void setHavenNaam(String havenNaam) {
+        this.havenNaam = havenNaam;
+    }
+
+    public void setOeverFrontNummer(String oeverFrontNummer) {
+        this.oeverFrontNummer = oeverFrontNummer;
+    }
+
+    public void setXmeTXT(String xmeTXT) {
+        this.xmeTXT = xmeTXT;
+    }
+
+    public void setLxmeTXT(String lxmeTXT) {
+        this.lxmeTXT = lxmeTXT;
+    }
+
+    public void setGeometry(IGeometry geometry) {
+        this.geometry = geometry;
     }
 
     public String getPaalNummer(){
