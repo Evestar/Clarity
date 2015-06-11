@@ -41,7 +41,7 @@ import com.riftwalkers.clarity.view.dialog.SearchDialog;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -73,7 +73,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
     private Marker LastMarkerClicked;
     private int clicks = 0;
-    private LinkedHashMap<Marker, PointOfInterest> savedMarkers;
+    private HashMap<Marker, PointOfInterest> savedMarkers;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,7 +92,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         pointOfInterestList = MainActivity.pointOfInterestList;
         tempPoiList = (PoiList) pointOfInterestList.clone();
 
-        savedMarkers = new LinkedHashMap<>();
+        savedMarkers = new HashMap<>();
         setupViews();
     }
 

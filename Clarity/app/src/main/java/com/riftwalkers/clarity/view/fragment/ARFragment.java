@@ -36,6 +36,7 @@ import com.riftwalkers.clarity.view.dialog.SearchDialog;
 
 import java.io.File;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
 
 public class ARFragment extends AbstractARFragment implements LocationListenerObserver, SearchButtonClickListener {
 
@@ -45,6 +46,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     private ImageStruct texture;
 
     private PoiList pointOfInterestList;
+    private HashMap<IGeometry, PointOfInterest> poiGeometryHashMap;
 
     private int drawRange;
 
@@ -59,7 +61,8 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     private FrameLayout infoBox;
 
     public ARFragment() {
-        pointOfInterestList = ((MainActivity) getActivity()).pointOfInterestList;
+        pointOfInterestList = MainActivity.pointOfInterestList;
+        poiGeometryHashMap = new HashMap<>();
     }
 
     @Override
@@ -90,8 +93,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         getView().findViewById(R.id.poi_info).setVisibility(View.VISIBLE);
 
         //link geometry with poi in poiList
-        String geometryID = geometry.getName();
-        PointOfInterest linkedPoi = pointOfInterestList.get(Integer.parseInt(geometryID)-1);
+        PointOfInterest linkedPoi = poiGeometryHashMap.get(geometry);
 
         //get and draw poi id
         String idText = "POI id: " + linkedPoi.getId();//poiID;
@@ -163,7 +165,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     private void drawGeometries() {
         //draw each poi in the arrayList
 
-        if(((MainActivity) getActivity()).isSearchingFromMaps){
+        if(MainActivity.isSearchingFromMaps){
             searchFromMaps();
         } else {
             for (PointOfInterest poi : pointOfInterestList) {
@@ -175,9 +177,10 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                     if(poi.getGeometry() != null) {
                         metaioSDK.unloadGeometry(poi.getGeometry());
                         poi.setGeometry(null);
+                        if(poiGeometryHashMap.containsKey(poi)) {
+                            poiGeometryHashMap.remove(poi);
+                        }
                     }
-
-                    continue;
                 } else {
 
                     int distance = getDistance(poi);
@@ -193,14 +196,17 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                                         0,
                                         0);
                                 poi.setGeometry(createGeometry(coordinate, POIbackground, 80, String.valueOf(poi.getId()), distance));
-                            } else {
-                                MetaioDebug.log(Log.ERROR, "Error loading POIbackground: " + POIbackground);
+
+                                poiGeometryHashMap.put(poi.getGeometry(), poi);
                             }
                         }
                     } else {
                         if (poi.getGeometry() != null) {
                             metaioSDK.unloadGeometry(poi.getGeometry());
                             poi.setGeometry(null);
+                            if(poiGeometryHashMap.containsKey(poi)) {
+                                poiGeometryHashMap.remove(poi);
+                            }
                         }
                     }
                 }
@@ -215,7 +221,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         boldersCheckbox.setChecked(false);
 
         for(PointOfInterest poi : pointOfInterestList) {
-            if(((MainActivity) getActivity()).SearchedPOI == poi) {
+            if(MainActivity.SearchedPOI == poi) {
 
                 int distance = getDistance(poi);
                 if (poi.getGeometry() == null) {
@@ -228,8 +234,6 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                                 0,
                                 0);
                         poi.setGeometry(createGeometry(coordinate, POIbackground, 80, String.valueOf(poi.getId()), distance));
-                    } else {
-                        MetaioDebug.log(Log.ERROR, "Error loading POIbackground: " + POIbackground);
                     }
                 }
 
@@ -254,8 +258,8 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     public IGeometry createGeometry(LLACoordinate coordinate, File iconFile, int scale, String id, int distance) {
         bitmap = BitmapFactory.decodeFile(iconFile.getAbsolutePath());
 
-        //draw text and notification onto the poi image, boolean for if the poi has a new message
-        bitmap = drawTextToBitmap(bitmap, id, distance, true);
+        //draw text onto the poi image
+        bitmap = drawTextToBitmap(bitmap, id, distance);
 
         byteBuffer = ByteBuffer.allocate(bitmap.getWidth()*bitmap.getHeight()*4);
 
@@ -304,8 +308,8 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    ((MainActivity) getActivity()).isSearchingFromMaps = false;
-                    ((MainActivity) getActivity()).SearchedPOI = null;
+                    MainActivity.isSearchingFromMaps = false;
+                    MainActivity.SearchedPOI = null;
                 }
 
                 mSurfaceView.queueEvent(new Runnable() {
@@ -322,8 +326,8 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    ((MainActivity) getActivity()).isSearchingFromMaps = false;
-                    ((MainActivity) getActivity()).SearchedPOI = null;
+                    MainActivity.isSearchingFromMaps = false;
+                    MainActivity.SearchedPOI = null;
                 }
 
                 mSurfaceView.queueEvent(new Runnable() {
@@ -364,8 +368,8 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    ((MainActivity) getActivity()).isSearchingFromMaps = false;
-                    ((MainActivity) getActivity()).SearchedPOI = null;
+                    MainActivity.isSearchingFromMaps = false;
+                    MainActivity.SearchedPOI = null;
                 }
 
                 mSurfaceView.queueEvent(new Runnable() {
@@ -462,8 +466,8 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                 mSurfaceView.queueEvent(new Runnable() {
                     @Override
                     public void run() {
-                        if ((((MainActivity) getActivity()).SearchedPOI != null)) {
-                            metaioSDK.unloadGeometry(((MainActivity) getActivity()).SearchedPOI.getGeometry());
+                        if ((MainActivity.SearchedPOI != null)) {
+                            metaioSDK.unloadGeometry(MainActivity.SearchedPOI.getGeometry());
                         }
 
                         ligplaatsenCheckbox.setChecked(false);
@@ -471,7 +475,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                         meerpalenCheckbox.setChecked(false);
                         boldersCheckbox.setChecked(false);
 
-                        ((MainActivity) getActivity()).SearchedPOI = poi;
+                        MainActivity.SearchedPOI = poi;
 
                         File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), "zoekPOI.png");
 
@@ -483,8 +487,8 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
 
                         float[] results = new float[3];
                         Location.distanceBetween(
-                                ((MainActivity) getActivity()).SearchedPOI.getCoordinates().get(0).getLatitude(),
-                                ((MainActivity) getActivity()).SearchedPOI.getCoordinates().get(0).getLongitude(),
+                                MainActivity.SearchedPOI.getCoordinates().get(0).getLatitude(),
+                                MainActivity.SearchedPOI.getCoordinates().get(0).getLongitude(),
                                 mSensors.getLocation().getLatitude(),
                                 mSensors.getLocation().getLongitude(),
                                 results
@@ -492,8 +496,8 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
 
                         int distance = (int) results[0];
 
-                        ((MainActivity) getActivity()).SearchedPOI.setGeometry(createGeometry(coordinate, POIbackground, 100,String.valueOf(((MainActivity) getActivity()).SearchedPOI.getId()), distance));
-                        ((MainActivity) getActivity()).SearchedPOI.getGeometry().setVisible(true);
+                        MainActivity.SearchedPOI.setGeometry(createGeometry(coordinate, POIbackground, 100, String.valueOf(MainActivity.SearchedPOI.getId()), distance));
+                        MainActivity.SearchedPOI.getGeometry().setVisible(true);
                     }
                 });
             }
@@ -501,7 +505,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         searchDialog.show();
     }
 
-    public Bitmap drawTextToBitmap(Bitmap baseImage, String text, int distance, boolean hasNewMessage) {
+    public Bitmap drawTextToBitmap(Bitmap baseImage, String text, int distance) {
 
         Bitmap.Config bitmapConfig = bitmap.getConfig();
         // set default bitmap config if none
@@ -540,17 +544,6 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         x = (baseImage.getWidth() - bounds.width())/2;
         y = baseImage.getHeight()-12;
         canvas.drawText(String.valueOf(distance) + " m", x, y, paint);
-
-        /*if(hasNewMessage) {
-            //draw new message notification TODO: to be moved to the checker of new messages at he POI
-            File notificationFile = AssetsManager.getAssetPathAsFile(getActivity(), "notification.png");
-            Bitmap notificationBitmap = BitmapFactory.decodeFile(notificationFile.getAbsolutePath());
-
-            paint.setColor(Color.WHITE);
-            x = (baseImage.getWidth() - bounds.width()) / 2 + 58;
-            y = 8;
-            canvas.drawBitmap(notificationBitmap, x, y, paint);
-        }*/
 
         return baseImage;
     }
