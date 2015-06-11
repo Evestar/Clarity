@@ -28,7 +28,6 @@ import com.metaio.tools.io.AssetsManager;
 import com.riftwalkers.clarity.R;
 import com.riftwalkers.clarity.data.interfaces.LocationListenerObserver;
 import com.riftwalkers.clarity.data.interfaces.SearchButtonClickListener;
-import com.riftwalkers.clarity.data.point_of_intrest.PoiList;
 import com.riftwalkers.clarity.data.point_of_intrest.PoiType;
 import com.riftwalkers.clarity.data.point_of_intrest.PointOfInterest;
 import com.riftwalkers.clarity.view.activities.MainActivity;
@@ -36,16 +35,20 @@ import com.riftwalkers.clarity.view.dialog.SearchDialog;
 
 import java.io.File;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ARFragment extends AbstractARFragment implements LocationListenerObserver, SearchButtonClickListener {
 
+    private int POI_SCALE = 80;
 
     private Bitmap bitmap;
     private ByteBuffer byteBuffer;
     private ImageStruct texture;
 
-    private PoiList pointOfInterestList;
+    private ArrayList<PointOfInterest> bolderList;
+    private ArrayList<PointOfInterest> ligplaatsenList;
+    private ArrayList<PointOfInterest> meerpalenList;
     private HashMap<IGeometry, PointOfInterest> poiGeometryHashMap;
 
     private int drawRange;
@@ -53,7 +56,6 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     private Button menuBackButton;
     private CheckBox meerpalenCheckbox;
     private CheckBox ligplaatsenCheckbox;
-    private CheckBox aanmeerboeienCheckbox;
     private CheckBox boldersCheckbox;
     private TextView drawRangeView;
     private SeekBar rangeSelectSeekBar;
@@ -61,8 +63,24 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     private FrameLayout infoBox;
 
     public ARFragment() {
-        pointOfInterestList = MainActivity.pointOfInterestList;
         poiGeometryHashMap = new HashMap<>();
+        bolderList = new ArrayList<>();
+        ligplaatsenList = new ArrayList<>();
+        meerpalenList = new ArrayList<>();
+
+        for(PointOfInterest poi : MainActivity.pointOfInterestList) {
+            switch (poi.getPoiType()) {
+                case Bolder:
+                    bolderList.add(poi);
+                    break;
+                case Meerpaal:
+                    meerpalenList.add(poi);
+                    break;
+                case Ligplaats:
+                    ligplaatsenList.add(poi);
+                    break;
+            }
+        }
     }
 
     @Override
@@ -86,8 +104,6 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
 
     @Override
     protected void onGeometryTouched(IGeometry geometry) {
-
-        Log.wtf("",geometry.toString());
 
         //Show poi info in the poi info box when touched
         getView().findViewById(R.id.poi_info).setVisibility(View.VISIBLE);
@@ -163,72 +179,65 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     }
 
     private void drawGeometries() {
-        //draw each poi in the arrayList
 
         if(MainActivity.isSearchingFromMaps){
             searchFromMaps();
         } else {
-            for (PointOfInterest poi : pointOfInterestList) {
-                if(     ((!meerpalenCheckbox.isChecked()) && (poi.getPoiType() == PoiType.Meerpaal)) ||
-                        ((!ligplaatsenCheckbox.isChecked()) && (poi.getPoiType() == PoiType.Ligplaats)) ||
-                        ((!boldersCheckbox.isChecked()) && (poi.getPoiType() == PoiType.Bolder))
-                        ) {
+            if(boldersCheckbox.isChecked()) {
+                for (PointOfInterest poi : bolderList) {
+                    checkIfShouldDrawPOI(poi);
+                }
+            } else {
+                for(PointOfInterest poi : bolderList) {
+                    checkIfPOIGeometryNotNull(poi);
+                }
+            }
 
-                    if(poi.getGeometry() != null) {
-                        metaioSDK.unloadGeometry(poi.getGeometry());
+            if(ligplaatsenCheckbox.isChecked()) {
+                for(PointOfInterest poi : ligplaatsenList) {
+                    checkIfShouldDrawPOI(poi);
+                }
+            } else {
+                for(PointOfInterest poi : ligplaatsenList) {
+                    checkIfPOIGeometryNotNull(poi);
+                }
+            }
 
-                        if(poiGeometryHashMap.containsKey(poi.getGeometry())) {
-                            poiGeometryHashMap.remove(poi.getGeometry());
-                        }
-
-                        poi.setGeometry(null);
-                    }
-                } else {
-
-                    int distance = getDistance(poi);
-                    if (distance < drawRange) {
-                        if (poi.getGeometry() == null) {
-                            //get type of POI and image
-                            File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), poi.GetImageName());
-
-                            if (POIbackground != null) {
-                                LLACoordinate coordinate = new LLACoordinate(
-                                        poi.getCoordinates().get(0).getLatitude(),
-                                        poi.getCoordinates().get(0).getLongitude(),
-                                        0,
-                                        0);
-                                poi.setGeometry(createGeometry(coordinate, POIbackground, 80, String.valueOf(poi.getId()), distance));
-
-                                poiGeometryHashMap.put(poi.getGeometry(), poi);
-                            }
-                        }
-                    } else {
-                        if (poi.getGeometry() != null) {
-                            metaioSDK.unloadGeometry(poi.getGeometry());
-
-                            if(poiGeometryHashMap.containsKey(poi.getGeometry())) {
-                                poiGeometryHashMap.remove(poi.getGeometry());
-                            }
-
-                            poi.setGeometry(null);
-                        }
-                    }
+            if(meerpalenCheckbox.isChecked()) {
+                for(PointOfInterest poi : meerpalenList) {
+                    checkIfShouldDrawPOI(poi);
+                }
+            } else {
+                for(PointOfInterest poi : meerpalenList) {
+                    checkIfPOIGeometryNotNull(poi);
                 }
             }
         }
     }
 
-    private void searchFromMaps(){
-        ligplaatsenCheckbox.setChecked(false);
-//        aanmeerboeienCheckbox.setChecked(false);
-        meerpalenCheckbox.setChecked(false);
-        boldersCheckbox.setChecked(false);
+    private void checkIfShouldDrawPOI(PointOfInterest poi) {
+        int distance = getDistance(poi);
+        if (distance < drawRange) {
+            if (poi.getGeometry() == null) {
+                //get type of POI and image
+                File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), poi.GetImageName());
 
-        int distance = getDistance(MainActivity.SearchedPOI);
-        if (MainActivity.SearchedPOI.getGeometry() == null) {
-            File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), "zoekPOI.png");
+                createPOIGeometry(poi, POIbackground, distance);
+            }
+        } else {
+            checkIfPOIGeometryNotNull(poi);
+        }
+    }
 
-            createPOIGeometry(MainActivity.SearchedPOI, POIbackground, distance);
+    private void checkIfPOIGeometryNotNull(PointOfInterest poi) {
+        if (poi.getGeometry() != null) {
+            metaioSDK.unloadGeometry(poi.getGeometry());
+
+            if(poiGeometryHashMap.containsKey(poi.getGeometry())) {
+                poiGeometryHashMap.remove(poi.getGeometry());
+            }
+
+            poi.setGeometry(null);
         }
     }
 
@@ -239,7 +248,22 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                     poi.getCoordinates().get(0).getLongitude(),
                     0,
                     0);
-            poi.setGeometry(createGeometry(coordinate, poiBackground, 80, String.valueOf(MainActivity.SearchedPOI.getId()), distance));
+            poi.setGeometry(createGeometry(coordinate, poiBackground, POI_SCALE, String.valueOf(poi.getId()), distance));
+
+            poiGeometryHashMap.put(poi.getGeometry(), poi);
+        }
+    }
+
+    private void searchFromMaps(){
+        ligplaatsenCheckbox.setChecked(false);
+        meerpalenCheckbox.setChecked(false);
+        boldersCheckbox.setChecked(false);
+
+        int distance = getDistance(MainActivity.SearchedPOI);
+        if (MainActivity.SearchedPOI.getGeometry() == null) {
+            File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), "zoekPOI.png");
+
+            createPOIGeometry(MainActivity.SearchedPOI, POIbackground, distance);
         }
     }
 
@@ -282,8 +306,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
 
             return geometry;
         } else {
-            // todo: dit gaat niet werken, geometry altijd null, wanneer niet Null dan bovenste stuk...
-            MetaioDebug.log(Log.ERROR, "Error loading geometry: " + geometry);
+            MetaioDebug.log(Log.ERROR, "Error loading geometry");
 
             bitmap.recycle();
             bitmap = null;
@@ -339,30 +362,6 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                 });
             }
         });
-
-/*        aanmeerboeienCheckbox = (CheckBox) getActivity().findViewById(R.id.aanmeerboeienCheckbox);
-        aanmeerboeienCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked) {
-                    for (PointOfInterest poi : pointOfInterestList) {
-                        if (poi.getPoiType().equals(PoiType.Boei)) {
-                            if(poi.getGeometry() != null)
-                                poi.getGeometry().setVisible(false);
-                        }
-                    }
-                    setSearch(false);
-                } else {
-                    for (PointOfInterest poi : pointOfInterestList) {
-                        if (poi.getPoiType().equals(PoiType.Boei)) {
-                            if(poi.getGeometry() != null)
-                                poi.getGeometry().setVisible(true);
-                        }
-                    }
-                }
-
-            }
-        });*/
 
         boldersCheckbox = (CheckBox) getActivity().findViewById(R.id.boldersCheckbox);
         boldersCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -429,27 +428,15 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
             }
         });
 
-        //setup onClickListener for the info box
         infoBox = (FrameLayout) getView().findViewById(R.id.poi_info);
 
+        //setup onClickListener for the info box
         infoBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 infoBox.setVisibility(View.INVISIBLE);
             }
         });
-
-        //setup onClickListener for the info box's new msg button
-        /*infoNewMsgButton = (Button) getView().findViewById(R.id.button_new_msg);
-
-        infoNewMsgButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                MetaioDebug.log("whuat?");
-
-            }
-        });*/
     }
 
     @Override
@@ -460,7 +447,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
 
     @Override
     public void onSearchClick() {
-        SearchDialog searchDialog = new SearchDialog(getActivity(), pointOfInterestList);
+        SearchDialog searchDialog = new SearchDialog(getActivity(), MainActivity.pointOfInterestList);
         searchDialog.setDialogResult(new SearchDialog.OnMyDialogResult() {
             @Override
             public void finish(final PointOfInterest poi) {
@@ -472,7 +459,6 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                         }
 
                         ligplaatsenCheckbox.setChecked(false);
-//                        aanmeerboeienCheckbox.setChecked(false);
                         meerpalenCheckbox.setChecked(false);
                         boldersCheckbox.setChecked(false);
 
@@ -486,18 +472,9 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                                 0,
                                 0);
 
-                        float[] results = new float[3];
-                        Location.distanceBetween(
-                                MainActivity.SearchedPOI.getCoordinates().get(0).getLatitude(),
-                                MainActivity.SearchedPOI.getCoordinates().get(0).getLongitude(),
-                                mSensors.getLocation().getLatitude(),
-                                mSensors.getLocation().getLongitude(),
-                                results
-                        );
+                        int distance = getDistance(MainActivity.SearchedPOI);
 
-                        int distance = (int) results[0];
-
-                        MainActivity.SearchedPOI.setGeometry(createGeometry(coordinate, POIbackground, 100, String.valueOf(MainActivity.SearchedPOI.getId()), distance));
+                        MainActivity.SearchedPOI.setGeometry(createGeometry(coordinate, POIbackground, POI_SCALE, String.valueOf(MainActivity.SearchedPOI.getId()), distance));
                         MainActivity.SearchedPOI.getGeometry().setVisible(true);
                     }
                 });

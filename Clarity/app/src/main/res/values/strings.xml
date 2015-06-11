@@ -17,7 +17,6 @@
 
     <string name="back_button_menu">Menu</string>
     <string name="meerpalenCheckbox">Meerpalen</string>
-    <string name="aanmeerboeienCheckbox">Afmeerboeien</string>
     <string name="ligplaatsenCheckbox">Ligplaatsen</string>
     <string name="boldersCheckbox">Bolders</string>
     <string name="rangeLabel">Bereik</string>
