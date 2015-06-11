@@ -68,6 +68,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
     private CheckBox ligplaatsenCheckbox;
     private CheckBox aanmeerboeienCheckbox;
     private CheckBox boldersCheckbox;
+    private CheckBox nullerCheckbox;
     private ImageView switchbutton;
 
     private Marker LastMarkerClicked;
@@ -205,11 +206,10 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         try {
             addresses = geocoder.getFromLocation(lastKnown.latitude, lastKnown.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
 
-            address = addresses.get(0).getPostalCode() +", "+ addresses.get(0).getLocality() +"\n"+addresses.get(0).getCountryName();
+            address = addresses.get(0).getPostalCode() + ", " + addresses.get(0).getLocality() + "\n" + addresses.get(0).getCountryName();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
 
         user = googleMap.addMarker(
@@ -250,88 +250,109 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
                         snippet = "";
 
-                        if(poi.getEigenaar()!=null){
-                            snippet += "Eigenaar : "+poi.getEigenaar()+"\n";
+                        if (poi.getEigenaar() != null) {
+                            snippet += "Eigenaar : " + poi.getEigenaar() + "\n";
                         } else {
                             snippet += "Eigenaar : onbekend\n";
                         }
-                        if(poi.getHavenNaam()!=null){
-                            snippet += "Haven : "+poi.getHavenNaam()+"\n";
+                        if (poi.getHavenNaam() != null) {
+                            snippet += "Haven : " + poi.getHavenNaam() + "\n";
                         } else {
                             snippet += "Haven : onbekend\n";
                         }
 
                         addAnMarker(
-                                getMarkerBitmap(0,155,0),
+                                getMarkerBitmap(0, 155, 0),
                                 poi,
-                                String.valueOf(poi.getPoiType()) + " ('" + distance +"m')",
+                                String.valueOf(poi.getPoiType()) + " ('" + distance + "m')",
                                 snippet
                         );
-                        break;
-                    case Meerpaal:
 
-                        snippet = "";
-
-                        if(poi.getTypePaal()!=null){
-                            snippet += "Type paal: "+poi.getTypePaal()+"\n";
-                        } else {
-                            snippet += "Type paal: onbekend\n";
-                        }
-
-                        if(poi.getTrekkracht() != 0 ){
-                            snippet += "Trekkracht : "+poi.getTrekkracht()+"KN\n";
-                        } else {
-                            snippet += "Trekkracht : onbekend\n";
-                        }
-
-                        if(poi.getPaalHaven() != null){
-                            snippet += "Haven : "+poi.getPaalHaven();
-                        } else {
-                            snippet += "Haven : onbekend";
-                        }
-
-                        if(poi.getPaalNummer() != null){
-                            addAnMarker(
-                                    getMarkerBitmap(255,0,0),
-                                    poi,
-                                    String.valueOf(poi.getPaalNummer()) + " ('" + distance +"m')",
-                                    snippet
-                            );
-                        }
-                        break;
-                    case Bolder:
-
-                        snippet = "";
-
-                        if(poi.getMateriaal()!=null){
-                            snippet += "Matriaal : "+poi.getMateriaal()+"\n";
-                        } else {
-                            snippet += "Matriaal : onbekend\n";
-                        }
-                        if(poi.getTrekkracht() != 0 ){
-                            snippet += "Trekkracht : "+poi.getTrekkracht()+"";
-                        } else {
-                            snippet += "Haven : onbekend";
-                        }
-
+                        switch (poi.getPoiType()) {
+                            case Ligplaats:
+//                        snippet = "";
+//
+//                        if(poi.getEigenaar()!=null){
+//                            snippet += "Eigenaar : "+poi.getEigenaar()+"\n";
+//                        } else {
+//                            snippet += "Eigenaar : onbekend\n";
+//                        }
+//                        if(poi.getHavenNaam()!=null){
+//                            snippet += "Haven : "+poi.getHavenNaam()+"\n";
+//                        } else {
+//                            snippet += "Haven : onbekend\n";
+//                        }
+//                        if(poi.getLigplaatsAfmeerType()!=null){
+//                            snippet += "Afmeer Type : "+poi.getLigplaatsAfmeerType()+"";
+//                        } else {
+//                            snippet += "Afmeer Type : onbekend";
+//                        }
+//
+//                        addAnMarker(
+//                                getMarkerBitmap(0,155,0),
+//                                poi,
+//                                String.valueOf(poi.getType()) + " ('" + distance +"m')",
+//                                snippet
+//                        );
+                                break;
+                            case Meerpaal:
+//                        snippet = "";
+//
+//                        if(poi.getTypePaal()!=null){
+//                            snippet += "Type paal: "+poi.getTypePaal()+"\n";
+//                        } else {
+//                            snippet += "Type paal: onbekend\n";
+//                        }
+//
+//                        if(poi.getTrekkracht() != 0 ){
+//                            snippet += "Trekkracht : "+poi.getTrekkracht()+"KN\n";
+//                        } else {
+//                            snippet += "Trekkracht : onbekend\n";
+//                        }
+//
+//                        if(poi.getPaalHaven() != null){
+//                            snippet += "Haven : "+poi.getPaalHaven();
+//                        } else {
+//                            snippet += "Haven : onbekend";
+//                        }
+//
 //                        if(poi.getPaalNummer() != null){
 //                            addAnMarker(
-//                                    getMarkerBitmap(230,99,24),
+//                                    getMarkerBitmap(255,0,0),
 //                                    poi,
 //                                    String.valueOf(poi.getPaalNummer()) + " ('" + distance +"m')",
 //                                    snippet
 //                            );
 //                        }
-                        break;
+                                break;
+                            case Bolder:
+
+
+                                snippet = "";
+
+                                addAnMarker(
+                                        getMarkerBitmap(230, 99, 24),
+                                        poi,
+                                        String.valueOf(poi.getPaalNummer()) + " ('" + distance + "m')",
+                                        snippet
+                                );
+
+                                break;
+                        }
+
+                        if (zoekPOI != null) {
+                            addAnMarker(getMarkerBitmap(255, 0, 255), zoekPOI, String.valueOf(zoekPOI.getId()), "");
+                        }
+
+
                 }
-
-                if(zoekPOI != null) {
-                    addAnMarker(getMarkerBitmap(255,0,255), zoekPOI, String.valueOf(zoekPOI.getId()),"");
-                }
-
-
             }
         }
+    }
+
+    private boolean pointHasData(){
+
+        return true;
     }
 
     private String getMarkerSnippet(PointOfInterest poi) {
@@ -390,12 +411,14 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
             PolygonOptions polygonOptions = new PolygonOptions();
 
+
             for (int i = 0; i < markers.length-1; i++) {
                 polygonOptions.add(markers[i].getPosition());
             }
 
             googleMap.addPolygon(polygonOptions);
         }
+
     }
 
     @Override
@@ -458,6 +481,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                     tempPoiList.removeAll(tempList);
                     tempList = null;
                 } else {
+                    nullerCheckbox.setChecked(false);
                     for (PointOfInterest poi : pointOfInterestList) {
                         if (poi.getPoiType().equals(PoiType.Meerpaal)) {
                             tempPoiList.add(poi);
@@ -482,6 +506,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                     tempPoiList.removeAll(removeList);
                     removeList = null;
                 } else {
+                    nullerCheckbox.setChecked(false);
                     for (PointOfInterest poi : pointOfInterestList) {
                         if (poi.getPoiType().equals(PoiType.Ligplaats)) {
                             tempPoiList.add(poi);
@@ -506,6 +531,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                     tempPoiList.removeAll(removeList);
                     removeList = null;
                 } else {
+                    nullerCheckbox.setChecked(false);
                     for (PointOfInterest poi : pointOfInterestList) {
                         if (poi.getPoiType().equals(PoiType.Boei)) {
                             tempPoiList.add(poi);
@@ -530,6 +556,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                     tempPoiList.removeAll(removeList);
                     removeList = null;
                 } else {
+                    nullerCheckbox.setChecked(false);
                     for (PointOfInterest poi : pointOfInterestList) {
                         if (poi.getPoiType().equals(PoiType.Bolder)) {
                             tempPoiList.add(poi);
@@ -561,6 +588,44 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
             public void onClick(View v) {
                 if(fragmentListener != null)
                     fragmentListener.ChangeFragment(ARFragment.class);
+            }
+        });
+
+        nullerCheckbox = (CheckBox) getActivity().findViewById(R.id.showNullers);
+        nullerCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(isChecked){
+                    tempPoiList.clear();
+                    boldersCheckbox.setChecked(false);
+                    meerpalenCheckbox.setChecked(false);
+                    ligplaatsenCheckbox.setChecked(false);
+                    aanmeerboeienCheckbox.setChecked(false);
+
+                    for (PointOfInterest poi : pointOfInterestList) {
+                        switch (poi.getPoiType()) {
+
+                            case Bolder:
+                                if(poi.getDescription()!=null && poi.getTrekkracht()!=0 && poi.getMateriaal()!=null){
+                                    tempPoiList.add(poi);
+                                }
+                                break;
+                            case Meerpaal:
+                                if(poi.getDescription()!=null && poi.getTrekkracht()!=0 && poi.getMateriaal()!=null){
+                                    tempPoiList.add(poi);
+                                }
+                                break;
+                            case Ligplaats:
+                                if(poi.getDescription()!=null && poi.getTrekkracht()!=0 && poi.getMateriaal()!=null){
+                                    tempPoiList.add(poi);
+                                }
+                                break;
+                            default: /* nothing, just nothing */ break;
+
+                        }
+                    }
+                }
             }
         });
 
