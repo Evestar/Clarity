@@ -1,5 +1,6 @@
 package com.riftwalkers.clarity.view.fragment;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -48,38 +49,50 @@ import java.util.Locale;
 @SuppressWarnings({"UnusedAssignment", "FieldCanBeLocal", "ConstantConditions"})
 public class MapsFragment extends BaseFragment implements OnMapReadyCallback,LocationListenerObserver,Runnable,SearchButtonClickListener {
 
-    private MapFragment map;
-    private GoogleMap googleMap;
-    private Marker user;
+    private MapFragment map;                                //
+    private GoogleMap googleMap;                            //
+    private Marker user;                                    //
 
-    private Thread thread;
-    private static boolean mapsActive = true;
-    private long lastMovedTime;
-    private boolean hasMoved = false;
-    private boolean hasClicked = false;
-    private long currentTime;
+    private Thread thread;                                  //
+    private static boolean mapsActive = true;               //
+    private long lastMovedTime;                             //
+    private boolean hasMoved = false;                       //
+    private boolean hasClicked = false;                     //
+    private long currentTime;                               //
 
-    private PoiList pointOfInterestList;
-    private PoiList tempPoiList;
-    private PointOfInterest zoekPOI;
+    private PoiList pointOfInterestList;                    //
+    private PoiList tempPoiList;                            //
+    private PointOfInterest zoekPOI;                        //
 
-    private Button menuBackButton;
-    private CheckBox meerpalenCheckbox;
-    private CheckBox ligplaatsenCheckbox;
-    private CheckBox boldersCheckbox;
-    private CheckBox nullerCheckbox;
-    private ImageView switchbutton;
+    private Button menuBackButton;                          //
+    private CheckBox meerpalenCheckbox;                     //
+    private CheckBox ligplaatsenCheckbox;                   //
+    private CheckBox boldersCheckbox;                       //
+    private CheckBox nullerCheckbox;                        //
+    private ImageView switchbutton;                         //
 
-    private Marker LastMarkerClicked;
-    private int clicks = 0;
-    private HashMap<Marker, PointOfInterest> savedMarkers;
+    private Marker LastMarkerClicked;                       //
+    private int clicks = 0;                                 //
+    private HashMap<Marker, PointOfInterest> savedMarkers;  //
 
-
+    /**
+     * TODO: JAVADOC
+     *
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     *
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.maps_fragment, container, false);
     }
 
+    /**
+     * TODO: JAVADOC
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -96,6 +109,9 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         setupViews();
     }
 
+    /**
+     * TODO: JAVADOC
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -105,6 +121,12 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
     }
 
+    /**
+     * <p>OnMapReady runs when the activity is done loading the mapfragment.
+     * It sets all the settings for the map and moves to camera to the starting position</p>
+     *
+     * @param googleMap The ready GoogleMap.
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
@@ -138,9 +160,17 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
         LatLngBounds bounds = googleMap.getProjection()
                 .getVisibleRegion().latLngBounds;
-        createMarker(bounds);
+        createMarkers(bounds);
+
 
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            /**
+             * <p>OnMarkerClick runs on the markerClick event.
+             * It shows the infoWindow of the clicked marker and can be used to start the search function in the AR-Fragment</p>
+             *
+             * @param marker the clicked marker.
+             * @return true if a marker has been click, false if you click on the user-marker.
+             */
             @Override
             public boolean onMarkerClick(Marker marker) {
                 hasClicked = true;
@@ -160,10 +190,9 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                     }
                 } else if (LastMarkerClicked.equals(marker)) {
                     // SAME MARKER -> SEARCH!
-                    ((MainActivity) getActivity()).isSearchingFromMaps = true;
+                    MainActivity.isSearchingFromMaps = true;
 
-                    PointOfInterest searchPOI = savedMarkers.get(marker);
-                    ((MainActivity) getActivity()).SearchedPOI = searchPOI;
+                    MainActivity.SearchedPOI = savedMarkers.get(marker);
 
                     fragmentListener.ChangeFragment(ARFragment.class);
                 }
@@ -176,13 +205,25 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         thread.start();
     }
 
+    /**
+     * <p>ObserverOnLocationChanged checks if the users location has been changed.
+     * It moves the camera to the new location and moves the marker. </p>
+     *
+     * @param location The GPS location (holding latitude and longitude) of users new location
+     */
     @Override
     public void observerOnLocationChanged(Location location) {
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(location.getLatitude(), location.getLongitude()), 16, 0, 0)));
         user.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
     }
 
-    private void createMarker(LatLngBounds bounds) {
+    /**
+     * <p>CreateMarkers creates a marker of each point of interest within the users screen (bounds).
+     * This function is also responsible for the marker of the user itself.</p>
+     *
+     * @param bounds The GPS location from the North-East corner until the South-West corner of the screen
+     */
+    private void createMarkers(LatLngBounds bounds) {
         googleMap.clear();
         savedMarkers.clear();
 
@@ -233,53 +274,66 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                     poi.getCoordinates().get(0).getLongitude() > sw.getLongitude() &&
                     poi.getCoordinates().get(0).getLongitude() < ne.getLongitude()) {
 
-                float[] results = new float[3];
-                Location.distanceBetween(
-                        poi.getCoordinates().get(0).getLatitude(),
-                        poi.getCoordinates().get(0).getLongitude(),
-                        user.getPosition().latitude,
-                        user.getPosition().longitude,
-                        results
-                );
-                int distance = (int) results[0];
+                createSingleMarker(poi);
 
-                String snippet;
-
-                switch (poi.getPoiType()) {
-                    case Ligplaats:
-
-                        snippet = "";
-
-                        if (poi.getEigenaar() != null) {
-                            snippet += "Eigenaar : " + poi.getEigenaar() + "\n";
-                        } else {
-                            snippet += "Eigenaar : onbekend\n";
-                        }
-                        if (poi.getHavenNaam() != null) {
-                            snippet += "Haven : " + poi.getHavenNaam() + "\n";
-                        } else {
-                            snippet += "Haven : onbekend\n";
-                        }
-
-                        addAnMarker(
-                                getMarkerBitmap(0, 155, 0),
-                                poi,
-                                String.valueOf(poi.getPoiType()) + " ('" + distance + "m')",
-                                snippet
-                        );
-
-                        if(poi.getPaalNummer() != null){
-                            addAnMarker(
-                                    getMarkerBitmap(230,99,24),
-                                    poi,
-                                    String.valueOf(poi.getPaalNummer()) + " ('" + distance +"m')",
-                                    snippet
-                            );
-                        }
-                        break;
+                if (zoekPOI != null) {
+                    addAnMarker(getMarkerBitmap(255, 0, 255), zoekPOI, String.valueOf(zoekPOI.getId()), "");
                 }
-                        switch (poi.getPoiType()) {
-                            case Ligplaats:
+
+            }
+        }
+    }
+
+    /**
+     * createSingleMarker creates one marker and places it on the Map.
+     *
+     * @param poi The point of interest which is going to be drawn to the map
+     */
+    private void createSingleMarker(PointOfInterest poi) {
+
+        float[] results = new float[3];
+        Location.distanceBetween(
+                poi.getCoordinates().get(0).getLatitude(),
+                poi.getCoordinates().get(0).getLongitude(),
+                user.getPosition().latitude,
+                user.getPosition().longitude,
+                results
+        );
+        int distance = (int) results[0];
+
+        String snippet = "";
+        switch (poi.getPoiType()) {
+            case Ligplaats:
+                if (poi.getEigenaar() != null) {
+                    snippet += "Eigenaar : " + poi.getEigenaar() + "\n";
+                } else {
+                    snippet += "Eigenaar : onbekend\n";
+                }
+                if (poi.getHavenNaam() != null) {
+                    snippet += "Haven : " + poi.getHavenNaam() + "\n";
+                } else {
+                    snippet += "Haven : onbekend\n";
+                }
+
+                addAnMarker(
+                        getMarkerBitmap(0, 155, 0),
+                        poi,
+                        String.valueOf(poi.getPoiType()) + " ('" + distance + "m')",
+                        snippet
+                );
+
+                if (poi.getPaalNummer() != null) {
+                    addAnMarker(
+                            getMarkerBitmap(230, 99, 24),
+                            poi,
+                            String.valueOf(poi.getPaalNummer()) + " ('" + distance + "m')",
+                            snippet
+                    );
+                }
+                break;
+        }
+        switch (poi.getPoiType()) {
+            case Ligplaats:
 //                        snippet = "";
 //
 //                        if(poi.getEigenaar()!=null){
@@ -304,8 +358,8 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 //                                String.valueOf(poi.getType()) + " ('" + distance +"m')",
 //                                snippet
 //                        );
-                                break;
-                            case Meerpaal:
+                break;
+            case Meerpaal:
 //                        snippet = "";
 //
 //                        if(poi.getTypePaal()!=null){
@@ -334,47 +388,32 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 //                                    snippet
 //                            );
 //                        }
-                                break;
-                            case Bolder:
+                break;
+            case Bolder:
 
 
-                                snippet = "";
+                snippet = "";
 
-                                addAnMarker(
-                                        getMarkerBitmap(230, 99, 24),
-                                        poi,
-                                        String.valueOf(poi.getPaalNummer()) + " ('" + distance + "m')",
-                                        snippet
-                                );
+                addAnMarker(
+                        getMarkerBitmap(230, 99, 24),
+                        poi,
+                        String.valueOf(poi.getPaalNummer()) + " ('" + distance + "m')",
+                        snippet
+                );
 
-                                break;
-                        }
-
-                        if (zoekPOI != null) {
-                            addAnMarker(getMarkerBitmap(255, 0, 255), zoekPOI, String.valueOf(zoekPOI.getId()), "");
-                        }
-
-
-                }
-            }
+                break;
         }
-
-
-    private boolean pointHasData(){
-
-        return true;
     }
 
-    private String getMarkerSnippet(PointOfInterest poi) {
-        String snippet = "";
-
-        if(poi.getDescription() != null) {
-            snippet += poi.getDescription()+"\n";
-        }
-
-        return snippet;
-    }
-
+    /**
+     * <p>GetMarkerBitmap is fired when a marker is created.
+     * It created a Circle bitmap with the color that is given in RGB</p>
+     *
+     * @param red R value in RGB
+     * @param green G value in RGB
+     * @param blue B value in RGB
+     * @return Bitmap circle that can be drawn into a map
+     */
     private Bitmap getMarkerBitmap(int red, int green, int blue) {
         Paint paint = new Paint();
         paint.setAntiAlias(true);
@@ -387,6 +426,15 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         return bitmap;
     }
 
+    /**
+     * <p>AddAnMarker combines everything together about a marker.
+     * When needed it wil provide a polygon for the size of a "Ligplaats"</p>
+     *
+     * @param color The bitmap created by getMarkerBitmap(r,g,b)
+     * @param poi Point of Interest used to get location of the maker and its type
+     * @param title Title of the marker (holds the name of the Point of interest)
+     * @param snippet Description of a marker (holds information about a Point of Interest)
+     */
     private void addAnMarker(Bitmap color, PointOfInterest poi, String title, String snippet) {
         Marker[] markers = new Marker[poi.getCoordinates().size()];
 
@@ -431,6 +479,10 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
     }
 
+    /**
+     * <p>This thread runs during the use of the mapsFragment.
+     * It checks if the user has moved the map to redraw the markers within its new bounds.</p>
+     */
     @Override
     public void run() {
         while (mapsActive) {
@@ -440,13 +492,16 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
                     // Drawing of makers
                     getActivity().runOnUiThread(new Runnable() {
+                        /**
+                         * TODO: JAVADOC
+                         */
                         @Override
                         public void run() {
                             LatLngBounds bounds = googleMap.getProjection()
                                     .getVisibleRegion().latLngBounds;
                             Log.wtf("MOVED AND STOPPED: ", String.valueOf(bounds));
 
-                            createMarker(bounds);
+                            createMarkers(bounds);
                         }
                     });
 
@@ -464,9 +519,16 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         }
     }
 
+    /**
+     * <p>SetupViews gets all the interactive buttons and checkboxes and binds them to a listener.</p>
+     */
     public void setupViews() {
         menuBackButton = (Button) getActivity().findViewById(R.id.backbuttonMenu);
         menuBackButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * TODO: JAVADOC
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 editor.putInt("choice", 0);
@@ -478,6 +540,12 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
         meerpalenCheckbox = (CheckBox) getActivity().findViewById(R.id.meerpalenCheckbox);
         meerpalenCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            /**
+             * TODO: JAVADOC
+             *
+             * @param buttonView
+             * @param isChecked
+             */
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
@@ -504,6 +572,12 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
         ligplaatsenCheckbox = (CheckBox) getActivity().findViewById(R.id.ligplaatsenCheckbox);
         ligplaatsenCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            /**
+             * TODO: JAVADOC
+             *
+             * @param buttonView
+             * @param isChecked
+             */
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked) {
@@ -529,6 +603,12 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
         boldersCheckbox = (CheckBox) getActivity().findViewById(R.id.boldersCheckbox);
         boldersCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            /**
+             * TODO: JAVADOC
+             *
+             * @param buttonView
+             * @param isChecked
+             */
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked) {
@@ -554,6 +634,12 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
         nullerCheckbox = (CheckBox) getActivity().findViewById(R.id.showNullers);
         nullerCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            /**
+             * TODO: JAVADOC
+             *
+             * @param buttonView
+             * @param isChecked
+             */
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
@@ -592,6 +678,9 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         });
 
         getActivity().runOnUiThread(new Runnable() {
+            /**
+             * TODO: JAVADOC
+             */
             @Override
             public void run() {
                 TextView rangeLabel = (TextView) getActivity().findViewById(R.id.rangeLabel);
@@ -608,6 +697,11 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         switchbutton = (ImageView) getView().findViewById(R.id.switchbuttonMaps);
 
         switchbutton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * TODO: JAVADOC
+             *
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 if (fragmentListener != null)
@@ -617,6 +711,12 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
         nullerCheckbox = (CheckBox) getActivity().findViewById(R.id.showNullers);
         nullerCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            /**
+             * TODO: JAVADOC
+             *
+             * @param buttonView
+             * @param isChecked
+             */
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
@@ -654,6 +754,9 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
     }
 
+    /**
+     * <p>DrawMarkers is a helper function to draw markers when a checkbox has changed from value.</p>
+     */
     public void drawMarkers() {
         getActivity().runOnUiThread(new Runnable() {
             @Override
@@ -661,15 +764,25 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                 LatLngBounds bounds = googleMap.getProjection()
                         .getVisibleRegion().latLngBounds;
 
-                createMarker(bounds);
+                createMarkers(bounds);
             }
         });
     }
 
+    /**
+     * <p>SetActive is used when the fragment is changed. It stops the Thread from running unnecessarily when other fragments are in use.</p>
+     * @param active new state of active.
+     */
     public static void setActive(boolean active) {
         mapsActive = active;
     }
 
+    /**
+     * <p>onSearchClick handles the search functionality in the maps.
+     *
+     * When the users searches for an marker via the search dialog,
+     * this function handles all the information that needs to be processed.</p>
+     */
     @Override
     public void onSearchClick() {
         SearchDialog searchDialog = new SearchDialog(getActivity(), pointOfInterestList);
@@ -686,7 +799,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
                 tempPoiList.add(zoekPOI);
 
-                createMarker(googleMap.getProjection()
+                createMarkers(googleMap.getProjection()
                         .getVisibleRegion().latLngBounds);
 
                 googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(zoekPOI.getCoordinates().get(0).getLatitude(), zoekPOI.getCoordinates().get(0).getLongitude()), 16, 0, 0)));
@@ -695,9 +808,16 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         searchDialog.show();
     }
 
+    /**
+     * Private inner class that makes a custom window info adapter.
+     */
     private class MyCustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         private final View myMarkerView;
 
+        /**
+         *
+         */
+        @SuppressLint("InflateParams")
         private MyCustomInfoWindowAdapter() {
             this.myMarkerView = getActivity().getLayoutInflater().inflate(R.layout.custom_infowindow_layout, null);
         }
@@ -707,7 +827,12 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
             return null;
         }
 
-
+        /**
+         *  TODO: JAVADOC
+         *
+         * @param marker
+         * @return
+         */
         @Override
         public View getInfoContents(Marker marker) {
             TextView title = (TextView) myMarkerView.findViewById(R.id.titleview);
