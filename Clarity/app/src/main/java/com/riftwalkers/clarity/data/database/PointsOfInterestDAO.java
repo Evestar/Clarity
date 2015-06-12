@@ -1,6 +1,7 @@
 package com.riftwalkers.clarity.data.database;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
@@ -8,6 +9,7 @@ import android.location.Location;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 import com.riftwalkers.clarity.data.point_of_intrest.PoiType;
 import com.riftwalkers.clarity.data.point_of_intrest.PointOfInterest;
+import com.riftwalkers.clarity.view.activities.MainActivity;
 
 import java.util.ArrayList;
 
@@ -24,6 +26,8 @@ public class PointsOfInterestDAO {
 
         ArrayList<PointOfInterest> pointOfInterests = new ArrayList<>();
 
+        SharedPreferences sharedPreferences = MainActivity.sharedPreferences;
+
         String[] MEERPALENcolumns = {ClarityDBHelper.UID,
                 ClarityDBHelper.FEATUREID,
                 ClarityDBHelper.DESCRIPTION,
@@ -35,6 +39,12 @@ public class PointsOfInterestDAO {
 
         Cursor cursor = db.query(ClarityDBHelper.MEERPALEN_TABLE_NAME,MEERPALENcolumns,null,null,null,null,null);
         while (cursor.moveToNext()){
+            if(!sharedPreferences.getBoolean("showAllData", true)) {
+                if(cursor.getString(cursor.getColumnIndex(ClarityDBHelper.DESCRIPTION)) == null) {
+                    continue;
+                }
+            }
+
             PointOfInterest poi = new PointOfInterest();
 
             poi.setId(cursor.getInt(cursor.getColumnIndex(ClarityDBHelper.UID)));
@@ -116,6 +126,12 @@ public class PointsOfInterestDAO {
 
         cursor = db.query(ClarityDBHelper.BOLDERS_TABLE_NAME,BOLDERScolumns,null,null,null,null,null);
         while (cursor.moveToNext()){
+            if(!sharedPreferences.getBoolean("showAllData", true)) {
+                if(cursor.getString(cursor.getColumnIndex(ClarityDBHelper.DESCRIPTION)) == null) {
+                    continue;
+                }
+            }
+
             PointOfInterest poi = new PointOfInterest();
 
             poi.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(ClarityDBHelper.UID))));

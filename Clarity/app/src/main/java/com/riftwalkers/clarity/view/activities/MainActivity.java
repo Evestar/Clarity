@@ -29,7 +29,7 @@ public class MainActivity extends ActionBarActivity implements ChangeFragmentLis
 
     private SearchButtonClickListener searchButtonClickListener;
 
-    private SharedPreferences sharedPreferences; // SharedPreference and information
+    public static SharedPreferences sharedPreferences; // SharedPreference and information
     private SharedPreferences.Editor editor;
 
     public static PoiList pointOfInterestList;

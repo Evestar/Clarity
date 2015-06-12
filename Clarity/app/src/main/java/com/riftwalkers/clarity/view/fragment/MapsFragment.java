@@ -1,6 +1,7 @@
 package com.riftwalkers.clarity.view.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -633,6 +634,12 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         });
 
         nullerCheckbox = (CheckBox) getActivity().findViewById(R.id.showNullers);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("ClarityApp",0);
+        if(sharedPreferences.getBoolean("showAllData",true)) {
+            nullerCheckbox.setChecked(true);
+        } else {
+            nullerCheckbox.setChecked(false);
+        }
         nullerCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             /**
              * TODO: JAVADOC
@@ -642,38 +649,16 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
              */
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                editor.putBoolean("showAllData",isChecked);
+                editor.commit();
 
+                MainActivity.pointOfInterestList = new PoiList(getActivity());
 
-                if (isChecked) {
-                    tempPoiList.clear();
+                if (map != null)
+                    getFragmentManager().beginTransaction().remove(map).commit();
 
-                    boldersCheckbox.setChecked(false);
-                    meerpalenCheckbox.setChecked(false);
-                    ligplaatsenCheckbox.setChecked(false);
-
-//                    for (PointOfInterest poi : pointOfInterestList) {
-//                        switch (poi.getPoiType()) {
-//
-//                            case Bolder:
-//                                if (poi.getDescription() != null && poi.getTrekkracht() != 0 && poi.getMateriaal() != null) {
-//                                    tempPoiList.add(poi);
-//                                }
-//                                break;
-//                            case Meerpaal:
-//                                if (poi.getDescription() != null && poi.getTrekkracht() != 0 && poi.getMateriaal() != null) {
-//                                    tempPoiList.add(poi);
-//                                }
-//                                break;
-//                            case Ligplaats:
-//                                if (poi.getDescription() != null && poi.getTrekkracht() != 0 && poi.getMateriaal() != null) {
-//                                    tempPoiList.add(poi);
-//                                }
-//                                break;
-//                            default: /* nothing, just nothing */
-//                                break;
-//                        }
-//                    }
-                }
+                if(fragmentListener != null)
+                    fragmentListener.ChangeFragment(MapsFragment.class);
             }
         });
 
@@ -708,50 +693,6 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                     fragmentListener.ChangeFragment(ARFragment.class);
             }
         });
-
-        nullerCheckbox = (CheckBox) getActivity().findViewById(R.id.showNullers);
-        nullerCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            /**
-             * TODO: JAVADOC
-             *
-             * @param buttonView
-             * @param isChecked
-             */
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                if(isChecked){
-                    tempPoiList.clear();
-                    boldersCheckbox.setChecked(false);
-                    meerpalenCheckbox.setChecked(false);
-                    ligplaatsenCheckbox.setChecked(false);
-
-                    for (PointOfInterest poi : pointOfInterestList) {
-                        switch (poi.getPoiType()) {
-
-                            case Bolder:
-                                if(poi.getDescription()!=null && poi.getTrekkracht()!=0 && poi.getMateriaal()!=null){
-                                    tempPoiList.add(poi);
-                                }
-                                break;
-                            case Meerpaal:
-                                if(poi.getDescription()!=null && poi.getTrekkracht()!=0 && poi.getMateriaal()!=null){
-                                    tempPoiList.add(poi);
-                                }
-                                break;
-                            case Ligplaats:
-                                if(poi.getDescription()!=null && poi.getTrekkracht()!=0 && poi.getMateriaal()!=null){
-                                    tempPoiList.add(poi);
-                                }
-                                break;
-                            default: /* nothing, just nothing */ break;
-
-                        }
-                    }
-                }
-            }
-        });
-
     }
 
     /**

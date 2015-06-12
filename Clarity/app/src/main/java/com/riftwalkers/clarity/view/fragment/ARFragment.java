@@ -1,5 +1,6 @@
 package com.riftwalkers.clarity.view.fragment;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -28,6 +29,7 @@ import com.metaio.tools.io.AssetsManager;
 import com.riftwalkers.clarity.R;
 import com.riftwalkers.clarity.data.interfaces.LocationListenerObserver;
 import com.riftwalkers.clarity.data.interfaces.SearchButtonClickListener;
+import com.riftwalkers.clarity.data.point_of_intrest.PoiList;
 import com.riftwalkers.clarity.data.point_of_intrest.PoiType;
 import com.riftwalkers.clarity.data.point_of_intrest.PointOfInterest;
 import com.riftwalkers.clarity.view.activities.MainActivity;
@@ -57,6 +59,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     private CheckBox meerpalenCheckbox;
     private CheckBox ligplaatsenCheckbox;
     private CheckBox boldersCheckbox;
+    private CheckBox nullDataCheckbox;
     private TextView drawRangeView;
     private SeekBar rangeSelectSeekBar;
     private ImageView switchbutton;
@@ -106,24 +109,24 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     protected void onGeometryTouched(IGeometry geometry) {
 
         //Show poi info in the poi info box when touched
-        getView().findViewById(R.id.poi_info).setVisibility(View.VISIBLE);
+        getActivity().findViewById(R.id.poi_info).setVisibility(View.VISIBLE);
 
         //link geometry with poi in poiList
         PointOfInterest linkedPoi = poiGeometryHashMap.get(geometry);
 
         //get and draw poi id
         String idText = "POI id: " + linkedPoi.getId();//poiID;
-        TextView infoID = (TextView)getView().findViewById(R.id.info_id);
+        TextView infoID = (TextView)getActivity().findViewById(R.id.info_id);
         infoID.setText(idText);
 
         //get and draw poi type
         String typeText = "Type: " + linkedPoi.getPoiType().toString();
-        TextView infoType = (TextView)getView().findViewById(R.id.info_type);
+        TextView infoType = (TextView)getActivity().findViewById(R.id.info_type);
         infoType.setText(typeText);
 
-        TextView row1 = (TextView)getView().findViewById(R.id.info_row1);
-        TextView row2 = (TextView)getView().findViewById(R.id.info_row2);
-        TextView row3 = (TextView)getView().findViewById(R.id.info_row3);
+        TextView row1 = (TextView)getActivity().findViewById(R.id.info_row1);
+        TextView row2 = (TextView)getActivity().findViewById(R.id.info_row2);
+        TextView row3 = (TextView)getActivity().findViewById(R.id.info_row3);
 
         if(linkedPoi.getPoiType() == PoiType.Bolder) {
             String trekkracht;
@@ -378,6 +381,25 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                         drawGeometries();
                     }
                 });
+            }
+        });
+
+        nullDataCheckbox = (CheckBox) getActivity().findViewById(R.id.showNullers);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("ClarityApp",0);
+        if(sharedPreferences.getBoolean("showAllData",true)) {
+            nullDataCheckbox.setChecked(true);
+        } else {
+            nullDataCheckbox.setChecked(false);
+        }
+        nullDataCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                editor.putBoolean("showAllData",isChecked);
+                editor.commit();
+
+                MainActivity.pointOfInterestList = new PoiList(getActivity());
+                if(fragmentListener != null)
+                    fragmentListener.ChangeFragment(ARFragment.class);
             }
         });
 
