@@ -21,26 +21,33 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 public class SearchDialog extends Dialog implements AdapterView.OnItemSelectedListener {
+    // Listener for 'search'
     private OnMyDialogResult mDialogResult;
 
+    // Activity from which the dialog spawns
     private Activity activity;
 
+    // Views
     private Spinner objectTypeSpinner;
     private Spinner areaSpinner;
     private Spinner objectSpinner;
     private Button button;
 
+    // ArrayAdapters
     private ArrayAdapter<CharSequence> objectTypeSpinnerAdapter;
     private ArrayAdapter areaSpinnerAdapter;
     private PointOfInterestAdapter objectSpinnerAdapter;
 
+    // ArrayLists
     private ArrayList<PointOfInterest> boldersArray;
     private ArrayList<PointOfInterest> koningsPalenArray;
     private ArrayList<PointOfInterest> hogePalenArray;
     private ArrayList<PointOfInterest> ligplaatsenArray;
-
     private ArrayList<String> areasArray;
 
+    /**
+     * Set the app to fullscreen
+     */
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -55,17 +62,25 @@ public class SearchDialog extends Dialog implements AdapterView.OnItemSelectedLi
         }
     }
 
+    /**
+     * Constructor
+     * @param activity Activity from which the search dialog is spawned
+     * @param pointOfInterests List of POI's
+     */
     public SearchDialog(Activity activity, ArrayList<PointOfInterest> pointOfInterests) {
         super(activity);
-        this.activity = activity;
-        this.setContentView(R.layout.search_dialog);
-        this.setTitle(R.string.search_dialog_title);
 
+        this.activity = activity;
+        this.setContentView(R.layout.search_dialog);        // Set custom layout
+        this.setTitle(R.string.search_dialog_title);        // Set title from strings.xml
+
+        // Initialize ArrayLists
         boldersArray = new ArrayList<>();
         koningsPalenArray = new ArrayList<>();
         hogePalenArray = new ArrayList<>();
         ligplaatsenArray = new ArrayList<>();
 
+        // Split POI list in sub arrayLists for fast processing
         for(PointOfInterest poi: pointOfInterests) {
             if(poi.getPoiType().equals(PoiType.Meerpaal)) {
                 if(poi.getDescription() != null) {
@@ -89,16 +104,19 @@ public class SearchDialog extends Dialog implements AdapterView.OnItemSelectedLi
             }
         }
 
+        // Setup spinners
         objectTypeSpinner = (Spinner) findViewById(R.id.objectTypeSpinner);
         objectSpinner = (Spinner) findViewById(R.id.objectSpinner);
         areaSpinner = (Spinner) findViewById(R.id.areaSpinner);
         button = (Button) findViewById(R.id.button);
 
+        // Setup objectType spinner
         objectTypeSpinnerAdapter = ArrayAdapter.createFromResource(activity, R.array.drawer_array, android.R.layout.simple_spinner_item);
         objectTypeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         objectTypeSpinner.setAdapter(objectTypeSpinnerAdapter);
         objectTypeSpinner.setOnItemSelectedListener(this);
 
+        // Setup 'Search' button
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,11 +128,18 @@ public class SearchDialog extends Dialog implements AdapterView.OnItemSelectedLi
         });
     }
 
-
-
+    /**
+     * Called when an item is selected from a spinner
+     * @param parent View from which the event is called
+     * @param position Position of the item in the list
+     */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        // If the event is called in the objectType spinner
         if(parent == objectTypeSpinner) {
+
+            // Hide other views if nothing is selected
             if(position == 0) {
                 areaSpinner.setVisibility(View.GONE);
                 objectSpinner.setVisibility(View.GONE);
@@ -132,7 +157,7 @@ public class SearchDialog extends Dialog implements AdapterView.OnItemSelectedLi
                 System.out.println("Ligplaatsen selected");
                 fillAreaSpinner(ligplaatsenArray);
             }
-        } else if(parent == areaSpinner) {
+        } else if(parent == areaSpinner) {      // If event comes from area spinner
             if(position == 0) {
                 objectSpinner.setVisibility(View.GONE);
                 button.setVisibility(View.GONE);
@@ -154,12 +179,17 @@ public class SearchDialog extends Dialog implements AdapterView.OnItemSelectedLi
         }
     }
 
+    /**
+     * Fill area spinner with area's from sourceArray
+     * @param sourceArray Array from which the area must be looked up
+     */
     private void fillAreaSpinner(ArrayList<PointOfInterest> sourceArray) {
         areasArray = new ArrayList<>();
 
         for(PointOfInterest poi : sourceArray) {
             String area = "";
 
+            // If Bolder, 'Koningspaal' or 'Hoge paal': find area in desciption
             if((sourceArray == hogePalenArray) || (sourceArray == koningsPalenArray) || (sourceArray == boldersArray)) {
                 String[] description = poi.getDescription().split(" ");
 
@@ -167,16 +197,18 @@ public class SearchDialog extends Dialog implements AdapterView.OnItemSelectedLi
                     area += description[i] + " ";
                 }
             } else if(sourceArray == ligplaatsenArray) {
-                area = poi.getHavenNaam();
+                area = poi.getHavenNaam();      // 'Ligplaatsen' has a property for area
             }
 
             area.trim();
 
+            // If area not already known, add it to areas array
             if(!areasArray.contains(area)) {
                 areasArray.add(area);
             }
         }
 
+        // Sort the areas array
         Collections.sort(areasArray, new Comparator<String>() {
             @Override
             public int compare(String lhs, String rhs) {
@@ -184,8 +216,10 @@ public class SearchDialog extends Dialog implements AdapterView.OnItemSelectedLi
             }
         });
 
+        // Add placeholder
         areasArray.add(0,"Gebied..");
 
+        // Set up area spinner
         areaSpinnerAdapter = new ArrayAdapter(activity, R.layout.searchbox_spinner_listview, areasArray);
         areaSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         areaSpinner.setAdapter(areaSpinnerAdapter);
@@ -194,6 +228,11 @@ public class SearchDialog extends Dialog implements AdapterView.OnItemSelectedLi
         areaSpinner.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Fill objects spinner with object from selected area
+     * @param areasArray Area array from with the selected are is chosen
+     * @param pointOfInterests POI array from which the objects must be loaded
+     */
     private void fillObjectsSpinner(ArrayList<String> areasArray, ArrayList<PointOfInterest> pointOfInterests) {
         ArrayList<PointOfInterest> pointOfInterestArrayList = new ArrayList<>();
         String poiArea = "";
@@ -229,10 +268,18 @@ public class SearchDialog extends Dialog implements AdapterView.OnItemSelectedLi
 
     }
 
+    /**
+     * Sets the object which observers the search event
+     * @param dialogResult Object which implements OnMyDialogResult interface
+     */
     public void setDialogResult(OnMyDialogResult dialogResult){
         mDialogResult = dialogResult;
     }
 
+    /**
+     * OnMyDialogResult<br/>
+     * Interface for search event listener
+     */
     public interface OnMyDialogResult{
         void finish(PointOfInterest poi);
     }

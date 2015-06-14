@@ -13,6 +13,9 @@ import com.riftwalkers.clarity.data.point_of_intrest.PointOfInterest;
 
 import java.util.List;
 
+/**
+ * Custom implementation of ArrayAdapter
+ */
 public class PointOfInterestAdapter extends ArrayAdapter<PointOfInterest> {
 
     private ViewHolder viewHolder;
