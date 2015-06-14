@@ -79,11 +79,9 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
     /**
      * TODO: JAVADOC
      *
-     *
      * @param inflater
      * @param container
      * @param savedInstanceState
-     *
      * @return
      */
     @Override
@@ -218,6 +216,10 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         user.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
     }
 
+    //////////////////////////////////////////////////
+    //                 MARKER STUFF                 //
+    //////////////////////////////////////////////////
+
     /**
      * <p>CreateMarkers creates a marker of each point of interest within the users screen (bounds).
      * This function is also responsible for the marker of the user itself.</p>
@@ -302,104 +304,22 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         );
         int distance = (int) results[0];
 
-        String snippet = "";
         switch (poi.getPoiType()) {
             case Ligplaats:
-                if (poi.getEigenaar() != null) {
-                    snippet += "Eigenaar : " + poi.getEigenaar() + "\n";
-                } else {
-                    snippet += "Eigenaar : onbekend\n";
-                }
-                if (poi.getHavenNaam() != null) {
-                    snippet += "Haven : " + poi.getHavenNaam() + "\n";
-                } else {
-                    snippet += "Haven : onbekend\n";
-                }
-
                 addAnMarker(
                         getMarkerBitmap(0, 155, 0),
                         poi,
-                        String.valueOf(poi.getPoiType()) + " ('" + distance + "m')",
-                        snippet
+                        getMarkerTitle(poi, distance),
+                        getMarkerSnippet(poi)
                 );
+                break;
 
-                if (poi.getPaalNummer() != null) {
-                    addAnMarker(
-                            getMarkerBitmap(230, 99, 24),
-                            poi,
-                            String.valueOf(poi.getPaalNummer()) + " ('" + distance + "m')",
-                            snippet
-                    );
-                }
-                break;
-        }
-        switch (poi.getPoiType()) {
-            case Ligplaats:
-//                        snippet = "";
-//
-//                        if(poi.getEigenaar()!=null){
-//                            snippet += "Eigenaar : "+poi.getEigenaar()+"\n";
-//                        } else {
-//                            snippet += "Eigenaar : onbekend\n";
-//                        }
-//                        if(poi.getHavenNaam()!=null){
-//                            snippet += "Haven : "+poi.getHavenNaam()+"\n";
-//                        } else {
-//                            snippet += "Haven : onbekend\n";
-//                        }
-//                        if(poi.getLigplaatsAfmeerType()!=null){
-//                            snippet += "Afmeer Type : "+poi.getLigplaatsAfmeerType()+"";
-//                        } else {
-//                            snippet += "Afmeer Type : onbekend";
-//                        }
-//
-//                        addAnMarker(
-//                                getMarkerBitmap(0,155,0),
-//                                poi,
-//                                String.valueOf(poi.getType()) + " ('" + distance +"m')",
-//                                snippet
-//                        );
-                break;
-            case Meerpaal:
-//                        snippet = "";
-//
-//                        if(poi.getTypePaal()!=null){
-//                            snippet += "Type paal: "+poi.getTypePaal()+"\n";
-//                        } else {
-//                            snippet += "Type paal: onbekend\n";
-//                        }
-//
-//                        if(poi.getTrekkracht() != 0 ){
-//                            snippet += "Trekkracht : "+poi.getTrekkracht()+"KN\n";
-//                        } else {
-//                            snippet += "Trekkracht : onbekend\n";
-//                        }
-//
-//                        if(poi.getPaalHaven() != null){
-//                            snippet += "Haven : "+poi.getPaalHaven();
-//                        } else {
-//                            snippet += "Haven : onbekend";
-//                        }
-//
-//                        if(poi.getPaalNummer() != null){
-//                            addAnMarker(
-//                                    getMarkerBitmap(255,0,0),
-//                                    poi,
-//                                    String.valueOf(poi.getPaalNummer()) + " ('" + distance +"m')",
-//                                    snippet
-//                            );
-//                        }
-                break;
             case Bolder:
-
-
-                snippet = "";
-
                 addAnMarker(
                         getMarkerBitmap(230, 99, 24),
                         poi,
-                        String.valueOf(poi.getPaalNummer()) + " ('" + distance + "m')",
-                        snippet
+                        getMarkerTitle(poi, distance),
+                        getMarkerSnippet(poi)
                 );
 
                 break;
@@ -407,12 +327,38 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
     }
 
     /**
+     * GetMarkerSnippet is used to get a snippet for the according point of interest types
+     *
+     * @param poi
+     * @return
+     */
+    private String getMarkerSnippet(PointOfInterest poi) {
+
+        return String.valueOf(poi.getPoiType())
+                .concat("");
+    }
+
+    /**
+     * @param poi
+     * @param distance
+     * @return
+     */
+    private String getMarkerTitle(PointOfInterest poi, int distance) {
+        String title = "";
+
+        title = title.concat(String.valueOf(poi.getId()))
+                .concat(" " + distance);
+
+        return title;
+    }
+
+    /**
      * <p>GetMarkerBitmap is fired when a marker is created.
      * It created a Circle bitmap with the color that is given in RGB</p>
      *
-     * @param red R value in RGB
+     * @param red   R value in RGB
      * @param green G value in RGB
-     * @param blue B value in RGB
+     * @param blue  B value in RGB
      * @return Bitmap circle that can be drawn into a map
      */
     private Bitmap getMarkerBitmap(int red, int green, int blue) {
@@ -431,20 +377,27 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
      * <p>AddAnMarker combines everything together about a marker.
      * When needed it wil provide a polygon for the size of a "Ligplaats"</p>
      *
-     * @param color The bitmap created by getMarkerBitmap(r,g,b)
-     * @param poi Point of Interest used to get location of the maker and its type
-     * @param title Title of the marker (holds the name of the Point of interest)
+     * @param color   The bitmap created by getMarkerBitmap(r,g,b)
+     * @param poi     Point of Interest used to get location of the maker and its type
+     * @param title   Title of the marker (holds the name of the Point of interest)
      * @param snippet Description of a marker (holds information about a Point of Interest)
      */
     private void addAnMarker(Bitmap color, PointOfInterest poi, String title, String snippet) {
-        Marker[] markers = new Marker[poi.getCoordinates().size()];
 
-        markers[0] = googleMap.addMarker(
+        ArrayList<Location> locations = new ArrayList<>();
+
+        for (int i = 0; i < poi.getCoordinates().size(); i++) {
+            locations.add(poi.getCoordinates().get(i));
+        }
+
+        Location center = getCentralCoordinate(locations);
+
+        Marker m = googleMap.addMarker(
                 new MarkerOptions()
                         .position(
                                 new LatLng(
-                                        poi.getCoordinates().get(0).getLatitude(),
-                                        poi.getCoordinates().get(0).getLongitude()
+                                        center.getLatitude(),
+                                        center.getLongitude()
                                 ))
                         .icon(
                                 BitmapDescriptorFactory.fromBitmap(
@@ -453,32 +406,68 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                         .title(title)
                         .snippet(snippet)
         );
-        savedMarkers.put(markers[0],poi);
+        savedMarkers.put(m, poi);
 
-        if(poi.getPoiType() == PoiType.Ligplaats) {
-            for (int i = 1; i < markers.length-1; i++) {
-                markers[i] = googleMap.addMarker(
-                        new MarkerOptions()
-                                .position(
-                                        new LatLng(
-                                                poi.getCoordinates().get(i).getLatitude(),
-                                                poi.getCoordinates().get(i).getLongitude()
-                                        ))
-                                .visible(false)
-                );
-            }
+        if (poi.getPoiType() == PoiType.Ligplaats) {
 
             PolygonOptions polygonOptions = new PolygonOptions();
 
-
-            for (int i = 0; i < markers.length-1; i++) {
-                polygonOptions.add(markers[i].getPosition());
+            for (int i = 0; i < locations.size() - 1; i++) {
+                polygonOptions.add(
+                    new LatLng(
+                        locations.get(i).getLatitude(),
+                        locations.get(i).getLongitude()
+                    )
+                );
             }
 
             googleMap.addPolygon(polygonOptions);
         }
-
     }
+
+    /**
+     *
+     * @param locations
+     * @return
+     */
+    private Location getCentralCoordinate(ArrayList<Location> locations) {
+        if (locations.size() == 1) {
+            return locations.get(0);
+        }
+
+        double x = 0;
+        double y = 0;
+        double z = 0;
+
+        for (int i = 0; i < locations.size()-1; i++) {
+            double latitude = locations.get(i).getLatitude() * Math.PI / 180;
+            double longitude = locations.get(i).getLongitude() * Math.PI / 180;
+
+            x += Math.cos(latitude) * Math.cos(longitude);
+            y += Math.cos(latitude) * Math.sin(longitude);
+            z += Math.sin(latitude);
+        }
+
+        double total = locations.size();
+
+        x = x / total;
+        y = y / total;
+        z = z / total;
+
+        double centralLongitude = Math.atan2(y, x);
+        double centralSquareRoot = Math.sqrt(x * x + y * y);
+        double centralLatitude = Math.atan2(z, centralSquareRoot);
+
+        Location center = new Location("");
+        center.setLatitude(centralLatitude * 180 / Math.PI);
+        center.setLongitude(centralLongitude * 180 / Math.PI);
+
+        return center;
+    }
+
+    //////////////////////////////////////////////////
+    //                 SWIPE THREAD                 //
+    //////////////////////////////////////////////////
 
     /**
      * <p>This thread runs during the use of the mapsFragment.
@@ -494,7 +483,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                     // Drawing of makers
                     getActivity().runOnUiThread(new Runnable() {
                         /**
-                         * TODO: JAVADOC
+                         * <p>Runnable over UI thread to draw whenever the user stopped swiping</p>
                          */
                         @Override
                         public void run() {
@@ -508,7 +497,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
                     hasMoved = false;
                 }
-            } else if(hasClicked){
+            } else if (hasClicked) {
                 try {
                     Thread.sleep(500);
                     hasMoved = false;
@@ -521,24 +510,22 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
     }
 
     /**
+     * <p>SetActive is used when the fragment is changed. It stops the Thread from running unnecessarily when other fragments are in use.</p>
+     *
+     * @param active new state of active.
+     */
+    public static void setActive(boolean active) {
+        mapsActive = active;
+    }
+
+    //////////////////////////////////////////////////
+    //                  VIEW STUFF                  //
+    //////////////////////////////////////////////////
+
+    /**
      * <p>SetupViews gets all the interactive buttons and checkboxes and binds them to a listener.</p>
      */
     public void setupViews() {
-        menuBackButton = (Button) getActivity().findViewById(R.id.backbuttonMenu);
-        menuBackButton.setOnClickListener(new View.OnClickListener() {
-            /**
-             * TODO: JAVADOC
-             * @param v
-             */
-            @Override
-            public void onClick(View v) {
-                editor.putInt("choice", 0);
-                editor.commit();
-                if (fragmentListener != null)
-                    fragmentListener.ChangeFragment(RoleSelectorFragment.class);
-            }
-        });
-
         meerpalenCheckbox = (CheckBox) getActivity().findViewById(R.id.meerpalenCheckbox);
         meerpalenCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             /**
@@ -659,12 +646,42 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
                 if(fragmentListener != null)
                     fragmentListener.ChangeFragment(MapsFragment.class);
+                if (isChecked) {
+                    tempPoiList.clear();
+                    boldersCheckbox.setChecked(false);
+                    meerpalenCheckbox.setChecked(false);
+                    ligplaatsenCheckbox.setChecked(false);
+
+                    for (PointOfInterest poi : pointOfInterestList) {
+                        switch (poi.getPoiType()) {
+
+                            case Bolder:
+                                if (poi.getDescription() != null && poi.getTrekkracht() != 0 && poi.getMateriaal() != null) {
+                                    tempPoiList.add(poi);
+                                }
+                                break;
+                            case Meerpaal:
+                                if (poi.getDescription() != null && poi.getTrekkracht() != 0 && poi.getMateriaal() != null) {
+                                    tempPoiList.add(poi);
+                                }
+                                break;
+                            case Ligplaats:
+                                if (poi.getDescription() != null && poi.getTrekkracht() != 0 && poi.getMateriaal() != null) {
+                                    tempPoiList.add(poi);
+                                }
+                                break;
+                            default: /* nothing, just nothing */
+                                break;
+
+                        }
+                    }
+                }
             }
         });
 
         getActivity().runOnUiThread(new Runnable() {
             /**
-             * TODO: JAVADOC
+             * <p>This inner thread is used to update the range label, for maps this means it will be invisible</p>
              */
             @Override
             public void run() {
@@ -679,8 +696,22 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
             }
         });
 
-        switchbutton = (ImageView) getView().findViewById(R.id.switchbuttonMaps);
+        menuBackButton = (Button) getActivity().findViewById(R.id.backbuttonMenu);
+        menuBackButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * TODO: JAVADOC
+             * @param v
+             */
+            @Override
+            public void onClick(View v) {
+                editor.putInt("choice", 0);
+                editor.commit();
+                if (fragmentListener != null)
+                    fragmentListener.ChangeFragment(RoleSelectorFragment.class);
+            }
+        });
 
+        switchbutton = (ImageView) getView().findViewById(R.id.switchbuttonMaps);
         switchbutton.setOnClickListener(new View.OnClickListener() {
             /**
              * TODO: JAVADOC
@@ -693,6 +724,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                     fragmentListener.ChangeFragment(ARFragment.class);
             }
         });
+
     }
 
     /**
@@ -711,16 +743,8 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
     }
 
     /**
-     * <p>SetActive is used when the fragment is changed. It stops the Thread from running unnecessarily when other fragments are in use.</p>
-     * @param active new state of active.
-     */
-    public static void setActive(boolean active) {
-        mapsActive = active;
-    }
-
-    /**
      * <p>onSearchClick handles the search functionality in the maps.
-     *
+     * <p/>
      * When the users searches for an marker via the search dialog,
      * this function handles all the information that needs to be processed.</p>
      */
@@ -734,7 +758,6 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                 zoekPOI = poi;
 
                 meerpalenCheckbox.setChecked(false);
-//                aanmeerboeienCheckbox.setChecked(false);
                 ligplaatsenCheckbox.setChecked(false);
                 boldersCheckbox.setChecked(false);
 
@@ -749,14 +772,18 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         searchDialog.show();
     }
 
+    //////////////////////////////////////////////////
+    //          CUSTOM INFO WINDOW ADAPTER          //
+    //////////////////////////////////////////////////
+
     /**
-     * Private inner class that makes a custom window info adapter.
+     * <p>Private inner class that makes a custom window info adapter.</p>
      */
     private class MyCustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         private final View myMarkerView;
 
         /**
-         *
+         * <p>When instantiating the Custom infoWindowAdapter, this constructor gets the right layout for the custom marker view.</p>
          */
         @SuppressLint("InflateParams")
         private MyCustomInfoWindowAdapter() {
@@ -769,10 +796,11 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         }
 
         /**
-         *  TODO: JAVADOC
+         * <p>GetInfoContents opens up the infoWindow of the marker, this includes the Title as well as the Snippet
+         * The custom info window is used to display data in a way the normal InfoWoindAdapter doest not allow.</p>
          *
-         * @param marker
-         * @return
+         * @param marker The given marker equals a marker that has resently been clicked
+         * @return It returns the View of the infoWindow with the right text.
          */
         @Override
         public View getInfoContents(Marker marker) {
