@@ -76,22 +76,11 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
     private int clicks = 0;                                 //
     private HashMap<Marker, PointOfInterest> savedMarkers;  //
 
-    /**
-     * TODO: JAVADOC
-     *
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return
-     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.maps_fragment, container, false);
     }
 
-    /**
-     * TODO: JAVADOC
-     */
     @Override
     public void onStart() {
         super.onStart();
@@ -108,9 +97,6 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         setupViews();
     }
 
-    /**
-     * TODO: JAVADOC
-     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -329,8 +315,8 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
     /**
      * GetMarkerSnippet is used to get a snippet for the according point of interest types
      *
-     * @param poi
-     * @return
+     * @param poi The point of interest that requests a Snippet
+     * @return A snippet with the description and values inside of the Point Of Interest
      */
     private String getMarkerSnippet(PointOfInterest poi) {
 
@@ -339,9 +325,9 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
     }
 
     /**
-     * @param poi
-     * @param distance
-     * @return
+     * @param poi This is the PointOfInterest which requests the title
+     * @param distance This is the distance between the User and the given Point Of Interest.
+     * @return A String of text holding both an ID and the Distance.
      */
     private String getMarkerTitle(PointOfInterest poi, int distance) {
         String title = "";
@@ -426,9 +412,10 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
     }
 
     /**
+     * <p>Calculates the center of a Array(list) of Locations. If only one location is within the ArrayList, it returns just the one.</p>
      *
-     * @param locations
-     * @return
+     * @param locations A list of locations.
+     * @return The center of the locations whitin the given list.
      */
     private Location getCentralCoordinate(ArrayList<Location> locations) {
         if (locations.size() == 1) {
@@ -529,13 +516,16 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         meerpalenCheckbox = (CheckBox) getActivity().findViewById(R.id.meerpalenCheckbox);
         meerpalenCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             /**
-             * TODO: JAVADOC
+             * <p>onCheckedChanged is called whenever the user checks or unchecked the checkbox.
+             * <p/>This function deletes or adds all the markers into the temporary array.
+             * </p>
              *
-             * @param buttonView
-             * @param isChecked
+             * @param buttonView The button or checkbox that was clicked. Might be used to change settings on this checkbox.
+             * @param isChecked The value of the checkbox
              */
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
 
                 if (!isChecked) {
                     ArrayList<PointOfInterest> tempList = new ArrayList<>();
@@ -561,10 +551,12 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         ligplaatsenCheckbox = (CheckBox) getActivity().findViewById(R.id.ligplaatsenCheckbox);
         ligplaatsenCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             /**
-             * TODO: JAVADOC
+             * <p>onCheckedChanged is called whenever the user checks or unchecked the checkbox.
+             * <p/>This function deletes or adds all the markers into the temporary array.
+             * </p>
              *
-             * @param buttonView
-             * @param isChecked
+             * @param buttonView The button or checkbox that was clicked. Might be used to change settings on this checkbox.
+             * @param isChecked The value of the checkbox
              */
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -592,10 +584,12 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         boldersCheckbox = (CheckBox) getActivity().findViewById(R.id.boldersCheckbox);
         boldersCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             /**
-             * TODO: JAVADOC
+             * <p>onCheckedChanged is called whenever the user checks or unchecked the checkbox.
+             * <p/>This function deletes or adds all the markers into the temporary array.
+             * </p>
              *
-             * @param buttonView
-             * @param isChecked
+             * @param buttonView The button or checkbox that was clicked. Might be used to change settings on this checkbox.
+             * @param isChecked The value of the checkbox
              */
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -629,10 +623,10 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         }
         nullerCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             /**
-             * TODO: JAVADOC
+             * <p>The nullerCheckbox can be changed by the user to use or don't use PointsOfInterests that have missing data.</p>
              *
-             * @param buttonView
-             * @param isChecked
+             * @param buttonView The button or checkbox that was clicked. Might be used to change settings on this checkbox.
+             * @param isChecked The value of the checkbox
              */
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -699,8 +693,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         menuBackButton = (Button) getActivity().findViewById(R.id.backbuttonMenu);
         menuBackButton.setOnClickListener(new View.OnClickListener() {
             /**
-             * TODO: JAVADOC
-             * @param v
+             * <p>Changes the fragment back to the RoleSelectorFragment</p>
              */
             @Override
             public void onClick(View v) {
@@ -714,9 +707,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         switchbutton = (ImageView) getView().findViewById(R.id.switchbuttonMaps);
         switchbutton.setOnClickListener(new View.OnClickListener() {
             /**
-             * TODO: JAVADOC
-             *
-             * @param v
+             * <p>Switches the fragment to the AR fragment.</p>
              */
             @Override
             public void onClick(View v) {
