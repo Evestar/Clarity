@@ -461,6 +461,23 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         });
     }
 
+    private void unloadAllGeometries(){
+        final ArrayList<PointOfInterest> removeList = new ArrayList<>();
+
+        for (PointOfInterest poi: poiGeometryHashMap.values()){
+            removeList.add(poi);
+        }
+
+        for(final PointOfInterest poi : removeList) {
+            mSurfaceView.queueEvent(new Runnable() {
+                @Override
+                public void run() {
+                    checkIfPOIGeometryNotNull(poi);
+                }
+            });
+        }
+    }
+
     @Override
     public void observerOnLocationChanged(Location location) {
         if(mSensors != null)
@@ -477,27 +494,15 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
                     @Override
                     public void run() {
                         if ((MainActivity.SearchedPOI != null)) {
-                            metaioSDK.unloadGeometry(MainActivity.SearchedPOI.getGeometry());
+                            checkIfPOIGeometryNotNull(MainActivity.SearchedPOI);
                         }
 
-                        ligplaatsenCheckbox.setChecked(false);
-                        meerpalenCheckbox.setChecked(false);
-                        boldersCheckbox.setChecked(false);
+                        unloadAllGeometries();
 
                         MainActivity.SearchedPOI = poi;
+                        MainActivity.isSearchingFromMaps = true;
 
-                        File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), "zoekPOI.png");
-
-                        LLACoordinate coordinate = new LLACoordinate(
-                                poi.getCoordinates().get(0).getLatitude(),
-                                poi.getCoordinates().get(0).getLongitude(),
-                                0,
-                                0);
-
-                        int distance = getDistance(MainActivity.SearchedPOI);
-
-                        MainActivity.SearchedPOI.setGeometry(createGeometry(coordinate, POIbackground, POI_SCALE, String.valueOf(MainActivity.SearchedPOI.getId()), distance));
-                        MainActivity.SearchedPOI.getGeometry().setVisible(true);
+                        drawGeometries();
                     }
                 });
             }

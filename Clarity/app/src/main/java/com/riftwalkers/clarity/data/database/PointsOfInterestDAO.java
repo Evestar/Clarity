@@ -23,6 +23,7 @@ public class PointsOfInterestDAO {
 
     public ArrayList<PointOfInterest> getAllPointsOfInterest(){
         db = helper.getReadableDatabase();
+        db.beginTransaction();
 
         ArrayList<PointOfInterest> pointOfInterests = new ArrayList<>();
 
@@ -86,6 +87,12 @@ public class PointsOfInterestDAO {
 
         cursor = db.query(ClarityDBHelper.LIGPLAATSEN_TABLE_NAME,LIGPLLATSENcolumns,null,null,null,null,null);
         while (cursor.moveToNext()){
+            if(!sharedPreferences.getBoolean("showAllData", true)) {
+                if(cursor.getString(cursor.getColumnIndex(ClarityDBHelper.LXMETXT)) == null) {
+                    continue;
+                }
+            }
+
             PointOfInterest poi = new PointOfInterest();
 
             poi.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(ClarityDBHelper.UID))));
@@ -160,6 +167,9 @@ public class PointsOfInterestDAO {
             pointOfInterests.add(poi);
         }
         cursor.close();
+
+        db.endTransaction();
+        db.close();
 
         return pointOfInterests;
     }

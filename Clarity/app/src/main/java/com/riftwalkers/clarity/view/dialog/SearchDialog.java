@@ -1,5 +1,6 @@
 package com.riftwalkers.clarity.view.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
@@ -7,26 +8,38 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.riftwalkers.clarity.R;
 import com.riftwalkers.clarity.data.point_of_intrest.PoiType;
 import com.riftwalkers.clarity.data.point_of_intrest.PointOfInterest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 
-public class SearchDialog extends Dialog {
+public class SearchDialog extends Dialog implements AdapterView.OnItemSelectedListener {
     private OnMyDialogResult mDialogResult;
 
-    private Spinner spinner;
-    private Spinner spinner2;
+    private Activity activity;
+
+    private Spinner objectTypeSpinner;
+    private Spinner areaSpinner;
+    private Spinner objectSpinner;
     private Button button;
 
-    private ArrayAdapter<CharSequence> spinnerAdapter;
-    private ArrayAdapter<CharSequence> spinner2Adapter;
+    private ArrayAdapter<CharSequence> objectTypeSpinnerAdapter;
+    private ArrayAdapter areaSpinnerAdapter;
+    private PointOfInterestAdapter objectSpinnerAdapter;
 
-    private ArrayList<PointOfInterest> boeienArray;
-    private ArrayList<PointOfInterest> palenArray;
+    private ArrayList<PointOfInterest> boldersArray;
+    private ArrayList<PointOfInterest> koningsPalenArray;
+    private ArrayList<PointOfInterest> hogePalenArray;
     private ArrayList<PointOfInterest> ligplaatsenArray;
+
+    private ArrayList<String> areasArray;
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -42,100 +55,178 @@ public class SearchDialog extends Dialog {
         }
     }
 
-    public SearchDialog(final Context context, ArrayList<PointOfInterest> pointOfInterests) {
-        super(context);
+    public SearchDialog(Activity activity, ArrayList<PointOfInterest> pointOfInterests) {
+        super(activity);
+        this.activity = activity;
         this.setContentView(R.layout.search_dialog);
         this.setTitle(R.string.search_dialog_title);
 
-        boeienArray = new ArrayList<>();
-        palenArray = new ArrayList<>();
+        boldersArray = new ArrayList<>();
+        koningsPalenArray = new ArrayList<>();
+        hogePalenArray = new ArrayList<>();
         ligplaatsenArray = new ArrayList<>();
 
         for(PointOfInterest poi: pointOfInterests) {
             if(poi.getPoiType().equals(PoiType.Meerpaal)) {
-                palenArray.add(poi);
+                if(poi.getDescription() != null) {
+                    String[] descriptionData = poi.getDescription().split(" ");
+                    String paalType = descriptionData[descriptionData.length-1].substring(0, 2);
+
+                    if(paalType.equals("KP")) {
+                        koningsPalenArray.add(poi);
+                    } else if(paalType.equals("HP")) {
+                        hogePalenArray.add(poi);
+                    }
+                }
             } else if(poi.getPoiType().equals(PoiType.Ligplaats)) {
-                ligplaatsenArray.add(poi);
+                if(poi.getLxmeTXT() != null) {
+                    ligplaatsenArray.add(poi);
+                }
             } else {
-                boeienArray.add(poi);
+                if(poi.getDescription() != null) {
+                    boldersArray.add(poi);
+                }
             }
         }
 
-        spinner = (Spinner) findViewById(R.id.spinner);
-        spinner2 = (Spinner) findViewById(R.id.spinner2);
+        objectTypeSpinner = (Spinner) findViewById(R.id.objectTypeSpinner);
+        objectSpinner = (Spinner) findViewById(R.id.objectSpinner);
+        areaSpinner = (Spinner) findViewById(R.id.areaSpinner);
         button = (Button) findViewById(R.id.button);
 
-        setSpinnerAdapter(ArrayAdapter.createFromResource(context, R.array.drawer_array, android.R.layout.simple_spinner_item));
-        getSpinnerAdapter().setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        getSpinner().setAdapter(getSpinnerAdapter());
-
-        getSpinner().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if ((id != 0) && (getSpinner2().getVisibility() == View.GONE)) {
-                    getSpinner2().setVisibility(View.VISIBLE);
-                    getButton().setVisibility(View.VISIBLE);
-                }
-
-                if (id == 0) {
-                    getSpinner2().setVisibility(View.GONE);
-                    getButton().setVisibility(View.GONE);
-                }
-
-                if (id == 1) {
-                    setSpinner2Adapter(new ArrayAdapter(context, R.layout.searchbox_spinner_listview, boeienArray));
-                } else if (id == 2) {
-                    setSpinner2Adapter(new ArrayAdapter(context, R.layout.searchbox_spinner_listview, ligplaatsenArray));
-                } else {
-                    setSpinner2Adapter(new ArrayAdapter(context, R.layout.searchbox_spinner_listview, palenArray));
-                }
-
-                getSpinner2Adapter().setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                getSpinner2().setAdapter(getSpinner2Adapter());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        objectTypeSpinnerAdapter = ArrayAdapter.createFromResource(activity, R.array.drawer_array, android.R.layout.simple_spinner_item);
+        objectTypeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        objectTypeSpinner.setAdapter(objectTypeSpinnerAdapter);
+        objectTypeSpinner.setOnItemSelectedListener(this);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if( mDialogResult != null ){
-                    mDialogResult.finish((PointOfInterest) getSpinner2().getSelectedItem());
+                    mDialogResult.finish((PointOfInterest) objectSpinner.getSelectedItem());
                 }
                 SearchDialog.this.dismiss();
             }
         });
     }
 
-    public Spinner getSpinner() {
-        return spinner;
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if(parent == objectTypeSpinner) {
+            if(position == 0) {
+                areaSpinner.setVisibility(View.GONE);
+                objectSpinner.setVisibility(View.GONE);
+                button.setVisibility(View.GONE);
+            } else if(position == 1) {
+                System.out.println("Bolders selected");
+                fillAreaSpinner(boldersArray);
+            } else if(position == 2) {
+                System.out.println("Hoge palen selected");
+                fillAreaSpinner(hogePalenArray);
+            } else if(position == 3) {
+                System.out.println("Koningspalen selected");
+                fillAreaSpinner(koningsPalenArray);
+            } else if(position == 4) {
+                System.out.println("Ligplaatsen selected");
+                fillAreaSpinner(ligplaatsenArray);
+            }
+        } else if(parent == areaSpinner) {
+            if(position == 0) {
+                objectSpinner.setVisibility(View.GONE);
+                button.setVisibility(View.GONE);
+            } else {
+                if(objectSpinner.getVisibility() == View.GONE) {
+                    objectSpinner.setVisibility(View.GONE);
+                }
+
+                if(objectTypeSpinner.getSelectedItemPosition() == 1) {
+                    fillObjectsSpinner(areasArray, boldersArray);
+                } else if(objectTypeSpinner.getSelectedItemPosition() == 2) {
+                    fillObjectsSpinner(areasArray, hogePalenArray);
+                } else if(objectTypeSpinner.getSelectedItemPosition() == 3) {
+                    fillObjectsSpinner(areasArray, koningsPalenArray);
+                } else if(objectTypeSpinner.getSelectedItemPosition() == 4) {
+                    fillObjectsSpinner(areasArray, ligplaatsenArray);
+                }
+            }
+        }
     }
 
-    public Spinner getSpinner2() {
-        return spinner2;
+    private void fillAreaSpinner(ArrayList<PointOfInterest> sourceArray) {
+        areasArray = new ArrayList<>();
+
+        for(PointOfInterest poi : sourceArray) {
+            String area = "";
+
+            if((sourceArray == hogePalenArray) || (sourceArray == koningsPalenArray) || (sourceArray == boldersArray)) {
+                String[] description = poi.getDescription().split(" ");
+
+                for (int i = 0; i < description.length - 1; i++) {
+                    area += description[i] + " ";
+                }
+            } else if(sourceArray == ligplaatsenArray) {
+                area = poi.getHavenNaam();
+            }
+
+            area.trim();
+
+            if(!areasArray.contains(area)) {
+                areasArray.add(area);
+            }
+        }
+
+        Collections.sort(areasArray, new Comparator<String>() {
+            @Override
+            public int compare(String lhs, String rhs) {
+                return lhs.compareToIgnoreCase(rhs);
+            }
+        });
+
+        areasArray.add(0,"Gebied..");
+
+        areaSpinnerAdapter = new ArrayAdapter(activity, R.layout.searchbox_spinner_listview, areasArray);
+        areaSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        areaSpinner.setAdapter(areaSpinnerAdapter);
+        areaSpinner.setOnItemSelectedListener(this);
+
+        areaSpinner.setVisibility(View.VISIBLE);
     }
 
-    public Button getButton() {
-        return button;
+    private void fillObjectsSpinner(ArrayList<String> areasArray, ArrayList<PointOfInterest> pointOfInterests) {
+        ArrayList<PointOfInterest> pointOfInterestArrayList = new ArrayList<>();
+        String poiArea = "";
+
+        for (String area : areasArray) {
+            if(areaSpinner.getSelectedItem().equals(area)) {
+                poiArea = area;
+            }
+        }
+
+        for (PointOfInterest poi : pointOfInterests) {
+                if(poi.getPoiType() == PoiType.Ligplaats) {
+                    if(poi.getHavenNaam().equals(poiArea)) {
+                        pointOfInterestArrayList.add(poi);
+                    }
+                } else {
+                    if(poi.getDescription().contains(poiArea)) {
+                        pointOfInterestArrayList.add(poi);
+                    }
+                }
+        }
+
+        objectSpinnerAdapter = new PointOfInterestAdapter(activity, R.layout.searchbox_spinner_listview, pointOfInterestArrayList);
+        objectSpinner.setAdapter(objectSpinnerAdapter);
+        objectSpinner.setOnItemSelectedListener(this);
+
+        objectSpinner.setVisibility(View.VISIBLE);
+        button.setVisibility(View.VISIBLE);
     }
 
-    public ArrayAdapter<CharSequence> getSpinnerAdapter() {
-        return spinnerAdapter;
-    }
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
-    public void setSpinnerAdapter(ArrayAdapter<CharSequence> spinnerAdapter) {
-        this.spinnerAdapter = spinnerAdapter;
-    }
-
-    public ArrayAdapter<CharSequence> getSpinner2Adapter() {
-        return spinner2Adapter;
-    }
-
-    public void setSpinner2Adapter(ArrayAdapter<CharSequence> spinner2Adapter) {
-        this.spinner2Adapter = spinner2Adapter;
     }
 
     public void setDialogResult(OnMyDialogResult dialogResult){

@@ -9,10 +9,11 @@
     <string name="search_dialog_title">Zoeken naar POI\'s</string>
     <string name="search_dialog_searchbutton">Zoek!</string>
     <string-array name="drawer_array">
-        <item></item>
-        <item>Afmeerboeien</item>
+        <item>Object type..</item>
+        <item>Bolders</item>
+        <item>Hoge palen</item>
+        <item>Koningspalen</item>
         <item>Ligplaatsen</item>
-        <item>Meerpalen</item>
     </string-array>
 
     <string name="back_button_menu">Menu</string>
