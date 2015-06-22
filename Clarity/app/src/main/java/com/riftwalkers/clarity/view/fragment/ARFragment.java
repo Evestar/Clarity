@@ -44,7 +44,7 @@ import java.util.HashMap;
 public class ARFragment extends AbstractARFragment implements LocationListenerObserver, SearchButtonClickListener {
 
     // Draw settings
-    private int POI_SCALE = 80;
+    private int POI_SCALE = 40;
     private int drawRange;
 
     // Data
@@ -371,7 +371,8 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
             poi.setGeometry(createGeometry(coordinate, poiBackground, POI_SCALE, String.valueOf(poi.getId()), distance));
 
             // Place reference to the geometry in the HashMap
-            poiGeometryHashMap.put(poi.getGeometry(), poi);
+            if(!poiGeometryHashMap.containsKey(poi.getGeometry()))
+                poiGeometryHashMap.put(poi.getGeometry(), poi);
         }
     }
 
@@ -634,6 +635,24 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
     public void observerOnLocationChanged(Location location) {
         if(mSensors != null)
             mSensors.setManualLocation(new LLACoordinate(location.getLatitude(), location.getLongitude(), 0, 0));
+
+        if(mSurfaceView != null) {
+            mSurfaceView.queueEvent(new Runnable() {
+                @Override
+                public void run() {
+                    ArrayList<PointOfInterest> tempPOIList = new ArrayList<PointOfInterest>();
+                    tempPOIList.addAll(poiGeometryHashMap.values());
+
+                    for (PointOfInterest poi : tempPOIList) {
+                        File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), poi.GetImageName());       // Get the right image for the POI
+
+                        int distance = getDistance(poi);
+                        metaioSDK.unloadGeometry(poi.getGeometry());
+                        createPOIGeometry(poi, POIbackground, distance);    // Generate it
+                    }
+                }
+            });
+        }
     }
 
     /**
@@ -703,7 +722,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         // Create rectangle for the distance
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.FILL);
-        canvas.drawRect(40, ((baseImage.getHeight() / 5) * 4), baseImage.getWidth()-40, baseImage.getHeight(), paint);
+        canvas.drawRect(40, ((baseImage.getHeight() / 5) * 4), baseImage.getWidth() - 40, baseImage.getHeight(), paint);
 
         // Draw the distance onto the rectangle
         paint.setColor(Color.BLUE);
