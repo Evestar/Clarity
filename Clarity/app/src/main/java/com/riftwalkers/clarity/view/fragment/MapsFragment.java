@@ -123,6 +123,8 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         googleMap.getUiSettings().setRotateGesturesEnabled(false);
         googleMap.getUiSettings().setCompassEnabled(false);
         googleMap.setInfoWindowAdapter(customInfoWindowAdapter);
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
+
         googleMap.moveCamera(
                 CameraUpdateFactory.newCameraPosition(
                         new CameraPosition(
@@ -265,6 +267,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
                 createSingleMarker(poi);
 
+
                 if (zoekPOI != null) {
                     addAnMarker(getMarkerBitmap(255, 0, 255), zoekPOI, String.valueOf(zoekPOI.getId()), "");
                 }
@@ -299,10 +302,18 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                         getMarkerSnippet(poi)
                 );
                 break;
-
             case Bolder:
                 addAnMarker(
-                        getMarkerBitmap(230, 99, 24),
+                        getMarkerBitmap(255, 0, 0),
+                        poi,
+                        getMarkerTitle(poi, distance),
+                        getMarkerSnippet(poi)
+                );
+
+                break;
+            case Meerpaal:
+                addAnMarker(
+                        getMarkerBitmap(0, 0, 155),
                         poi,
                         getMarkerTitle(poi, distance),
                         getMarkerSnippet(poi)
@@ -319,9 +330,37 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
      * @return A snippet with the description and values inside of the Point Of Interest
      */
     private String getMarkerSnippet(PointOfInterest poi) {
+        String s = "";
 
-        return String.valueOf(poi.getPoiType())
-                .concat("");
+        switch(poi.getPoiType()){
+            case Bolder:
+
+                s+= "Toegestane trekkracht : ";
+                if(poi.getTrekkracht() != 0) {
+                    s += String.valueOf(poi.getTrekkracht());
+                } else {
+                    s += "Onbekend";    // Set to 'Onbekend' if data is unknown
+                }
+
+                s+= "(KN)\nMethode verankering : ";
+                if(poi.getMethodeVerankering() != null) {
+                    s += poi.getMethodeVerankering();
+                } else {
+                    s += "Onbekend";   // Set to 'Onbekend' if data is unknown
+                }
+
+                break;
+            case Meerpaal:
+
+                break;
+            case Ligplaats:
+
+                break;
+        }
+
+
+
+        return s;
     }
 
     /**
@@ -330,12 +369,44 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
      * @return A String of text holding both an ID and the Distance.
      */
     private String getMarkerTitle(PointOfInterest poi, int distance) {
-        String title = "";
+        String s = "";
 
-        title = title.concat(String.valueOf(poi.getId()))
-                .concat(" " + distance);
+        String[] temp;
 
-        return title;
+        switch(poi.getPoiType()){
+            case Bolder:
+                if(poi.getDescription() != null) {
+                    temp = poi.getDescription().split(" ");
+                    s += temp[temp.length - 2] + " " + temp[temp.length - 1];
+                } else {
+                    s += "DATA UNKOWN";
+                }
+
+                s+= " ('"+distance+"')";
+
+                break;
+            case Meerpaal:
+
+                if(poi.getDescription() != null) {
+                    temp = poi.getDescription().split(" ");
+                    s += temp[temp.length - 1];
+                } else {
+                    s += "DATA UNKOWN";
+                }
+                s+= " ('"+distance+"')";
+
+                break;
+            case Ligplaats:
+
+                s+= poi.getLxmeTXT();
+                s+= " ('"+distance+"')";
+
+                break;
+        }
+
+
+
+        return s;
     }
 
     /**
@@ -752,14 +823,24 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                 ligplaatsenCheckbox.setChecked(false);
                 boldersCheckbox.setChecked(false);
 
+                googleMap.moveCamera(
+                        CameraUpdateFactory.newCameraPosition(
+                                new CameraPosition(
+                                        new LatLng(
+                                                zoekPOI.getCoordinates().get(0).getLatitude(),
+                                                zoekPOI.getCoordinates().get(0).getLongitude()),
+                                        16,
+                                        0,
+                                        0
+                                )
+                        )
+                );
+
+                tempPoiList.clear();
                 tempPoiList.add(zoekPOI);
-
-                createMarkers(googleMap.getProjection()
-                        .getVisibleRegion().latLngBounds);
-
-                googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(zoekPOI.getCoordinates().get(0).getLatitude(), zoekPOI.getCoordinates().get(0).getLongitude()), 16, 0, 0)));
             }
         });
+
         searchDialog.show();
     }
 
