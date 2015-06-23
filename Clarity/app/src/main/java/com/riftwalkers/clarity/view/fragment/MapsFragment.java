@@ -61,9 +61,9 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
     private boolean hasClicked = false;                     //
     private long currentTime;                               //
 
-    private PoiList pointOfInterestList;                    //
-    private PoiList tempPoiList;                            //
-    private PointOfInterest zoekPOI;                        //
+    private ArrayList<PointOfInterest> boldersList;         //
+    private ArrayList<PointOfInterest> meerpalenList;       //
+    private ArrayList<PointOfInterest> ligplaatsenList;     //
 
     private Button menuBackButton;                          //
     private CheckBox meerpalenCheckbox;                     //
@@ -90,10 +90,23 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         //locationProvider.addLocationListenObserver(this);
 
         thread = new Thread(this);
-        pointOfInterestList = MainActivity.pointOfInterestList;
-        tempPoiList = (PoiList) pointOfInterestList.clone();
 
-        savedMarkers = new HashMap<>();
+        boldersList         = new ArrayList<PointOfInterest>();
+        ligplaatsenList     = new ArrayList<PointOfInterest>();
+        meerpalenList       = new ArrayList<PointOfInterest>();
+        savedMarkers        = new HashMap<Marker, PointOfInterest>();
+
+        for(PointOfInterest poi: MainActivity.pointOfInterestList)
+        {
+            if(poi.getPoiType() == PoiType.Bolder){
+                boldersList.add(poi);
+            } else if(poi.getPoiType() == PoiType.Ligplaats){
+                ligplaatsenList.add(poi);
+            } else if(poi.getPoiType() == PoiType.Meerpaal){
+                meerpalenList.add(poi);
+            }
+        }
+
         setupViews();
     }
 
@@ -172,15 +185,13 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                     LastMarkerClicked = marker;
                     System.out.println(LastMarkerClicked);
                     marker.showInfoWindow();
-                    if (clicks % 5 == 0) {
+                    if (clicks % 4 == 0) {
                         Toast.makeText(getActivity(), "Tap again to open Augmented Reality", Toast.LENGTH_SHORT).show();
                     }
                 } else if (LastMarkerClicked.equals(marker)) {
                     // SAME MARKER -> SEARCH!
                     MainActivity.isSearchingFromMaps = true;
-
                     MainActivity.SearchedPOI = savedMarkers.get(marker);
-
                     fragmentListener.ChangeFragment(ARFragment.class);
                 }
 
@@ -200,8 +211,10 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
      */
     @Override
     public void observerOnLocationChanged(Location location) {
-        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(location.getLatitude(), location.getLongitude()), 16, 0, 0)));
-        user.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+//        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(location.getLatitude(), location.getLongitude()), 16, 0, 0)));
+        if(user != null) {
+            user.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+        }
     }
 
     //////////////////////////////////////////////////
@@ -243,7 +256,6 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
             e.printStackTrace();
         }
 
-
         user = googleMap.addMarker(
                 new MarkerOptions()
                         .position(lastKnown)
@@ -257,21 +269,43 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
         );
 
         // poi's
-        for (int i = 0; i < tempPoiList.size(); i++) {
-            PointOfInterest poi = tempPoiList.get(i);
+        if(boldersCheckbox.isChecked()){
+            CheckIfShouldDraw(boldersList, sw, ne);
+        }
+        if(meerpalenCheckbox.isChecked()){
+            CheckIfShouldDraw(meerpalenList, sw, ne);
+        }
+        if(ligplaatsenCheckbox.isChecked()){
+            CheckIfShouldDraw(ligplaatsenList, sw, ne);
+        }
 
+        if (MainActivity.SearchedPOI != null) {
+            float[] results = new float[3];
+            Location.distanceBetween(
+                    MainActivity.SearchedPOI.getCoordinates().get(0).getLatitude(),
+                    MainActivity.SearchedPOI.getCoordinates().get(0).getLongitude(),
+                    user.getPosition().latitude,
+                    user.getPosition().longitude,
+                    results
+            );
+            int distance = (int) results[0];
+
+            addAnMarker(
+                    getMarkerBitmap(255, 0, 255),
+                    MainActivity.SearchedPOI,
+                    getMarkerTitle(MainActivity.SearchedPOI, distance),
+                    getMarkerSnippet(MainActivity.SearchedPOI));
+        }
+    }
+
+    public void CheckIfShouldDraw(ArrayList<PointOfInterest> pointOfInterests, Location sw, Location ne){
+        for(PointOfInterest poi : pointOfInterests){
             if (poi.getCoordinates().get(0).getLatitude() > sw.getLatitude() &&
                     poi.getCoordinates().get(0).getLatitude() < ne.getLatitude() &&
                     poi.getCoordinates().get(0).getLongitude() > sw.getLongitude() &&
                     poi.getCoordinates().get(0).getLongitude() < ne.getLongitude()) {
 
                 createSingleMarker(poi);
-
-
-                if (zoekPOI != null) {
-                    addAnMarker(getMarkerBitmap(255, 0, 255), zoekPOI, String.valueOf(zoekPOI.getId()), "");
-                }
-
             }
         }
     }
@@ -334,26 +368,58 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
         switch(poi.getPoiType()){
             case Bolder:
-
                 s+= "Toegestane trekkracht : ";
                 if(poi.getTrekkracht() != 0) {
-                    s += String.valueOf(poi.getTrekkracht());
+                    s += String.valueOf(poi.getTrekkracht()) + "(KN)";
                 } else {
                     s += "Onbekend";    // Set to 'Onbekend' if data is unknown
                 }
 
-                s+= "(KN)\nMethode verankering : ";
+                s+= "\nMethode verankering : ";
                 if(poi.getMethodeVerankering() != null) {
                     s += poi.getMethodeVerankering();
                 } else {
                     s += "Onbekend";   // Set to 'Onbekend' if data is unknown
                 }
 
+                if(poi.getDescription() != null) {
+                    s += "\n\n" + poi.getDescription();
+                }
+
                 break;
             case Meerpaal:
+                if(poi.getTypePaal() != null){
+                    s += poi.getTypePaal();
+                } else {
+                    s += "Meerpaal";
+                }
+
+                if(poi.getMateriaal() != null){
+                    s += "\nMateriaal : " + poi.getMateriaal();
+                    if(poi.getTrekkracht() != 0){
+                        s += "(max. " + poi.getTrekkracht() + " KN)";
+                    }
+                }
+
+                if(poi.getDescription() != null){
+                    s += "\n\n" + poi.getDescription();
+                }
 
                 break;
             case Ligplaats:
+                if(poi.getEigenaar() != null){
+                    s += "Eigenaar : " + poi.getEigenaar() + "\n";
+                }
+
+                if(poi.getHavenNaam() != null){
+                    s += "Haven : " + poi.getHavenNaam() + "\n";
+                    if(poi.getXmeTXT() != null){
+                        s += "Plaats : " + poi.getXmeTXT() + "\n";
+                    }
+                    if(poi.getOeverFrontNummer() != null){
+                        s += "Oeverfront nummer : " + poi.getOeverFrontNummer();
+                    }
+                }
 
                 break;
         }
@@ -370,7 +436,6 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
      */
     private String getMarkerTitle(PointOfInterest poi, int distance) {
         String s = "";
-
         String[] temp;
 
         switch(poi.getPoiType()){
@@ -379,10 +444,8 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                     temp = poi.getDescription().split(" ");
                     s += temp[temp.length - 2] + " " + temp[temp.length - 1];
                 } else {
-                    s += "DATA UNKOWN";
+                    s += "Onbekende bolder";
                 }
-
-                s+= " ('"+distance+"')";
 
                 break;
             case Meerpaal:
@@ -391,20 +454,20 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
                     temp = poi.getDescription().split(" ");
                     s += temp[temp.length - 1];
                 } else {
-                    s += "DATA UNKOWN";
+                    s += "Onbekende paal";
                 }
-                s+= " ('"+distance+"')";
 
                 break;
             case Ligplaats:
-
-                s+= poi.getLxmeTXT();
-                s+= " ('"+distance+"')";
+                if(poi.getLxmeTXT() != null) {
+                    s += poi.getLxmeTXT();
+                } else {
+                    s += "Onbekende ligplaats";
+                }
 
                 break;
         }
-
-
+        s+= " ("+distance+"m)";
 
         return s;
     }
@@ -596,24 +659,9 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
              */
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-
-                if (!isChecked) {
-                    ArrayList<PointOfInterest> tempList = new ArrayList<>();
-                    for (PointOfInterest poi : tempPoiList) {
-                        if (poi.getPoiType().equals(PoiType.Meerpaal)) {
-                            tempList.add(poi);
-                        }
-                    }
-                    tempPoiList.removeAll(tempList);
-                    tempList = null;
-                } else {
-                    nullerCheckbox.setChecked(false);
-                    for (PointOfInterest poi : pointOfInterestList) {
-                        if (poi.getPoiType().equals(PoiType.Meerpaal)) {
-                            tempPoiList.add(poi);
-                        }
-                    }
+                if (isChecked) {
+                    MainActivity.SearchedPOI = null;
+                    MainActivity.isSearchingFromMaps = false;
                 }
                 drawMarkers();
             }
@@ -631,22 +679,9 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
              */
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked) {
-                    ArrayList<PointOfInterest> removeList = new ArrayList<>();
-                    for (PointOfInterest poi : tempPoiList) {
-                        if (poi.getPoiType().equals(PoiType.Ligplaats)) {
-                            removeList.add(poi);
-                        }
-                    }
-                    tempPoiList.removeAll(removeList);
-                    removeList = null;
-                } else {
-                    nullerCheckbox.setChecked(false);
-                    for (PointOfInterest poi : pointOfInterestList) {
-                        if (poi.getPoiType().equals(PoiType.Ligplaats)) {
-                            tempPoiList.add(poi);
-                        }
-                    }
+                if (isChecked) {
+                    MainActivity.SearchedPOI = null;
+                    MainActivity.isSearchingFromMaps = false;
                 }
                 drawMarkers();
             }
@@ -664,22 +699,9 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
              */
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked) {
-                    ArrayList<PointOfInterest> removeList = new ArrayList<>();
-                    for (PointOfInterest poi : tempPoiList) {
-                        if (poi.getPoiType().equals(PoiType.Bolder)) {
-                            removeList.add(poi);
-                        }
-                    }
-                    tempPoiList.removeAll(removeList);
-                    removeList = null;
-                } else {
-                    nullerCheckbox.setChecked(false);
-                    for (PointOfInterest poi : pointOfInterestList) {
-                        if (poi.getPoiType().equals(PoiType.Bolder)) {
-                            tempPoiList.add(poi);
-                        }
-                    }
+                if (isChecked) {
+                    MainActivity.SearchedPOI = null;
+                    MainActivity.isSearchingFromMaps = false;
                 }
                 drawMarkers();
             }
@@ -711,36 +733,6 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
 
                 if(fragmentListener != null)
                     fragmentListener.ChangeFragment(MapsFragment.class);
-                if (isChecked) {
-                    tempPoiList.clear();
-                    boldersCheckbox.setChecked(false);
-                    meerpalenCheckbox.setChecked(false);
-                    ligplaatsenCheckbox.setChecked(false);
-
-                    for (PointOfInterest poi : pointOfInterestList) {
-                        switch (poi.getPoiType()) {
-
-                            case Bolder:
-                                if (poi.getDescription() != null && poi.getTrekkracht() != 0 && poi.getMateriaal() != null) {
-                                    tempPoiList.add(poi);
-                                }
-                                break;
-                            case Meerpaal:
-                                if (poi.getDescription() != null && poi.getTrekkracht() != 0 && poi.getMateriaal() != null) {
-                                    tempPoiList.add(poi);
-                                }
-                                break;
-                            case Ligplaats:
-                                if (poi.getDescription() != null && poi.getTrekkracht() != 0 && poi.getMateriaal() != null) {
-                                    tempPoiList.add(poi);
-                                }
-                                break;
-                            default: /* nothing, just nothing */
-                                break;
-
-                        }
-                    }
-                }
             }
         });
 
@@ -812,32 +804,27 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback,Loc
      */
     @Override
     public void onSearchClick() {
-        SearchDialog searchDialog = new SearchDialog(getActivity(), pointOfInterestList);
+        SearchDialog searchDialog = new SearchDialog(getActivity(), MainActivity.pointOfInterestList);
         searchDialog.setDialogResult(new SearchDialog.OnMyDialogResult() {
             @Override
             public void finish(final PointOfInterest poi) {
+            MainActivity.SearchedPOI = poi;
 
-                zoekPOI = poi;
+            meerpalenCheckbox.setChecked(false);
+            ligplaatsenCheckbox.setChecked(false);
+            boldersCheckbox.setChecked(false);
 
-                meerpalenCheckbox.setChecked(false);
-                ligplaatsenCheckbox.setChecked(false);
-                boldersCheckbox.setChecked(false);
-
-                googleMap.moveCamera(
-                        CameraUpdateFactory.newCameraPosition(
-                                new CameraPosition(
-                                        new LatLng(
-                                                zoekPOI.getCoordinates().get(0).getLatitude(),
-                                                zoekPOI.getCoordinates().get(0).getLongitude()),
-                                        16,
-                                        0,
-                                        0
-                                )
-                        )
-                );
-
-                tempPoiList.clear();
-                tempPoiList.add(zoekPOI);
+            googleMap.moveCamera(
+                    CameraUpdateFactory.newCameraPosition(
+                            new CameraPosition(
+                                    new LatLng(
+                                            MainActivity.SearchedPOI.getCoordinates().get(0).getLatitude(),
+                                            MainActivity.SearchedPOI.getCoordinates().get(0).getLongitude()),
+                                    16,
+                                    0,
+                                    0)
+                    )
+            );
             }
         });
 

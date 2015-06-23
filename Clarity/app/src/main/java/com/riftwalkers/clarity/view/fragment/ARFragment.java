@@ -39,12 +39,16 @@ import com.riftwalkers.clarity.view.dialog.SearchDialog;
 import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class ARFragment extends AbstractARFragment implements LocationListenerObserver, SearchButtonClickListener {
 
     // Draw settings
-    private int POI_SCALE = 80;
+    private int POI_SCALE = 40;
     private int drawRange;
 
     // Data
@@ -107,7 +111,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         metaioSDK.setTrackingConfiguration("GPS");
 
         // Debug settings
-        metaioSDK.setLLAObjectRenderingLimits(5, 200);
+        metaioSDK.setLLAObjectRenderingLimits(25, 100);
         metaioSDK.setRendererClippingPlaneLimits(10, 220000);
 
         // Set this fragment as the location provider observer
@@ -251,7 +255,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
             // Draw front number if known
             if(linkedPoi.getOeverFrontNummer() != null) {
                 row4.setVisibility(View.VISIBLE);
-                row4.setText("Oever front nummber: " + linkedPoi.getOeverFrontNummer());
+                row4.setText("Oeverfront nummer: " + linkedPoi.getOeverFrontNummer());
             } else {
                 row4.setVisibility(View.GONE);
             }
@@ -388,7 +392,7 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         int distance = getDistance(MainActivity.SearchedPOI);
 
         if (MainActivity.SearchedPOI.getGeometry() == null) {
-            File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), "zoekPOI.png");    // Use a special image for the POI
+            File POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), "backup2.png");    // Use a special image for the POI
 
             createPOIGeometry(MainActivity.SearchedPOI, POIbackground, distance);
         }
@@ -631,9 +635,76 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
      * @param location The new location of the user
      */
     @Override
-    public void observerOnLocationChanged(Location location) {
+    public void observerOnLocationChanged(final Location location) {
         if(mSensors != null)
             mSensors.setManualLocation(new LLACoordinate(location.getLatitude(), location.getLongitude(), 0, 0));
+
+        if(mSurfaceView != null) {
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    LinkedList<PointOfInterest> tempPoiList = new LinkedList<PointOfInterest>();
+                    try {
+                        for (PointOfInterest pointOfInterest : poiGeometryHashMap.values()) {
+                            tempPoiList.add(pointOfInterest);
+                        }
+
+                        Collections.sort(tempPoiList, new Comparator<PointOfInterest>() {
+                            @Override
+                            public int compare(PointOfInterest lhs, PointOfInterest rhs) {
+                                int poi1Distance = getDistance(lhs);
+                                int poi2Distance = getDistance(rhs);
+
+                                if (poi1Distance > poi2Distance) {
+                                    return 1;
+                                } else if (poi1Distance < poi2Distance) {
+                                    return -1;
+                                } else {
+                                    return 0;
+                                }
+                            }
+                        });
+
+                        for (final PointOfInterest poi : tempPoiList) {
+                            if (mSurfaceView != null) {
+                                mSurfaceView.queueEvent(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        File POIbackground = null;
+                                        if((MainActivity.SearchedPOI != null) &&(poi == MainActivity.SearchedPOI)) {
+                                            POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), "backup2.png");       // Get the right image for the POI
+                                        } else {
+                                            POIbackground = AssetsManager.getAssetPathAsFile(getActivity(), poi.GetImageName());       // Get the right image for the POI
+                                        }
+
+                                        int distance = getDistance(poi);
+                                        metaioSDK.unloadGeometry(poi.getGeometry());
+                                        createPOIGeometry(poi, POIbackground, distance);    // Generate it
+                                    }
+                                });
+                            }
+
+                            try {
+                                Thread.sleep(200);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } catch (ConcurrentModificationException e){
+                        e.printStackTrace();
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e1) {
+                            e1.printStackTrace();
+                        }
+
+                        locationProvider.requestUpdate();
+                    }
+                }
+            }).start();
+        }
     }
 
     /**
@@ -689,16 +760,16 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
         Canvas canvas = new Canvas(baseImage);
 
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);     // Use anti-aliasing
-        paint.setColor(Color.rgb(61, 61, 61));              // The text color, #3D3D3D
+//        paint.setColor(Color.rgb(221, 221, 221));              // The text color, #3D3D3D
         paint.setTextSize(24);                              // Text size in pixels
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));    // Make the text bold
 
         // Draw text to the canvas center
-        Rect bounds = new Rect();
-        paint.getTextBounds(text, 0, text.length(), bounds);
-        int x = (baseImage.getWidth() - bounds.width())/2;
-        int y = (baseImage.getHeight() + bounds.height())/3;
-        canvas.drawText(text, x, y, paint);
+//        Rect bounds = new Rect();
+//        paint.getTextBounds(text, 0, text.length(), bounds);
+//        int x = (baseImage.getWidth() - bounds.width())/2;
+//        int y = (baseImage.getHeight() + bounds.height())/3;
+//        canvas.drawText(text, x, y, paint);
 
         // Create rectangle for the distance
         paint.setColor(Color.WHITE);
@@ -707,11 +778,11 @@ public class ARFragment extends AbstractARFragment implements LocationListenerOb
 
         // Draw the distance onto the rectangle
         paint.setColor(Color.BLUE);
-        bounds = new Rect();
+        Rect bounds = new Rect();
         text = String.valueOf(distance) + " m";
         paint.getTextBounds(text, 0, text.length(), bounds);
-        x = (baseImage.getWidth() - bounds.width())/2;
-        y = baseImage.getHeight()-12;
+        int x = (baseImage.getWidth() - bounds.width())/2;
+        int y = baseImage.getHeight()-12;
         canvas.drawText(String.valueOf(distance) + " m", x, y, paint);
 
         // Return generated image

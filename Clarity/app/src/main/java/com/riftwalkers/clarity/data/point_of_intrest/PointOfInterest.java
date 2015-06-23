@@ -97,8 +97,8 @@ public class PointOfInterest {
     {
         switch (this.poiType){
             case Ligplaats: return "POIa.png";
-            case Meerpaal: return "POIc.png";
-            case Bolder: return "backup3.png";
+            case Meerpaal: return "POIb.png";
+            case Bolder: return "POIc.png";
             default: return "ExamplePOI.png";
         }
     }

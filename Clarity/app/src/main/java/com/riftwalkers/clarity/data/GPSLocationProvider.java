@@ -2,6 +2,7 @@ package com.riftwalkers.clarity.data;
 
 import android.app.Activity;
 import android.content.Context;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -27,7 +28,9 @@ public class GPSLocationProvider implements LocationListener {
         locationManager = (LocationManager) this.activity.getSystemService(Context.LOCATION_SERVICE);
         lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, this);
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        locationManager.requestLocationUpdates(locationManager.getBestProvider(criteria, true), 4000, 25, this);
     }
 
     @Override
@@ -57,7 +60,9 @@ public class GPSLocationProvider implements LocationListener {
     }
 
     public void requestUpdate() {
-        locationManager.requestSingleUpdate(locationManager.NETWORK_PROVIDER, this, null);
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        locationManager.requestSingleUpdate(locationManager.getBestProvider(criteria, true), this, null);
     }
 
     public void addLocationListenObserver(LocationListenerObserver locationListenerObserver) {

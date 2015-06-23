@@ -38,8 +38,6 @@ public class RoleSelectorFragment extends BaseFragment{
         if(sharedPreferences.getBoolean("SETUPCOMPLETED",false)) {
             activateButtons();
         } else {
-            Toast.makeText(getActivity(), "Please wait while required data is loaded...", Toast.LENGTH_LONG).show();
-
             AssetsExtracter assetsExtracter = new AssetsExtracter();
             assetsExtracter.setContext(getActivity());
             assetsExtracter.setActivity(getActivity());
@@ -49,7 +47,6 @@ public class RoleSelectorFragment extends BaseFragment{
                     activateButtons();
                     editor.putBoolean("SETUPCOMPLETED", true);
                     editor.apply();
-                    Toast.makeText(getActivity().getApplicationContext(), "All assets are loaded", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override

@@ -81,7 +81,7 @@
                     android:layout_height="30dp"
                     android:id="@+id/legendaImageC"
                     android:layout_gravity="left"
-                    android:src="@drawable/legenda_c"
+                    android:src="@drawable/legenda_b"
                     android:layout_marginTop="5dp"
                     tools:ignore="RtlHardcoded"
                     android:contentDescription="@string/legend"/>
@@ -113,7 +113,7 @@
                     android:layout_height="30dp"
                     android:id="@+id/legendaImageD"
                     android:layout_gravity="left"
-                    android:src="@drawable/legenda_d"
+                    android:src="@drawable/legenda_c"
                     android:layout_marginTop="0dp"
                     tools:ignore="RtlHardcoded"
                     android:contentDescription="@string/legend"/>
@@ -130,6 +130,7 @@
             android:layout_below="@+id/linearLayout"
             android:text="@string/nullDataShowBox"
             android:checked="true"
+            android:layout_marginTop="20dp"
             />
 
         <LinearLayout
